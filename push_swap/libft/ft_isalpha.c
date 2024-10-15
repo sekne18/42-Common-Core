@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jan <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/15 21:59:48 by jans             ###   ########.fr       */
+/*   Created: 2024/09/29 10:45:59 by jan               #+#    #+#             */
+/*   Updated: 2024/10/10 15:15:38 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
-
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
-
-int		validate_input(char **args);
-
-
-#endif
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}

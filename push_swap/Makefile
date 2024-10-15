@@ -1,28 +1,23 @@
 CC = cc
-CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -I.
 
-SRCS = push_swap.c 
+SRCS = push_swap.c utils.c
 OBJS = $(SRCS:.c=.o)
-NAME = push_swap.a
+NAME = push_swap
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+	@$(MAKE) -C ./libft
+	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -I. -c $< -o $@
-
-all: $(NAME) #testing
-
-#test: test.o $(NAME) clean
-#	$(CC) -o test test.o $(NAME)
-
-#test.o: test.c	
-#	$(CC) $(CFLAGS) -I. -c $< -o $@
+all: $(NAME)
 
 clean:
-	rm -f $(OBJS)
+	@$(MAKE) -C ./libft fclean
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(EXEC) #test
+	@rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re

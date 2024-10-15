@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jan <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/15 21:59:48 by jans             ###   ########.fr       */
+/*   Created: 2024/09/29 11:09:45 by jan               #+#    #+#             */
+/*   Updated: 2024/10/10 18:36:11 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
-
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
-
-int		validate_input(char **args);
-
-
-#endif
+int	ft_isprint(int c)
+{
+	if (c >= 32 && c <= 126)
+		return (1);
+	return (0);
+}

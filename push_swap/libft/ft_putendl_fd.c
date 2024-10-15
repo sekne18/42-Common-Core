@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/15 21:59:48 by jans             ###   ########.fr       */
+/*   Created: 2024/10/07 00:07:31 by jans              #+#    #+#             */
+/*   Updated: 2024/10/10 22:56:49 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
+/*#include <stdio.h>
 
-int		validate_input(char **args);
-
-
-#endif
+int	main()
+{
+	ft_putendl_fd("", 2);
+	return (0);
+}
+*/
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}

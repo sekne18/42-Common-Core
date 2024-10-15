@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/15 21:59:48 by jans             ###   ########.fr       */
+/*   Created: 2024/10/06 23:46:58 by jans              #+#    #+#             */
+/*   Updated: 2024/10/10 21:01:24 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	int	i;
 
-int		validate_input(char **args);
-
-
-#endif
+	i = -1;
+	while (s[++i])
+		f(i, &s[i]);
+}
