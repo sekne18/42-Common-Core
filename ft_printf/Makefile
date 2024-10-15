@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 
 SRCS = ft_printf.c srcs/util.c srcs/hex_util.c 
 OBJS = $(SRCS:.c=.o)
@@ -13,16 +13,10 @@ $(NAME): $(OBJS)
 
 all: $(NAME) #testing
 
-#test: test.o $(NAME) clean
-#	$(CC) -o test test.o $(NAME)
-
-#test.o: test.c	
-#	$(CC) $(CFLAGS) -I. -c $< -o $@
-
 clean:
 	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(EXEC) #test
+	rm -f $(NAME) $(EXEC)
 
 re: fclean all
