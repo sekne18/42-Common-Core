@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/16 21:31:53 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/16 22:19:17 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
 	t_list	*stack_b;
-	
+
 	stack_a = NULL;
 	stack_b = NULL;
 	if (argc < 2)

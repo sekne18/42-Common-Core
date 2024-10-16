@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/16 22:17:23 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/16 22:21:49 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	sa(t_list **stack_a)
 	t_list	*curr;
 	t_list	*next;
 	t_list	*prev;
-	
+
 	prev = NULL;//Create a null obj
 	curr = *stack_a;
 	next = NULL;
@@ -35,5 +35,5 @@ void	sa(t_list **stack_a)
 		}
 		prev = curr;
 		curr = next;
-	}	
+	}
 }

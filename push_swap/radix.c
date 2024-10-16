@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:55:24 by jans              #+#    #+#             */
-/*   Updated: 2024/10/16 22:17:24 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/16 22:21:41 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	radix_sort(t_list **stack_a, t_list **stack_b)
 	sa(stack_a);
 	print_list(*stack_a);
 	print_list(*stack_b);
-	
 	/*
 	sb(stack_b);
 	print_list(stack_a);
