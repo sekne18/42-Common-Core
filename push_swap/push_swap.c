@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/16 14:43:59 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/16 16:50:27 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	validate_args(int argc, char **argv, t_list **stack)
 	i = ft_arrlen(argv);
 	while (i-- > type)
 	{
-		if (!valid_arg_format(argv[i]))
+		if (!valid_arg_format(argv[i])) // handle overflows
 			return (0);
-		node = ft_lstnew(ft_atoi(argv[i])); //Handle int overflows
+		node = ft_lstnew(ft_atoi(argv[i]));
 		if (!node)
 			return (0);
 		ft_lstadd_back(stack, node);
@@ -99,30 +99,24 @@ int	has_duplicates(t_list **stack)
 }
 
 int	valid_arg_format(char *str)
-{//CHECK IF IT WORKS!
+{
 	int		i;
 	int		op;
-	int		is_neg;
+	//int		is_neg;
 	long	sum;
 
 	op = 0;
 	i = -1;
-	is_neg = 1;
+	//is_neg = 1;
 	sum = 0;
-	while (*str == '-' || *str == '+')
-	{
-		if (*str++ == '-')
-			is_neg *= -1;
+	while (str[++i] == '-' || str[i] == '+')
 		op++;
-	}
-	while (*str)
+	while (str[i])
 	{
-		if (!ft_isdigit(*str))
+		if (!ft_isdigit(str[i++]))
 			return (0);
-		else 
-			sum += ft_atoi(&str[i]) * is_neg;
-		str++;
 	}
+	sum += ft_atoi(str);
 	if (INT_MAX < sum || INT_MIN > sum)
 		return (0);
 	return (op < 2);
