@@ -6,13 +6,13 @@
 /*   By: jan <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:47:19 by jan               #+#    #+#             */
-/*   Updated: 2024/10/10 18:28:07 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:16:42 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *nptr)
+long	ft_atoi(const char *nptr)
 {
-	int	sum;
+	long	sum;
 	int	is_neg;
 
 	is_neg = 1;
