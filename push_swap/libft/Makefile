@@ -16,18 +16,18 @@ BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 NAME = libft.a
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+	@ar rcs $(NAME) $(OBJS)
 
 bonus: $(BONUS_OBJS) $(OBJS)
-	ar rcs $(NAME) $(BONUS_OBJS) $(OBJS)
+	@ar rcs $(NAME) $(BONUS_OBJS) $(OBJS)
 
 all: $(NAME) bonus
 
 clean:
-	rm -f $(OBJS) $(BONUS_OBJS)
+	@rm -f $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean $(NAME)
 

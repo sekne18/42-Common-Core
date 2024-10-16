@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   list_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 19:28:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/16 22:17:23 by jans             ###   ########.fr       */
+/*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
+/*   Updated: 2024/10/16 20:51:47 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
-void	sa(t_list **stack_a)
+void	print_list(t_list *lst)
 {
-	t_list	*curr;
-	t_list	*next;
-	t_list	*prev;
-	
-	prev = NULL;//Create a null obj
-	curr = *stack_a;
-	next = NULL;
-	if (!curr || !curr->next)
-		return ;
-	while (curr->next)
+	while (lst)
 	{
-		next = curr->next;
-		if (!next->next)
-		{
-			curr->next = next->next;
-			next->next = curr;
-			prev->next = next;
-			break ;
-		}
-		prev = curr;
-		curr = next;
-	}	
+		printf("%d", lst->number);
+		if (lst->next)
+			printf(" -> ");
+		lst = lst->next;
+	}
+	printf("\n");
 }
