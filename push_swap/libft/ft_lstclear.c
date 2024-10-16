@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:55:00 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/07 21:11:31 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/16 10:25:23 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main()
 	return (0);
 }
 */
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	ft_lstclear(t_list **lst)
 {
 	t_list	*curr;
 	t_list	*tmp;
@@ -47,7 +47,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	while (curr)
 	{
 		tmp = curr->next;
-		ft_lstdelone(curr, del);
+		free(curr);
 		curr = tmp;
 	}
 	*lst = NULL;

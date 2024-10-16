@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:50:45 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/07 17:54:47 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/16 10:20:08 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	del(lst->content);
+	del(lst.number);
 	free(lst);
 }
