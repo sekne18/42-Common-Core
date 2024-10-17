@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:48:38 by jans              #+#    #+#             */
-/*   Updated: 2024/10/16 20:50:33 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/17 15:04:43 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	validate_args(int argc, char **argv, t_list **stack)
 {
-	t_list	*node;
 	int		i;
 	int		type;
+	int		ret;
 
 	type = 1;
 	if (argc == 2)
@@ -24,8 +24,20 @@ int	validate_args(int argc, char **argv, t_list **stack)
 		type--;
 		argv = ft_split(argv[argc - 1], ' ');
 	}
-	i = ft_arrlen(argv);
-	while (i-- > type)
+	i = ft_arrlen(argv);	
+	ret = fill_list(i, type, stack, argv); 
+	if (!type)
+		free_all(argv);
+	return (ret);
+}
+
+int	fill_list(int len, int type, t_list **stack, char **argv)
+{
+	t_list	*node;
+	int		i;
+
+	i = type - 1;
+	while (len > ++i)
 	{
 		if (!valid_arg_format(argv[i]))
 			return (0);
@@ -36,8 +48,6 @@ int	validate_args(int argc, char **argv, t_list **stack)
 		if (has_duplicates(stack, node))
 			return (0);
 	}
-	if (!type)
-		free_all(argv);
 	return (1);
 }
 

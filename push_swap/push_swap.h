@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/16 21:33:21 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/17 15:03:56 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		validate_args(int argc, char **argv, t_list **stack);
 int		valid_arg_format(char *str);
 int		has_duplicates(t_list **stack, t_list *node);
 int		ft_arrlen(char **arr);
+int	fill_list(int len, int type, t_list **stack, char **argv);
 void	print_list(t_list *lst);
 void	radix_sort(t_list **stack_a, t_list **stack_b);
 void	sa(t_list **stack_a);
