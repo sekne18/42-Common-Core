@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 14:24:41 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/17 21:36:24 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	sa(t_list **stack_a)
 	t_list	*curr;
 	int		tmp;
 
+	ft_putstr_fd("sa\n", 1);
 	curr = *stack_a;
 	if (!curr || !curr->next)
 		return ;
@@ -37,6 +38,7 @@ void	sb(t_list **stack_b)
 	t_list	*curr;
 	int		tmp;
 
+	ft_putstr_fd("sb\n", 1);
 	curr = *stack_b;
 	if (!curr || !curr->next)
 		return ;

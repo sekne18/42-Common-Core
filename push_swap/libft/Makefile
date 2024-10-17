@@ -32,3 +32,5 @@ fclean: clean
 re: fclean $(NAME)
 
 .PHONY: all bonus clean fclean re
+
+.SILENT:

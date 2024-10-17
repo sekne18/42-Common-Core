@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:45 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 15:34:07 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/17 21:37:00 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ra(t_list **stack_a)
 	t_list	*last;
 	t_list	*prev;
 
+	ft_putstr_fd("ra\n", 1);
 	last = *stack_a;
 	prev = NULL;
 	if (!last || !last->next)
@@ -36,6 +37,7 @@ void	rb(t_list **stack_b)
 	t_list	*last;
 	t_list	*prev;
 
+	ft_putstr_fd("rb\n", 1);
 	last = *stack_b;
 	prev = NULL;
 	if (!last || !last->next)

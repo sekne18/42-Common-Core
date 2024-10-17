@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/16 22:19:17 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/17 20:45:55 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	radix_sort(&stack_a, &stack_b);
+	print_list(stack_a);
 	ft_lstclear(&stack_a);
 	return (1);
 }
