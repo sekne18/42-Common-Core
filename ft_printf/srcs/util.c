@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 07:20:20 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/10 14:19:11 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/17 07:36:35 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_putnbr(int nb, int *counter)
 }
 
 void	ft_putudec(unsigned int nb, int *counter)
-{	
+{
 	char	res[11];
 	int		i;
 	int		is_neg;
