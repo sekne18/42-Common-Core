@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:55:24 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 21:33:16 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/17 22:25:17 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	radix_sort(t_list **stack_a, t_list **stack_b)
 		size = ft_lstsize(*stack_a);
 		while (size--)
 		{
+			// Check is its been solved
 			if (get_bit(ft_lstlastnum(*stack_a), (max_tmp - max_bits)))
 				ra(stack_a);
 			else
