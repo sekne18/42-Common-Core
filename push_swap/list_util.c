@@ -6,13 +6,12 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/10/18 08:36:10 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/18 18:07:12 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
-#include <limits.h>
 
 void	print_list(t_list *lst)
 {
@@ -26,23 +25,39 @@ void	print_list(t_list *lst)
 	printf("\n");
 }
 
-int	ft_lstmax(t_list *stack)
+int	ft_lstmax_idx(t_list *stack)
 {
 	int	max;
 
-	max = INT_MIN;
 	if (!stack)
-		return (max);
+		return (0);
+	max = stack->index;
 	while (stack->next)
 	{
-		if (max < stack->number)
-			max = stack->number;
+		if (max < stack->index)
+			max = stack->index;
 		stack = stack->next;
 	}
 	return (max);
 }
 
-int	ft_lstlastnum(t_list *stack)
+int	ft_lstmin(t_list *stack)
+{
+	int	min;
+
+	if (!stack)
+		return (0);
+	min = stack->number;
+	while (stack->next)
+	{
+		if (min > stack->number)
+			min = stack->number;
+		stack = stack->next;
+	}
+	return (min);
+}
+
+int	ft_lstlast_idx(t_list *stack)
 {
 	int	last;
 
@@ -50,7 +65,7 @@ int	ft_lstlastnum(t_list *stack)
 		return (0);
 	while (stack->next)
 		stack = stack->next;
-	last = stack->number;
+	last = stack->index;
 	return (last);
 }
 
@@ -61,7 +76,7 @@ int	is_sorted(t_list *stack)
 	curr = stack;
 	while (curr->next)
 	{
-		if (curr->number < curr->next->number)
+		if (curr->index < curr->next->index)
 			return (0);
 		curr = curr->next;
 	}

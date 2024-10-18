@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 21:32:25 by jans              #+#    #+#             */
-/*   Updated: 2024/10/16 22:20:21 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/18 17:52:41 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef struct s_list
 {
 	int				number;
+	int				index;
 	struct s_list	*next;
 }	t_list;
 
