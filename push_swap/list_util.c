@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 21:16:32 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/18 08:36:10 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,18 @@ int	ft_lstlastnum(t_list *stack)
 		stack = stack->next;
 	last = stack->number;
 	return (last);
+}
+
+int	is_sorted(t_list *stack)
+{
+	t_list	*curr;
+
+	curr = stack;
+	while (curr->next)
+	{
+		if (curr->number < curr->next->number)
+			return (0);
+		curr = curr->next;
+	}
+	return (1);
 }
