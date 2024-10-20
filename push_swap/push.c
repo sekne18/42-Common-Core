@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:23 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 21:35:26 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/20 09:20:14 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,38 @@
 
 void	pa(t_list **stack_a, t_list **stack_b)
 {
-	t_list	*curr_b;
-
 	ft_putstr_fd("pa\n", 1);
-	curr_b = *stack_b;
-	if (!*stack_b)
-		return ;	
-	if (!curr_b->next)
-	{
-		ft_lstadd_back(stack_a, curr_b);
-		*stack_b = NULL;
-		return ;
-	}
-	while (curr_b->next->next)
-		curr_b = curr_b->next;
-	ft_lstadd_back(stack_a, curr_b->next);
-	curr_b->next = NULL;
+	push(stack_a, stack_b);
 }
 
 void	pb(t_list **stack_a, t_list **stack_b)
 {
-	t_list	*curr_a;
-
 	ft_putstr_fd("pb\n", 1);
-	curr_a = *stack_a;
-	if (!*stack_a)
-		return ;	
-	if (!curr_a->next)
-	{
-		ft_lstadd_back(stack_b, curr_a);
-		*stack_a = NULL;
+	push(stack_b, stack_a);
+}
+
+void push(t_list **to, t_list **from)
+{
+	t_list	*head_to;
+	t_list	*head_from;
+	t_list	*tmp;
+
+	if (!*from)
 		return ;
+	head_to = *to;
+	head_from = *from;
+	tmp = head_from;
+	head_from = head_from->next;
+	*from = head_from;
+	if (!head_to)
+	{
+		head_to = tmp;
+		head_to->next = NULL;
+		*to = head_to;
 	}
-	while (curr_a->next->next)
-		curr_a = curr_a->next;
-	ft_lstadd_back(stack_b, curr_a->next);
-	curr_a->next = NULL;
+	else
+	{
+		tmp->next = head_to;
+		*to = tmp;
+	}
 }

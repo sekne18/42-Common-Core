@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/10/18 18:07:12 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/19 20:58:35 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_list(t_list *lst)
 {
 	while (lst)
 	{
-		printf("%d", lst->number);
+		printf("%d (%d)", lst->number, lst->index);
 		if (lst->next)
 			printf(" -> ");
 		lst = lst->next;
@@ -32,7 +32,7 @@ int	ft_lstmax_idx(t_list *stack)
 	if (!stack)
 		return (0);
 	max = stack->index;
-	while (stack->next)
+	while (stack)
 	{
 		if (max < stack->index)
 			max = stack->index;
@@ -43,18 +43,18 @@ int	ft_lstmax_idx(t_list *stack)
 
 int	ft_lstmin(t_list *stack)
 {
-	int	min;
+	t_list	*min;
 
 	if (!stack)
 		return (0);
-	min = stack->number;
-	while (stack->next)
+	min = stack;
+	while (stack)
 	{
-		if (min > stack->number)
-			min = stack->number;
+		if (min->number > stack->number)
+			min = stack;
 		stack = stack->next;
 	}
-	return (min);
+	return (min->number);
 }
 
 int	ft_lstlast_idx(t_list *stack)
@@ -76,9 +76,25 @@ int	is_sorted(t_list *stack)
 	curr = stack;
 	while (curr->next)
 	{
-		if (curr->index < curr->next->index)
+		if (curr->number > curr->next->number)
 			return (0);
 		curr = curr->next;
 	}
 	return (1);
+}
+
+int	ft_lst_nextmin(t_list *stack)
+{
+	t_list	*min;
+	t_list	*curr;
+
+	curr = stack;
+	min = NULL;
+	while (curr)
+	{
+		if (curr->index == -1 && (!min || min->number > curr->number))
+			min = curr;
+		curr = curr->next;
+	}
+	return (min->number);
 }

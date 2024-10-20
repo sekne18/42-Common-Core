@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -g -Wall -Werror -Wextra -I.
 
 SRCS = push_swap.c utils.c list_util.c input.c radix.c \
-		swap.c push.c rotate.c rev_rotate.c
+		swap.c push.c rotate.c rev_rotate.c mini_sort.c
 OBJS = $(SRCS:.c=.o)
 NAME = push_swap
 
@@ -12,6 +12,8 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
 
 all: $(NAME)
+
+#bonus: 
 
 clean:
 	@make -C ./libft fclean
