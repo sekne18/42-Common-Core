@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/20 15:53:54 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/20 21:30:57 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,23 @@ int		ft_lstlast_idx(t_list *stack);
 int		is_sorted(t_list *stack);
 int		ft_lstmin(t_list *stack);
 int		ft_lst_nextmin(t_list *stack);
+int		valid(char	*str, t_list **stack_a, t_list **stack_b);
+int		read_instructions(t_list **stack_a, t_list **stack_b);
+int		execute(char *str, t_list **stack_a, t_list **stack_b);
+
 void	radix_sort_b(t_list **stack_a, t_list **stack_b, int max_bit, int i);
 void	sort_3(t_list **stack_a);
 void	sort_5(t_list **stack_a, t_list **stack_b, int len);
 void	mini_sort(t_list **stack_a, t_list **stack_b, int len);
-void	push(t_list **to, t_list **from);
-void	rotate(t_list **stack);
-void	swap(t_list **stack);
-void	rev_rotate(t_list **stack);
-void	push_swap(t_list **stack_a, t_list **stack_b);
 void	compress_numbers(t_list **stack_a, int size);
 void	print_list(t_list *lst);
 void	radix_sort(t_list **stack_a, t_list **stack_b);
+
+void	swap(t_list **stack);
+void	push(t_list **to, t_list **from);
+void	rotate(t_list **stack);
+void	push_swap(t_list **stack_a, t_list **stack_b);
+void	rev_rotate(t_list **stack);
 void	sa(t_list **stack_a);
 void	sb(t_list **stack_b);
 void	ss(t_list **stack_a, t_list **stack_b);

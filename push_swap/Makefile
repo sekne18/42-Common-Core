@@ -3,7 +3,10 @@ CFLAGS = -g -Wall -Werror -Wextra -I.
 
 SRCS = push_swap.c utils.c list_util.c input.c radix.c \
 		swap.c push.c rotate.c rev_rotate.c mini_sort.c
+BONUS_SRCS = checker.c swap.c utils.c list_util.c input.c \
+		radix.c push.c rotate.c rev_rotate.c mini_sort.c
 OBJS = $(SRCS:.c=.o)
+BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 NAME = push_swap
 
 $(NAME): $(OBJS)
@@ -13,7 +16,10 @@ $(NAME): $(OBJS)
 
 all: $(NAME)
 
-#bonus: 
+bonus:
+	@make -C ./libft
+	@make bonus	-C ./libft
+	$(CC) $(CFLAGS) $(BONUS_SRCS) ./libft/libft.a -o checker
 
 clean:
 	@make -C ./libft fclean
