@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:48:38 by jans              #+#    #+#             */
-/*   Updated: 2024/10/17 15:04:43 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/20 14:55:35 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	fill_list(int len, int type, t_list **stack, char **argv)
 		if (has_duplicates(stack, node))
 			return (0);
 	}
-	return (1);
+	return (len > 0);
 }
 
 int	ft_arrlen(char **arr)
@@ -84,6 +84,8 @@ int	valid_arg_format(char *str)
 	i = -1;
 	while (str[++i] == '-' || str[i] == '+')
 		op++;
+	if (!str[i])
+		return (0);
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i++]))

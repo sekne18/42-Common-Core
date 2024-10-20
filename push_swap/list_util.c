@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/10/19 20:58:35 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/20 15:23:23 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_list(t_list *lst)
 {
 	while (lst)
 	{
-		printf("%d (%d)", lst->number, lst->index);
+		printf("%d", lst->number);
 		if (lst->next)
 			printf(" -> ");
 		lst = lst->next;

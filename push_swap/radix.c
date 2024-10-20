@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:55:24 by jans              #+#    #+#             */
-/*   Updated: 2024/10/20 09:37:50 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/20 15:55:53 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	radix_sort(t_list **stack_a, t_list **stack_b)
 	size = ft_lstsize(*stack_a);
 	while (i++ < max_bits)
 	{
-		j = 0;
-		while (j++ < size)
+		j = -1;
+		while (++j < size && !is_sorted(*stack_a))
 		{
 			head = *stack_a;
 			if (((head->index >> i) & 1) == 1)
@@ -34,9 +34,27 @@ void	radix_sort(t_list **stack_a, t_list **stack_b)
 			else
 				pb(stack_a, stack_b);
 		}
-		while (*stack_b)
+		radix_sort_b(stack_a, stack_b, max_bits, j + 1);
+	}
+	while (*stack_b)
+		pa(stack_a, stack_b);
+}
+
+void	radix_sort_b(t_list **stack_a, t_list **stack_b, int max_bit, int i)
+{
+	int	size;
+
+	size = ft_lstsize(*stack_b);
+	while (size-- && i <= max_bit && !is_sorted(*stack_a))
+	{
+		if ((((*stack_b)->index >> i) & 1) == 0)
+			rb(stack_b);
+		else
 			pa(stack_a, stack_b);
 	}
+	if (is_sorted(*stack_b))
+		while (*stack_b)
+			pa(stack_a, stack_b);
 }
 
 void	compress_numbers(t_list **stack_a, int len)

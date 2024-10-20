@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/20 11:25:39 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/20 15:53:54 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		ft_lstlast_idx(t_list *stack);
 int		is_sorted(t_list *stack);
 int		ft_lstmin(t_list *stack);
 int		ft_lst_nextmin(t_list *stack);
+void	radix_sort_b(t_list **stack_a, t_list **stack_b, int max_bit, int i);
 void	sort_3(t_list **stack_a);
 void	sort_5(t_list **stack_a, t_list **stack_b, int len);
 void	mini_sort(t_list **stack_a, t_list **stack_b, int len);
