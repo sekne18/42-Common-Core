@@ -6,29 +6,32 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/19 21:50:47 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/21 09:52:29 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sa(t_list **stack_a)
+void	sa(t_list **stack_a, int bonus)
 {
-	ft_putstr_fd("sa\n", 1);
+	if (!bonus)
+		ft_putstr_fd("sa\n", 1);
 	swap(stack_a);
 }
 
-void	sb(t_list **stack_b)
+void	sb(t_list **stack_b, int bonus)
 {
-	ft_putstr_fd("sb\n", 1);
+	if (!bonus)
+		ft_putstr_fd("sb\n", 1);
 	swap(stack_b);
 }
 
-void	ss(t_list **stack_a, t_list **stack_b)
+void	ss(t_list **stack_a, t_list **stack_b, int bonus)
 {
 	swap(stack_a);
 	swap(stack_b);
-	ft_putstr_fd("ss\n", 1);
+	if (!bonus)
+		ft_putstr_fd("ss\n", 1);
 }
 
 void	swap(t_list **stack)

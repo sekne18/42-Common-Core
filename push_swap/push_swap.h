@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/20 21:30:57 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/21 09:45:51 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,21 @@ void	mini_sort(t_list **stack_a, t_list **stack_b, int len);
 void	compress_numbers(t_list **stack_a, int size);
 void	print_list(t_list *lst);
 void	radix_sort(t_list **stack_a, t_list **stack_b);
+void	push_swap(t_list **stack_a, t_list **stack_b);
 
 void	swap(t_list **stack);
 void	push(t_list **to, t_list **from);
 void	rotate(t_list **stack);
-void	push_swap(t_list **stack_a, t_list **stack_b);
 void	rev_rotate(t_list **stack);
-void	sa(t_list **stack_a);
-void	sb(t_list **stack_b);
-void	ss(t_list **stack_a, t_list **stack_b);
-void	pa(t_list **stack_a, t_list **stack_b);
-void	pb(t_list **stack_a, t_list **stack_b);
-void	ra(t_list **stack_a);
-void	rb(t_list **stack_b);
-void	rr(t_list **stack_a, t_list **stack_b);
-void	rra(t_list **stack_a);
-void	rrb(t_list **stack_b);
-void	rrr(t_list **stack_a, t_list **stack_b);
+void	sa(t_list **stack_a, int bonus);
+void	sb(t_list **stack_b, int bonus);
+void	ss(t_list **stack_a, t_list **stack_b, int bonus);
+void	pa(t_list **stack_a, t_list **stack_b, int bonus);
+void	pb(t_list **stack_a, t_list **stack_b, int bonus);
+void	ra(t_list **stack_a, int bonus);
+void	rb(t_list **stack_b, int bonus);
+void	rr(t_list **stack_a, t_list **stack_b, int bonus);
+void	rra(t_list **stack_a, int bonus);
+void	rrb(t_list **stack_b, int bonus);
+void	rrr(t_list **stack_a, t_list **stack_b, int bonus);
 #endif
