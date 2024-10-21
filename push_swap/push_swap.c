@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/20 15:28:55 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/21 09:51:08 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	push_swap(t_list **stack_a, t_list **stack_b)
 	if (is_sorted(*stack_a))
 		return ;
 	else if (len == 2)
-		sa(stack_a);
+		sa(stack_a, 0);
 	else if (len > 2 && len < 6)
 		mini_sort(stack_a, stack_b, len);
 	else 

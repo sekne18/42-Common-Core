@@ -6,21 +6,23 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 19:28:23 by jans              #+#    #+#             */
-/*   Updated: 2024/10/20 09:20:14 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/21 09:47:31 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	pa(t_list **stack_a, t_list **stack_b)
+void	pa(t_list **stack_a, t_list **stack_b, int bonus)
 {
-	ft_putstr_fd("pa\n", 1);
+	if (!bonus)
+		ft_putstr_fd("pa\n", 1);
 	push(stack_a, stack_b);
 }
 
-void	pb(t_list **stack_a, t_list **stack_b)
+void	pb(t_list **stack_a, t_list **stack_b, int bonus)
 {
-	ft_putstr_fd("pb\n", 1);
+	if (!bonus)
+		ft_putstr_fd("pb\n", 1);
 	push(stack_b, stack_a);
 }
 
