@@ -6,15 +6,15 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:36:49 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/07 21:30:57 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/22 21:25:58 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_point **lst, t_point *new)
 {
-	t_list	*curr;
+	t_point	*curr;
 
 	if (*lst == NULL)
 	{

@@ -2,7 +2,7 @@ CC := cc
 CFLAGS := -g -Wall -Werror -Wextra -I.
 MLXFLAGS := -lmlx -lXext -lX11 -lm -lbsd
 
-SRCS := fdf.c main.c get_next_line.c
+SRCS := fdf.c main.c get_next_line.c parsing.c
 OBJS := $(SRCS:.c=.o)
 NAME := fdf
 LIBMLX := ./mlx/libmlx.a

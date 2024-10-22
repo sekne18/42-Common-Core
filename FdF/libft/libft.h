@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 21:32:25 by jans              #+#    #+#             */
-/*   Updated: 2024/10/14 15:04:54 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/22 22:15:34 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+/*
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}	t_list;
+}	t_list;*/
+
+typedef struct s_point
+{
+	int				x;
+	int				y;
+	int				z;
+	struct s_point	next;
+}				t_point;
 
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
@@ -61,14 +70,14 @@ void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
-t_list			*ft_lstnew(void *content);
-void			ft_lstadd_front(t_list **lst, t_list *new);
-int				ft_lstsize(t_list *lst);
-t_list			*ft_lstlast(t_list *lst);
-void			ft_lstadd_back(t_list **lst, t_list *new);
-void			ft_lstdelone(t_list *lst, void (*del)(void *));
-void			ft_lstclear(t_list **lst, void (*del)(void *));
-void			ft_lstiter(t_list *lst, void (*f)(void *));
-t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)
-					(void *));
+t_point			*ft_lstnew(int x, int y, int z);
+void			ft_lstadd_front(t_point **lst, t_point *new);
+int				ft_lstsize(t_point *lst);
+//t_point			*ft_lstlast(t_point *lst);
+void			ft_lstadd_back(t_point **lst, t_point *new);
+/*void			ft_lstdelone(t_point *lst, void (*del)(void *));
+void			ft_lstclear(t_point **lst, void (*del)(void *));
+void			ft_lstiter(t_point *lst, void (*f)(void *));
+t_point			*ft_lstmap(t_point *lst, void *(*f)(void *), void (*del)
+					(void *));*/
 #endif
