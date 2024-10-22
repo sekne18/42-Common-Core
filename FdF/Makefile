@@ -1,22 +1,26 @@
 CC := cc
-CLFAGS := -Wall -Werror -Wextra -I.
+CFLAGS := -g -Wall -Werror -Wextra -I.
+MLXFLAGS := -lmlx -lXext -lX11 -lm -lbsd
 
-SRCS = FdF.c main.c
-OBJS = $(SRCS:.c=.o)
-NAME = FdF
+SRCS := fdf.c main.c get_next_line.c
+OBJS := $(SRCS:.c=.o)
+NAME := fdf
+LIBMLX := ./mlx/libmlx.a
 
 $(NAME): $(OBJS)
-	@make -C ./libft
-	$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
+	$(MAKE) -C ./libft
+	$(MAKE) -C ./mlx
+	$(CC) $(CFLAGS) $(OBJS) -Lmlx $(MLXFLAGS) ./libft/libft.a -o $(NAME)
 
 all: $(NAME)
 
 clean:
-	@make -C ./libft fclean
+	@make -C ./libft clean
+	@make -C ./mlx clean
 	@rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) ./libft/libft.a
 
 re: fclean all
 
