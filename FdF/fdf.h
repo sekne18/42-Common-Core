@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/10/22 21:51:31 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/23 16:41:04 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,17 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-void	draw_line(int *x_pos, int *y_pos, t_data *img, char axis);
 void	fdf(char	**map);
-void	convert_to_points(char **map);
 int		parse_map(char	***map, char *filename);
-int		*get_int_arr_line(char *line, int *len_x);
-int		**to_int_array(char **map, int *len_x, int *len_y);
-int		parse_map(char	***map, char *filename);
+int		projected_x(t_point *p);
+int		projected_y(t_point *p);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	draw_wireframe(t_point ***points, t_data *img);
+void	connect_vertical(t_point ***points, int x, int y, t_data *img);
+void	connect_horizontal(t_point ***points, int x, int y, t_data *img);
+void	draw_line(t_point p1, t_point p2, t_data *img);
+void	initialize(char **map, t_data *img);
+t_point	***get_points_array(char **map);
+t_point	**get_cols(char *line, int y);
 
 #endif

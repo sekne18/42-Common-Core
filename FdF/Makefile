@@ -2,13 +2,14 @@ CC := cc
 CFLAGS := -g -Wall -Werror -Wextra -I.
 MLXFLAGS := -lmlx -lXext -lX11 -lm -lbsd
 
-SRCS := fdf.c main.c get_next_line.c parsing.c
+SRCS := fdf.c main.c get_next_line.c parsing.c draw.c
 OBJS := $(SRCS:.c=.o)
 NAME := fdf
 LIBMLX := ./mlx/libmlx.a
 
 $(NAME): $(OBJS)
 	$(MAKE) -C ./libft
+	$(MAKE) bonus -C ./libft
 	$(MAKE) -C ./mlx
 	$(CC) $(CFLAGS) $(OBJS) -Lmlx $(MLXFLAGS) ./libft/libft.a -o $(NAME)
 

@@ -6,13 +6,13 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:53:35 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/10 23:24:06 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/23 08:13:49 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+t_point	*ft_lstlast(t_point *lst)
 {
 	if (lst == NULL)
 		return (NULL);
