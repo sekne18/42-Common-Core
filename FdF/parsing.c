@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/23 16:33:43 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/24 21:08:41 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,20 @@ t_point	***get_points_array(char **map)
 		return (NULL);
 	i = -1;
 	while (map[++i])
-		points[i] = get_cols(map[i], i);
+		points[i] = get_cols(map[i], i, len_y);
 	points[i] = 0;
 	return (points);
 }
 
-t_point	**get_cols(char *line, int y)
+t_point	**get_cols(char *line, int y, int len_y)
 {
 	char	**formatted;
 	int		x;
 	t_point	**point_arr;
 	int		len_x;
+	int		zoom;
 
+	zoom = 8;
 	len_x = 0;
 	x = -1;
 	formatted = ft_split(line, ' ');
@@ -52,8 +54,8 @@ t_point	**get_cols(char *line, int y)
 	if (!point_arr)
 		return (NULL);
 	while (formatted[++x])
-		point_arr[x] = ft_new_point(x, y, ft_atoi(formatted[x]), ft_new_info(len_x, y));
-	//point_arr[x] = 0;
+		point_arr[x] = ft_new_point((x * zoom), (y * zoom),
+		(ft_atoi(formatted[x]) * zoom), ft_new_info(len_x, len_y));
 	free_all(formatted);
 	return (point_arr);
 }

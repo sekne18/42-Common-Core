@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:59:39 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/23 16:04:18 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/23 21:03:39 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_point	*ft_new_point(int x, int y, int z, t_info *info)
 {
-	t_point	node;
+	t_point	*node;
 
 	node = malloc(sizeof(t_point));
 	if (!node)
@@ -27,11 +27,11 @@ t_point	*ft_new_point(int x, int y, int z, t_info *info)
 }
 
 
-t_point	*ft_new_info(int cols, int rows)
+t_info *ft_new_info(int cols, int rows)
 {
-	t_point	node;
+	t_info	*node;
 
-	node = malloc(sizeof(t_point));
+	node = malloc(sizeof(t_info));
 	if (!node)
 		return (NULL);
 	node->cols = cols;

@@ -8,10 +8,10 @@ NAME := fdf
 LIBMLX := ./mlx/libmlx.a
 
 $(NAME): $(OBJS)
-	$(MAKE) -C ./libft
-	$(MAKE) bonus -C ./libft
-	$(MAKE) -C ./mlx
-	$(CC) $(CFLAGS) $(OBJS) -Lmlx $(MLXFLAGS) ./libft/libft.a -o $(NAME)
+	@$(MAKE) -C ./libft
+	@$(MAKE) bonus -C ./libft
+	@$(MAKE) -C ./mlx
+	@$(CC) $(CFLAGS) $(OBJS) -Lmlx $(MLXFLAGS) ./libft/libft.a -o $(NAME)
 
 all: $(NAME)
 
