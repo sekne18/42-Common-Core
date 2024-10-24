@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/10/24 20:58:00 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/24 22:55:45 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,14 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
+typedef struct	s_vars {
+	void	*mlx;
+	void	*win;
+}				t_vars;
+
 void	fdf(char	**map);
+int		key_hook(int keycode, t_vars *vars);
+int		mouse_hook(int keycode, t_vars *vars);
 int		parse_map(char	***map, char *filename);
 int		projected_x(t_point *p);
 int		projected_y(t_point *p);
