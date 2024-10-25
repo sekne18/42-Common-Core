@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:34 by jans              #+#    #+#             */
-/*   Updated: 2024/10/24 22:59:40 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/25 12:31:05 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	fdf(char **map)
 	t_data	img;
 	
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WIN_HEIGHT, WIN_WIDTH, "FdF");
-	img.img = mlx_new_image(vars.mlx, WIN_HEIGHT, WIN_WIDTH);
+	vars.win = mlx_new_window(vars.mlx, WIN_WIDTH, WIN_HEIGHT, "FdF");
+	img.img = mlx_new_image(vars.mlx, WIN_WIDTH, WIN_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 										&img.endian);
 	mlx_key_hook(vars.win, key_hook, &vars);
