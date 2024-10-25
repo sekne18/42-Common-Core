@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:45:25 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/25 14:08:47 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/25 16:00:32 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	connect_horizontal(t_point ***points, int x, int y, t_data *img)
 {
-	t_point p1;
-	t_point p2;
+	t_point	p1;
+	t_point	p2;
 	int		dx;
 	int		dy;
 
@@ -26,15 +26,15 @@ void	connect_horizontal(t_point ***points, int x, int y, t_data *img)
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
-		slope_less_then_one(&p1, &p2, img);
+		slope_less_then_one(&p1, &p2, img, points[y][x + 1]->z);
 	else
-		slope_bigger_than_one(&p1, &p2, img);
+		slope_bigger_than_one(&p1, &p2, img, points[y][x + 1]->z);
 }
 
 void	connect_vertical(t_point ***points, int x, int y, t_data *img)
 {
-	t_point p1;
-	t_point p2;
+	t_point	p1;
+	t_point	p2;
 	int		dx;
 	int		dy;
 
@@ -45,9 +45,9 @@ void	connect_vertical(t_point ***points, int x, int y, t_data *img)
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
-		slope_less_then_one(&p1, &p2, img);
+		slope_less_then_one(&p1, &p2, img, points[y + 1][x]->z);
 	else
-		slope_bigger_than_one(&p1, &p2, img);
+		slope_bigger_than_one(&p1, &p2, img, points[y + 1][x]->z);
 }
 
 void	draw_wireframe(t_point ***points, t_data *img)
@@ -75,82 +75,94 @@ void	draw_wireframe(t_point ***points, t_data *img)
 	}
 }
 
-int projected_x(t_point *p)
+void	slope_less_then_one(t_point *a, t_point *b, t_data *img, int z)
 {
-	float	rotation;
-
-	rotation = ((M_PI * 30) / 180);
-	return (((p->x - p->y) * cos(rotation)) * 2);
-}
-
-int projected_y(t_point *p)
-{
-	float	rotation;
-
-	rotation = ((M_PI * 30) / 180);
-	return (((p->x + p->y) * sin(rotation) - p->z) * 2);
-}
-
-void slope_less_then_one(t_point *a, t_point *b, t_data *img)
-{
-    int	sx;
-    int	sy;
+	int	sx;
+	int	sy;
 	int	p;
 	int	dx;
 	int	dy;
+	int	x;
+	int	y;
 
+	z++;
+	y = a->y;
+	x = a->x;
 	dx = abs(b->x - a->x);
 	dy = abs(b->y - a->y);
 	if (a->x < b->x) // Move direction in x
 		sx = 1;
 	else
 		sx = -1;
-    if (a->y < b->y) // Move direction in y
+	if (a->y < b->y) // Move direction in y
 		sy = 1;
 	else
 		sy = -1;
-	p = 2 * dx - dx;  // Initial decision variable
-    while (a->x != b->x)
-    {
-        my_mlx_pixel_put(img, a->x, a->y, 0x00FFFFFF);
-        a->x += sx;  // Move in y direction
-        if (p >= 0)
-        {
-            a->y += sy;  // Move in x direction when p is non-negative
-            p -= 2 * dx;
-        }
-        p += 2 * dy;  // Always adjust p by 2*dx
-    }
+	p = 2 * dx - dx; // Initial decision variable
+	while (a->x != b->x)
+	{
+		my_mlx_pixel_put(img, a->x, a->y, interpolate_color(x, y, a, b));
+		a->x += sx; // Move in y direction
+		if (p >= 0)
+		{
+			a->y += sy; // Move in x direction when p is non-negative
+			p -= 2 * dx;
+		}
+		p += 2 * dy; // Always adjust p by 2*dx
+	}
 }
 
-void slope_bigger_than_one(t_point *a, t_point *b, t_data *img)
+unsigned int	interpolate_color(int x, int y, t_point *p1, t_point *p2)
 {
-    int	sx;
-    int	sy;
+	int				r;
+	int				g;
+	int				b;
+	unsigned int	color_a;
+	unsigned int	color_b;
+	float			fract;
+
+	fract = fraction(x, y, p1, p2);
+	color_a = 0x0040AF8E;
+	color_b = 0x00CEFA1C;
+	r = ((color_a >> 16) & 0xFF) + fract * (((color_b >> 16) & 0xFF) - ((color_a >> 16) & 0xFF));
+    g = ((color_a >> 8) & 0xFF) + fract * (((color_b >> 8) & 0xFF) - ((color_a >> 8) & 0xFF));
+    b = (color_a & 0xFF) + fract * ((color_b & 0xFF) - (color_a & 0xFF));
+	return ((r << 16) | (g << 8) | b);
+}
+
+void	slope_bigger_than_one(t_point *a, t_point *b, t_data *img, int z)
+{
+	int	sx;
+	int	sy;
 	int	p;
 	int	dx;
 	int	dy;
+	int	x;
+	int	y;
 
+	z++;
+	x = a->x;
+	y = a->y;
 	dx = abs(b->x - a->x);
 	dy = abs(b->y - a->y);
 	if (a->x < b->x) // Move direction in x
 		sx = 1;
 	else
 		sx = -1;
-    if (a->y < b->y) // Move direction in y
+	if (a->y < b->y) // Move direction in y
 		sy = 1;
 	else
 		sy = -1;
-	p = 2 * dx - dy;  // Initial decision variable
-    while (a->y != b->y)
-    {
-        my_mlx_pixel_put(img, a->x, a->y, 0x00FFFFFF);
-        a->y += sy;  // Move in y direction
-        if (p >= 0)
-        {
-            a->x += sx;  // Move in x direction when p is non-negative
-            p -= 2 * dy;
-        }
-        p += 2 * dx;  // Always adjust p by 2*dx
-    }
+	p = 2 * dx - dy; // Initial decision variable
+	while (a->y != b->y)
+	{
+		my_mlx_pixel_put(img, a->x, a->y, interpolate_color(x, y, a, b));
+		a->y += sy; // Move in y direction
+		if (p >= 0)
+		{
+			a->x += sx; // Move in x direction when p is non-negative
+			p -= 2 * dy;
+		}
+		p += 2 * dx; // Always adjust p by 2*dx
+	}
 }

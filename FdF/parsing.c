@@ -55,12 +55,12 @@ t_point	**get_cols(char *line, int y, int len_y)
 		return (NULL);
 	while (formatted[++x])
 		point_arr[x] = ft_new_point((x * zoom), (y * zoom),
-		(ft_atoi(formatted[x]) * zoom), ft_new_info(len_x, len_y));
+				(ft_atoi(formatted[x]) * zoom), ft_new_info(len_x, len_y));
 	free_all(formatted);
 	return (point_arr);
 }
 
-int	parse_map(char	***map, char *filename)
+int	parse_map(char ***map, char *filename)
 {
 	int		fd;
 	char	*line;
