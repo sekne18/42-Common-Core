@@ -6,13 +6,13 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/10/24 21:08:41 by jans             ###   ########.fr       */
+/*   Updated: 2024/10/28 19:04:50 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_point	***get_points_array(char **map)
+t_point	***get_points_array(char **map, t_vars *vars)
 {
 	t_point	***points;
 	int		i;
@@ -29,8 +29,14 @@ t_point	***get_points_array(char **map)
 		return (NULL);
 	i = -1;
 	while (map[++i])
+	{
 		points[i] = get_cols(map[i], i, len_y);
+		if (!points[i])
+			free_points(points);
+	}
 	points[i] = 0;
+	set_z_limits(points, vars);
+	check_if_square(points, map, vars);
 	return (points);
 }
 
@@ -40,9 +46,7 @@ t_point	**get_cols(char *line, int y, int len_y)
 	int		x;
 	t_point	**point_arr;
 	int		len_x;
-	int		zoom;
 
-	zoom = 8;
 	len_x = 0;
 	x = -1;
 	formatted = ft_split(line, ' ');
@@ -54,8 +58,8 @@ t_point	**get_cols(char *line, int y, int len_y)
 	if (!point_arr)
 		return (NULL);
 	while (formatted[++x])
-		point_arr[x] = ft_new_point((x * zoom), (y * zoom),
-				(ft_atoi(formatted[x]) * zoom), ft_new_info(len_x, len_y));
+		point_arr[x] = ft_new_point(x, y, ft_atoi(formatted[x]),
+				ft_new_info(len_x, len_y));
 	free_all(formatted);
 	return (point_arr);
 }
@@ -64,7 +68,6 @@ int	parse_map(char ***map, char *filename)
 {
 	int		fd;
 	char	*line;
-	char	*read_line;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -72,16 +75,56 @@ int	parse_map(char ***map, char *filename)
 	line = ft_strdup("");
 	if (!line)
 		return (0);
+	get_lines(fd, &line);
+	close(fd);
+	if (ft_strlen(line) == 0)
+	{
+		free(line);
+		return (0);
+	}
+	*map = ft_split(line, '\n');
+	free(line);
+	return (1);
+}
+
+void	get_lines(int fd, char **line)
+{
+	char	*tmp;
+	char	*read_line;
+
 	while (1)
 	{
 		read_line = get_next_line(fd);
 		if (!read_line)
 			break ;
-		line = ft_strjoin(line, read_line);
+		tmp = *line;
+		*line = ft_strjoin(*line, read_line);
+		free(tmp);
 		free(read_line);
 	}
-	close(fd);
-	*map = ft_split(line, '\n');
-	free(line);
-	return (1);
+}
+
+void	set_z_limits(t_point ***points, t_vars *vars)
+{
+	int	y;
+	int	x;
+	int	cols;
+	int	rows;
+
+	vars->min_z = 0;
+	vars->max_z = 0;
+	rows = points[0][0]->info->rows;
+	cols = points[0][0]->info->cols;
+	y = -1;
+	while (++y < rows)
+	{
+		x = -1;
+		while (++x < cols)
+		{
+			if (vars->min_z > points[y][x]->z)
+				vars->min_z = points[y][x]->z;
+			if (vars->max_z < points[y][x]->z)
+				vars->max_z = points[y][x]->z;
+		}
+	}
 }

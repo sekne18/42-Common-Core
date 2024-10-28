@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 21:32:25 by jans              #+#    #+#             */
-/*   Updated: 2024/10/23 16:10:07 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/10/28 07:39:22 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,19 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-
-/*typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}	t_list;*/
-
 typedef struct s_point
 {
 	int				x;
 	int				y;
 	int				z;
 	struct s_info	*info;
-}				t_point;
+}					t_point;
 
 typedef struct s_info
 {
-	int		rows;
-	int		cols;
-}				t_info;
+	int	rows;
+	int	cols;
+}		t_info;
 
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
