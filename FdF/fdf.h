@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/10/28 19:15:39 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/01 16:40:00 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int				projected_x(t_point *p, int scale);
 int				projected_y(t_point *p, int scale);
 int				ft_close_win(void *param);
 int				ft_key_press(int keycode, void *param);
-void			set_setters(t_point a, t_point b, int *sy, int *sx);
+void			set_setters(t_point *a, t_point *b, int *sy, int *sx);
 void			check_if_square(t_point ***points, char **map, t_vars *vars);
 void			get_lines(int fd, char **line);
 void			cleanup(t_vars *vars);

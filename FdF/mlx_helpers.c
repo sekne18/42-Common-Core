@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 22:38:31 by jans              #+#    #+#             */
-/*   Updated: 2024/10/28 19:15:16 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/01 16:42:57 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	projected_y(t_point *p, int scale)
 	return (((p->x * scale) + (p->y * scale)) * sin(rotation) - (p->z * scale));
 }
 
-void	set_setters(t_point a, t_point b, int *sy, int *sx)
+void	set_setters(t_point *a, t_point *b, int *sy, int *sx)
 {
 	if (a->x < b->x)
 		*sx = 1;
