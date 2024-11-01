@@ -6,7 +6,6 @@ SRCS := fdf.c get_next_line.c parsing.c draw.c mlx_helpers.c utils.c\
 		hooks.c
 OBJS := $(SRCS:.c=.o)
 NAME := fdf
-LIBMLX := ./mlx/libmlx.a
 
 $(NAME): $(OBJS)
 	@$(MAKE) -C ./libft
