@@ -11,5 +11,5 @@ Gades on the projects
 | push_swap         | C          | 🔄 Evaluation    |
 | FdF               | C          | 🔄 Evaluation    |
 | Minitalk          | C          | 🔄 Evaluation    |
-| Minishell         | C          | 🔄 Evaluation    |
 | Philosophers      | C          | 🔄 In Progress   |
+| Minishell         | C          | ❌ Not Started   |
