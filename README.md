@@ -1,4 +1,4 @@
-# Common code projects
+# Common core projects
 
 Gades on the projects
 
