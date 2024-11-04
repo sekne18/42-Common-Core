@@ -1,7 +1,7 @@
 CC := cc
 CFLAGS := -Wall -Werror -Wextra -I./philo
 
-SRCS := ./philo/main.c
+SRCS := ./philo/main.c ./philo/utils.c ./philo/input.c
 OBJS := $(SRCS:.c=.o)
 NAME := philo
 
