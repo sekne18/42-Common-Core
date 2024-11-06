@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 11:32:31 by jans              #+#    #+#             */
-/*   Updated: 2024/11/04 16:35:14 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/05 10:31:39 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,19 @@ void	start_eating(t_table *table)
 	if (table->nbr_limit_meals == 0)
 		return ;
 	else if (table->philo_nbr == 1)
-		; // TOOD
+		; // TODO
 	else
 	{
 		while (++i < table->philo_nbr)
-		{
 			pthread_create(&table->philos[i].thread_id, NULL, eating_simulation,
-			&table->philos[i]);
-		}	
-		// Start of simulation
-
-		table->start_simulation = gettime(MILLISECOND);
-		// Now all threads are ready
-		set_bool(&table->table_mutex, &table->all_threads_ready, true);
-		
-		//Wait for everyone
-		i = -1;
-		while (++i < table->philo_nbr)
-			pthread_join(&table->philos[i].thread_id, NULL);
-
-		//If we manage to reach this line, all philos are FULL!
-
-		
+				&table->philos[i]);
 	}
+	table->start_simulation = gettime(MILLISECOND);
+	set_bool(&table->table_mutex, &table->all_threads_ready, true);
+	i = -1;
+	while (++i < table->philo_nbr)
+		pthread_join(table->philos[i].thread_id, NULL);
+	
 }
 
 void	*eating_simulation(void *data)
@@ -67,17 +57,40 @@ void	*eating_simulation(void *data)
 	
 	while (!sim_done(philo->table))
 	{
-		//am I full?
 		if (philo->full)
 			break ;
-		// eat
-		eat(philo);
-		// sleep
 		
-		// think
+		eat(philo);
+		
+		write_status(SLEEPING, philo);
+		precise_usleep(philo->table->time_to_sleep, philo->table);
+	
 		thinking(philo);
 	}
 
 	return (NULL);
 }
 
+void	eat(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->first_fork->fork);
+	write_status(TAKE_FIRST_FORK, philo);
+	pthread_mutex_lock(&philo->second_fork->fork);
+	write_status(TAKE_SECOND_FORK, philo);
+	
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
+	philo->meals_counter++;
+	write_status(EATING, philo);
+	precise_usleep(philo->table->time_to_eat, philo->table);
+	if (philo->table->nbr_limit_meals > 0
+		&& philo->meals_counter == philo->table->nbr_limit_meals)
+		set_bool(&philo->philo_mutex, &philo->full, true);
+
+	pthread_mutex_unlock(&philo->first_fork->fork);
+	pthread_mutex_unlock(&philo->second_fork->fork);
+}
+
+void	thinking(t_philo *philo)
+{
+	write_status(THINKING, philo);
+}

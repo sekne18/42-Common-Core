@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 12:18:41 by jans              #+#    #+#             */
-/*   Updated: 2024/11/04 12:31:33 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/05 09:34:55 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value)
 	pthread_mutex_unlock(mutex);
 }
 
-void	get_bool(pthread_mutex_t *mutex, bool *value)
+bool	get_bool(pthread_mutex_t *mutex, bool *value)
 {
 	bool	ret;
 
@@ -36,7 +36,7 @@ void	set_long(pthread_mutex_t *mutex, long *dest, long value)
 	pthread_mutex_unlock(mutex);
 }
 
-void	get_long(pthread_mutex_t *mutex, long *value)
+long	get_long(pthread_mutex_t *mutex, long *value)
 {
 	long	ret;
 
