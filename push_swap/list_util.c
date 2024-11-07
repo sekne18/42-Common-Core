@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/10/20 15:23:23 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/06 14:38:24 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_list(t_list *lst)
 {
 	while (lst)
 	{
-		printf("%d", lst->number);
+		printf("%d (%d)", lst->number, lst->index);
 		if (lst->next)
 			printf(" -> ");
 		lst = lst->next;
@@ -50,11 +50,11 @@ int	ft_lstmin(t_list *stack)
 	min = stack;
 	while (stack)
 	{
-		if (min->number > stack->number)
+		if (min->index > stack->index)
 			min = stack;
 		stack = stack->next;
 	}
-	return (min->number);
+	return (min->index);
 }
 
 int	ft_lstlast_idx(t_list *stack)
@@ -73,6 +73,8 @@ int	is_sorted(t_list *stack)
 {
 	t_list	*curr;
 
+	if (!stack)
+		return (1);
 	curr = stack;
 	while (curr->next)
 	{

@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/10/21 09:45:51 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/06 21:56:45 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,17 @@ void	rr(t_list **stack_a, t_list **stack_b, int bonus);
 void	rra(t_list **stack_a, int bonus);
 void	rrb(t_list **stack_b, int bonus);
 void	rrr(t_list **stack_a, t_list **stack_b, int bonus);
+
+void	rot_to_pos(int count, t_list **stack_b, void (*op)(t_list **stack_b, int bouns));
+void	move_to_stack_a(t_list **stack_a, t_list **stack_b);
+void	merge_sort(t_list **stack_a, t_list **stack_b);
+int		rotate_count(t_list *stack, int index);
+int		find_median(t_list *stack, int size);
+int		compare_ints(const void *a, const void *b);
+void	merge_sort_small(t_list **stack_a, t_list **stack_b);
+void	merge_sort_big(t_list **stack_a, t_list **stack_b);
+void	find_quartiles(t_list *stack, int *q1, int *q2, int *q3);
+
+
+
 #endif

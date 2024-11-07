@@ -6,32 +6,31 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:57:06 by jans              #+#    #+#             */
-/*   Updated: 2024/10/15 21:10:04 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/06 21:34:33 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-/*
-void	ft_lstclear(t_list **lst, void (*del)(void *))
-{
-	t_list	*curr;
-	t_list	*tmp;
 
-	curr = *lst;
-	while (curr)
+int find_median(t_list *stack, int size)
+{
+	int *values = malloc(size * sizeof(int));
+	t_list *current = stack;
+	int i = 0;
+
+	while (current) 
 	{
-		tmp = curr->next;
-		ft_lstdelone(curr, del);
-		curr = tmp;
+		values[i++] = current->index;
+		current = current->next;
 	}
-	*lst = NULL;
+	qsort(values, size, sizeof(int), compare_ints);
+	int median = values[size / 2];
+
+	free(values);
+	return median;
 }
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+int compare_ints(const void *a, const void *b)
 {
-	if (lst)
-	{
-		del(lst->content);
-		free(lst);
-	}
-}*/
+    return (*(int*)a - *(int*)b);
+}

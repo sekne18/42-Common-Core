@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:59:11 by jans              #+#    #+#             */
-/*   Updated: 2024/10/21 10:11:27 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/06 08:20:57 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ int	read_instructions(t_list **stack_a, t_list **stack_b)
 	}
 	if (flag)
 		return (0);
+	print_list(stack_a);
 	if (is_sorted(*stack_a) && !*stack_b)
 		ft_putstr_fd("OK\n", 1);
 	else
-		ft_putstr_fd("KO\n", 1);	
+		ft_putstr_fd("KO\n", 1);
 	return (1);
 }
 

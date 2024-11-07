@@ -2,7 +2,8 @@ CC = cc
 CFLAGS = -g -Wall -Werror -Wextra -I.
 
 SRCS = push_swap.c utils.c list_util.c input.c radix.c \
-		swap.c push.c rotate.c rev_rotate.c mini_sort.c
+		swap.c push.c rotate.c rev_rotate.c mini_sort.c \
+		merge_sort.c
 BONUS_SRCS = checker.c swap.c utils.c list_util.c input.c \
 		radix.c push.c rotate.c rev_rotate.c mini_sort.c
 OBJS = $(SRCS:.c=.o)
