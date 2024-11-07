@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:46:36 by jans              #+#    #+#             */
-/*   Updated: 2024/11/06 22:11:41 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/07 17:49:43 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,46 +48,32 @@ void	merge_sort_small(t_list **stack_a, t_list **stack_b)
 
 void	merge_sort_big(t_list **stack_a, t_list **stack_b)
 {
-	int	orig_size;
-	int q1;
-	int	q2;
-	int	q3;
 	int	size;
+	int quart;
 
-	orig_size = ft_lstsize(*stack_a);
+	quart = 0;
 	if (orig_size < 4)
 	{
 		sort_3(stack_a);
 		return ;
 	}
 	find_quartiles(*stack_a, &q1, &q2, &q3);
-	size = orig_size;
-	while (size--)
-	{
-		if ((*stack_a)->index < q1)
-			pb(stack_a, stack_b, 0);
-		else
-			ra(stack_a, 0);
-	}
-	size = ft_lstsize(*stack_a);
-    while (size--) {
-        if ((*stack_a)->index >= q1 && (*stack_a)->index < q2)
-            pb(stack_a, stack_b, 0);
-        else
-            ra(stack_a, 0);
-    }
-    size = ft_lstsize(*stack_a);
-    while (size--) {
-        if ((*stack_a)->index >= q2 && (*stack_a)->index < q3)
-            pb(stack_a, stack_b, 0);
-        else
-            ra(stack_a, 0);
-    }
-	while (size--) {
-        if ((*stack_a)->index >= q3)
-            pb(stack_a, stack_b, 0);
-        else
-            ra(stack_a, 0);
+    while (++quartile <= 4)
+    {
+        int target_quartile = (quartile == 1) ? q1 : (quartile == 2) ? q2 : (quartile == 3) ? q3 : INT_MAX;
+        
+        size = ft_lstsize(*stack_a);
+        while (size--)
+        {
+            if ((*stack_a)->index < target_quartile)
+            {
+                pb(stack_a, stack_b, 0);
+                if ((*stack_b)->next && (*stack_b)->index < (*stack_b)->next->index)
+                    rb(stack_b, 0);
+            }
+            else
+                ra(stack_a, 0);
+        }
     }
 }
 
