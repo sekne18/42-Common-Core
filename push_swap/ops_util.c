@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ops_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 18:57:06 by jans              #+#    #+#             */
-/*   Updated: 2024/11/06 21:34:33 by jans             ###   ########.fr       */
+/*   Created: 2024/11/09 11:17:11 by jans              #+#    #+#             */
+/*   Updated: 2024/11/09 11:25:27 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	find_median(t_list *stack, int size)
+void	rot_to_pos(int count, t_list **stack_b, void (*op)(t_list **stack_b,
+			int bouns))
 {
-	int		*values;
-	t_list	*current;
-	int		i;
-	int		median;
-
-	values = malloc(size * sizeof(int));
-	current = stack;
-	i = 0;
-	while (current)
-	{
-		values[i++] = current->index;
-		current = current->next;
-	}
-	qsort(values, size, sizeof(int), compare_ints);
-	median = values[size / 2];
-	free(values);
-	return (median);
+	while (count--)
+		op(stack_b, 0);
 }
 
-int	compare_ints(const void *a, const void *b)
+int	rotate_count(t_list *stack, int index)
 {
-	return (*(int *)a - *(int *)b);
+	int	steps;
+
+	steps = 0;
+	while (stack)
+	{
+		if (stack->index == index)
+			return (steps);
+		steps++;
+		stack = stack->next;
+	}
+	return (steps);
 }

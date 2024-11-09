@@ -65,7 +65,7 @@ void	compress_numbers(t_list **stack_a, int len)
 int	find_max_bits(t_list *stack_a)
 {
 	int	max_bits;
-	int max_num;
+	int	max_num;
 
 	max_bits = 0;
 	max_num = ft_lstmax_idx(stack_a);

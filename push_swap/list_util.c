@@ -6,24 +6,12 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/11/06 14:38:24 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/09 11:26:13 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
-
-void	print_list(t_list *lst)
-{
-	while (lst)
-	{
-		printf("%d (%d)", lst->number, lst->index);
-		if (lst->next)
-			printf(" -> ");
-		lst = lst->next;
-	}
-	printf("\n");
-}
 
 int	ft_lstmax_idx(t_list *stack)
 {

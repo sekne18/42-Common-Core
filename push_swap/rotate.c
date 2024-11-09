@@ -14,7 +14,7 @@
 
 void	ra(t_list **stack_a, int bonus)
 {
-	rotate(stack_a);	
+	rotate(stack_a);
 	if (!bonus)
 		ft_putstr_fd("ra\n", 1);
 }

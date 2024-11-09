@@ -26,7 +26,7 @@ void	pb(t_list **stack_a, t_list **stack_b, int bonus)
 	push(stack_b, stack_a);
 }
 
-void push(t_list **to, t_list **from)
+void	push(t_list **to, t_list **from)
 {
 	t_list	*head_to;
 	t_list	*head_from;

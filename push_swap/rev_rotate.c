@@ -34,11 +34,11 @@ void	rrr(t_list **stack_a, t_list **stack_b, int bonus)
 		ft_putstr_fd("rrr\n", 1);
 }
 
-void rev_rotate(t_list **stack)
+void	rev_rotate(t_list **stack)
 {
 	t_list	*head;
 	t_list	*tail;
-	
+
 	if (!*stack)
 		return ;
 	head = *stack;

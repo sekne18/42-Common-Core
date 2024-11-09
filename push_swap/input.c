@@ -14,9 +14,9 @@
 
 int	validate_args(int argc, char **argv, t_list **stack)
 {
-	int		i;
-	int		type;
-	int		ret;
+	int	i;
+	int	type;
+	int	ret;
 
 	type = 1;
 	if (argc == 2)
@@ -24,8 +24,8 @@ int	validate_args(int argc, char **argv, t_list **stack)
 		type--;
 		argv = ft_split(argv[argc - 1], ' ');
 	}
-	i = ft_arrlen(argv);	
-	ret = fill_list(i, type, stack, argv); 
+	i = ft_arrlen(argv);
+	ret = fill_list(i, type, stack, argv);
 	if (!type)
 		free_all(argv);
 	return (ret);
@@ -77,8 +77,8 @@ int	has_duplicates(t_list **stack, t_list *node)
 
 int	valid_arg_format(char *str)
 {
-	int		i;
-	int		op;
+	int	i;
+	int	op;
 
 	op = 0;
 	i = -1;
