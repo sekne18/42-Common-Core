@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/09 11:51:25 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/15 15:58:35 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void	push_swap(t_list **stack_a, t_list **stack_b)
 	else if (len <= 100)
 		merge_sort_small(stack_a, stack_b);
 	else
-		radix_sort(stack_a, stack_b);
+		merge_sort_big(stack_a, stack_b);
+//		radix_sort(stack_a, stack_b);
 }
