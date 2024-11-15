@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:19:16 by jans              #+#    #+#             */
-/*   Updated: 2024/10/21 09:51:41 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/15 14:51:13 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,25 @@ void	sort_3(t_list **stack_a)
 void	sort_5(t_list **stack_a, t_list **stack_b, int len)
 {
 	int	l;
+	int	min;
+	int	push_count;
 
+	push_count = 0;
 	l = len;
+	min = ft_lstmin(*stack_a);
 	while (len--)
 	{
-		if ((*stack_a)->index == 0 || (l == 5 && (*stack_a)->index == 1))
+		if ((*stack_a)->index == min || (l == 5 && (*stack_a)->index == (min + 1)))
+		{
 			pb(stack_a, stack_b, 0);
+			push_count++;
+		}
 		else
 			ra(stack_a, 0);
 	}
 	sort_3(stack_a);
-	pa(stack_a, stack_b, 0);
-	pa(stack_a, stack_b, 0);
+	while (push_count--)
+		pa(stack_a, stack_b, 0);
 	if ((*stack_a)->index > (*stack_a)->next->index)
 		sa(stack_a, 0);
 }

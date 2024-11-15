@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:23 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/09 11:35:24 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/15 15:49:14 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ void	rra(t_list **stack_a, int bonus);
 void	rrb(t_list **stack_b, int bonus);
 void	rrr(t_list **stack_a, t_list **stack_b, int bonus);
 
-void	rot_to_pos(int count, t_list **stack_b, void (*op)(t_list **stack_b,
-				int bouns));
+void	rot_to_pos_b(t_list **stack_a, t_list **stack_b);
+void	rot_to_pos_a(int count, t_list **stack, void (*op)(t_list **stack_b,
+			int bonus));
 void	move_to_stack_a(t_list **stack_a, t_list **stack_b, int *rot_a);
 void	move_to_stack_aa(t_list **stack_a, t_list **stack_b);
 void	merge_sort(t_list **stack_a, t_list **stack_b);
@@ -71,5 +72,10 @@ void	merge_sort_big(t_list **stack_a, t_list **stack_b);
 void	find_quartiles(t_list *stack, int *q1, int *q2, int *q3);
 void	push_quartile_to_b(t_list **stack_a, t_list **stack_b, int upper_bound,
 			int lower_bound);
+int		rotate_count_median(t_list *stack, int median);
+void	possible_swap(t_list **stack_b);
+int		next_to_be_moved(t_list *stack);
+void	check_for_swap(t_list **stack);
+int	rotate_count_quartile(t_list *stack, int upper_bound, int lower_bound);
 
 #endif
