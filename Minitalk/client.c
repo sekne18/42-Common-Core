@@ -6,77 +6,63 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:05:38 by jans              #+#    #+#             */
-/*   Updated: 2024/11/10 15:47:32 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/18 14:29:00 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	response_handler(int signum)
-{// Makes sure that client/server wait for each other
-	static int	received = 0;
+void	send_string(int pid_init, char *str)
+{
+	static int		current_bit = 0;
+	static pid_t	pid = 0;
+	static char		*message = NULL;
+	int				signal;
+	int				zeroes;
 
-	if (signum == SIGUSR1)
-		received++;
+	if (pid_init)
+		pid = pid_init;
+	if (str)
+		message = str;
+	if (current_bit % 8 == 0)
+		zeroes = 0;
+	if (message[current_bit / 8] & (0x01 << (current_bit % 8)))
+		signal = SIGUSR1;
 	else
 	{
-		ft_putnbr_fd(received, 1);
-		ft_putchar_fd('\n', 1);
+		signal = SIGUSR2;
+		zeroes++;
+	}
+	current_bit++;
+	usleep(128);
+	if (kill(pid, signal) || zeroes == 8)
 		exit(0);
-	}
 }
 
-void	send_char(int pid, char c)
+void	response_handler(int signum)
 {
-	int				i;
-	unsigned char	temp_char;
-
-	i = 8;
-	temp_char = c;
-	while (i--)
-	{
-		if (temp_char >> i & 1) //Shift right by i bits, and compares if equals to 1
-			kill(pid, SIGUSR2);
-		else
-			kill(pid, SIGUSR1);
-		usleep(100);
-	}
-}
-
-void	send_string(int pid, const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < ft_strlen(str))
-		send_char(pid, str[i++]);
-	i = 8;
-	while (i--)
-	{
-		kill(pid, SIGUSR1);
-		usleep(100);
-	}
+	if (signum == SIGUSR2)
+		send_string(0, NULL);
+	if (signum == SIGUSR1)
+		exit(-1);
 }
 
 int	main(int argc, char **argv)
 {
-	int	pid;
-
 	if (argc != 3)
 	{
 		ft_putstr_fd(argv[0], 1);
 		return (1);
 	}
-	pid = atoi(argv[1]);
-	if (pid <= 0)
+	if (atoi(argv[1]) <= 0)
 	{
 		ft_putstr_fd("Invalid server PID\n", 1);
 		return (1);
 	}
-	signal(SIGUSR1, response_handler);
-	signal(SIGUSR2, response_handler);
-	send_string(pid, argv[2]);
-	//while (1)
-	//	pause();
+	signal(SIGUSR1, &response_handler);
+	signal(SIGUSR2, &response_handler);
+	send_string(atoi(argv[1]), argv[2]);
+	while (1)
+		pause();
 	return (0);
 }

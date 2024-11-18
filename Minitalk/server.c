@@ -6,52 +6,63 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:43:31 by jans              #+#    #+#             */
-/*   Updated: 2024/11/10 15:24:09 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/18 14:28:34 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-
 void	handle_sigusr(int signum, siginfo_t *info, void *context)
 {
-	static	char	current_data = 0;
-	static	int		bit_position = 0;
-	static	pid_t	client_pid = 0;
+	static	char	curr_data = 0;
+	static	int		bits_received = 0;
 
 	(void)context;
-	if (!client_pid) // If no client has been assigned
-		client_pid = info->si_pid; // assigns the sending process's PID
-	current_data |= (signum == SIGUSR2); // Is condition is true, sets 1, otherwise 0
-	if (++bit_position == 8)
+	if (signum == SIGUSR1)
 	{
-		bit_position = 0; // reset
-		if (!current_data)
-		{
-			kill(client_pid, SIGUSR2); // Indicates the end of messages
-			client_pid = 0; // reset
-			return ;
-		}
-		ft_putchar_fd(current_data, 1); //print character
-		current_data = 0; // reset
-		// signals back that it has successfully received and printed a character
-		kill(client_pid, SIGUSR1); 
+		curr_data = curr_data | (0x01 << bits_received % 8);
 	}
-	else
-		current_data <<= 1; // shift one bit to the left, prep to receive the next bit
+	if (bits_received % 8 == 7)
+	{
+		if (curr_data == '\0')
+		{
+			usleep(256);
+			kill(info->si_pid, SIGUSR1);
+		}
+		else
+			write(1, &curr_data, 1);
+		curr_data = 0; // reset
+	}
+	bits_received++;	
+	usleep(256);
+	kill(info->si_pid, SIGUSR2);
 }
 
 int	main(void)
 {
 	struct sigaction	sa;
+	sigset_t			block_mask;
 
+	ft_putstr_fd("PID: " , 1);
 	ft_putstr_fd(ft_itoa(getpid()), 1);
 	ft_putchar_fd('\n', 1);
-	// Will pass extra info (the info and context) to the handler
+	sigemptyset(&block_mask);	
+	sigaddset(&block_mask, SIGINT);
+	sigaddset(&block_mask, SIGQUIT);
+	sa.sa_handler = 0;
 	sa.sa_flags = SA_SIGINFO; 
+	sa.sa_mask = block_mask;
 	sa.sa_sigaction = &handle_sigusr;
-	sigaction(SIGUSR1, &sa, NULL); // Assign handler
-	sigaction(SIGUSR2, &sa, NULL); // Assign handler
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	{
+		write(1, "Error", 5);
+		return (0);
+	}
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		write(1, "Error", 5);
+		return (0);
+	}
 	while (1)
 		pause();
 	return (0);
