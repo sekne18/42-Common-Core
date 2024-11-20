@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:45:25 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/20 11:03:08 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/20 16:45:48 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	draw_wireframe(t_point ***points, t_vars *vars)
 	rows = points[0][0]->info->rows;
 	cols = points[0][0]->info->cols;
 	ft_clear_image(vars, cols, rows);
+	transform_points(points, vars);
 	y = 0;
 	while (y < rows)
 	{
@@ -94,9 +95,10 @@ void	slope_less_then_one(t_point *a, t_point *b, t_vars *vars, int z)
 	p = 2 * dx - dx;
 	while (a->x != b->x)
 	{
-		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT && a->y >= 0))
-			my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
-					vars->max_z, z));
+		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT
+				&& a->y >= 0))
+			my_mlx_pixel_put(vars->data, a->x, a->y,
+				interpolate_color(vars->min_z, vars->max_z, z));
 		a->x += sx;
 		if (p >= 0)
 		{
@@ -121,9 +123,10 @@ void	slope_bigger_than_one(t_point *a, t_point *b, t_vars *vars, int z)
 	p = 2 * dx - dy;
 	while (a->y != b->y)
 	{
-		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT && a->y >= 0))
-			my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
-					vars->max_z, z));
+		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT
+				&& a->y >= 0))
+			my_mlx_pixel_put(vars->data, a->x, a->y,
+				interpolate_color(vars->min_z, vars->max_z, z));
 		a->y += sy;
 		if (p >= 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 11:09:08 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/20 16:48:24 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ typedef struct s_vars
 	t_data		*data;
 	t_point		***points;
 	int			zoom;
-	float		angle_x;
-	float		angle_y;
-	float		angle_z;
+	int			transl;
 	int			min_z;
 	int			max_z;
 }				t_vars;
@@ -72,7 +70,6 @@ int				projected_y(t_point *p, int scale, t_vars *vars);
 int				ft_close_win(void *param);
 int				ft_key_press(int keycode, void *param);
 void			set_setters(t_point *a, t_point *b, int *sy, int *sx);
-void			check_if_square(t_point ***points, char **map, t_vars *vars);
 void			get_lines(int fd, char **line);
 void			cleanup(t_vars *vars);
 void			free_points(t_point ***points);
@@ -98,5 +95,6 @@ void			ft_clear_image(t_vars *vars, int cols, int rows);
 void			rotate_z(t_point *p, float angle);
 void			rotate_y(t_point *p, float angle);
 void			rotate_x(t_point *p, float angle);
+void			transform_points(t_point ***points, t_vars *vars);
 
 #endif

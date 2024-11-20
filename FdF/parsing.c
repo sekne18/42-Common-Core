@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/11/19 16:24:47 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/20 15:55:21 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_point	***get_points_array(char **map, t_vars *vars)
 	}
 	points[i] = 0;
 	set_z_limits(points, vars);
-//	check_if_square(points, map, vars);
 	return (points);
 }
 
