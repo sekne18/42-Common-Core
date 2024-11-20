@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:45:25 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/01 16:42:32 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/20 11:03:08 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ void	connect_horizontal(t_point ***points, int x, int y, t_vars *vars)
 	t_point	p2;
 	int		dx;
 	int		dy;
-	int		scale;
+	int		zoom;
 
-	scale = 9;
-	p1.x = projected_x(points[y][x], scale) + (WIN_WIDTH / 2);
-	p1.y = projected_y(points[y][x], scale) + (WIN_HEIGHT / 2);
-	p2.x = projected_x(points[y][x + 1], scale) + (WIN_WIDTH / 2);
-	p2.y = projected_y(points[y][x + 1], scale) + (WIN_HEIGHT / 2);
+	zoom = vars->zoom;
+	p1.x = projected_x(points[y][x], zoom, vars) + (WIN_WIDTH / 2);
+	p1.y = projected_y(points[y][x], zoom, vars) + (WIN_HEIGHT / 2);
+	p2.x = projected_x(points[y][x + 1], zoom, vars) + (WIN_WIDTH / 2);
+	p2.y = projected_y(points[y][x + 1], zoom, vars) + (WIN_HEIGHT / 2);
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
-		slope_less_then_one(&p1, &p2, vars, points[y][x + 1]->z * scale);
+		slope_less_then_one(&p1, &p2, vars, points[y][x + 1]->z * zoom);
 	else
-		slope_bigger_than_one(&p1, &p2, vars, points[y][x + 1]->z * scale);
+		slope_bigger_than_one(&p1, &p2, vars, points[y][x + 1]->z * zoom);
 }
 
 void	connect_vertical(t_point ***points, int x, int y, t_vars *vars)
@@ -39,25 +39,19 @@ void	connect_vertical(t_point ***points, int x, int y, t_vars *vars)
 	t_point	p2;
 	int		dx;
 	int		dy;
-	int		scale;
+	int		zoom;
 
-	if ((WIN_WIDTH / points[0][0]->info->cols) <
-		(WIN_HEIGHT / points[0][0]->info->rows))
-		scale = WIN_WIDTH / points[0][0]->info->cols;
-	else
-		scale = WIN_HEIGHT / points[0][0]->info->rows;
-	scale /= 10;
-	scale++;
-	p1.x = projected_x(points[y][x], scale) + (WIN_WIDTH / 2);
-	p1.y = projected_y(points[y][x], scale) + (WIN_HEIGHT / 2);
-	p2.x = projected_x(points[y + 1][x], scale) + (WIN_WIDTH / 2);
-	p2.y = projected_y(points[y + 1][x], scale) + (WIN_HEIGHT / 2);
+	zoom = vars->zoom;
+	p1.x = projected_x(points[y][x], zoom, vars) + (WIN_WIDTH / 2);
+	p1.y = projected_y(points[y][x], zoom, vars) + (WIN_HEIGHT / 2);
+	p2.x = projected_x(points[y + 1][x], zoom, vars) + (WIN_WIDTH / 2);
+	p2.y = projected_y(points[y + 1][x], zoom, vars) + (WIN_HEIGHT / 2);
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
-		slope_less_then_one(&p1, &p2, vars, points[y + 1][x]->z * scale);
+		slope_less_then_one(&p1, &p2, vars, points[y + 1][x]->z * zoom);
 	else
-		slope_bigger_than_one(&p1, &p2, vars, points[y + 1][x]->z * scale);
+		slope_bigger_than_one(&p1, &p2, vars, points[y + 1][x]->z * zoom);
 }
 
 void	draw_wireframe(t_point ***points, t_vars *vars)
@@ -69,6 +63,7 @@ void	draw_wireframe(t_point ***points, t_vars *vars)
 
 	rows = points[0][0]->info->rows;
 	cols = points[0][0]->info->cols;
+	ft_clear_image(vars, cols, rows);
 	y = 0;
 	while (y < rows)
 	{
@@ -99,8 +94,9 @@ void	slope_less_then_one(t_point *a, t_point *b, t_vars *vars, int z)
 	p = 2 * dx - dx;
 	while (a->x != b->x)
 	{
-		my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
-				vars->max_z, z));
+		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT && a->y >= 0))
+			my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
+					vars->max_z, z));
 		a->x += sx;
 		if (p >= 0)
 		{
@@ -125,8 +121,9 @@ void	slope_bigger_than_one(t_point *a, t_point *b, t_vars *vars, int z)
 	p = 2 * dx - dy;
 	while (a->y != b->y)
 	{
-		my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
-				vars->max_z, z));
+		if ((a->x <= WIN_WIDTH && a->x >= 0) && (a->y <= WIN_HEIGHT && a->y >= 0))
+			my_mlx_pixel_put(vars->data, a->x, a->y, interpolate_color(vars->min_z,
+					vars->max_z, z));
 		a->y += sy;
 		if (p >= 0)
 		{

@@ -26,8 +26,7 @@ t_point	*ft_new_point(int x, int y, int z, t_info *info)
 	return (node);
 }
 
-
-t_info *ft_new_info(int cols, int rows)
+t_info	*ft_new_info(int cols, int rows)
 {
 	t_info	*node;
 
