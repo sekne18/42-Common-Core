@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:10:02 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/20 16:58:58 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:09:32 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,28 +101,33 @@ void	transform_points(t_point ***points, t_vars *vars)
 		x = 0;
 		while (x < cols)
 		{
-			if (vars->transl == 1)
-			{
-				points[y][x]->x += -1;
-				points[y][x]->y -= -1;
-			}
-			else if (vars->transl == 2)
-			{
-				points[y][x]->x += 1;
-				points[y][x]->y -= 1;
-			}
-			else if (vars->transl == 3)
-			{
-				points[y][x]->x += -1;
-				points[y][x]->y -= 1;
-			}
-			else if (vars->transl == 4)
-			{
-				points[y][x]->x += 1;
-				points[y][x]->y -= -1;
-			}
+			set_translation(points[y][x], vars);
 			x++;
 		}
 		y++;
+	}
+}
+
+void	set_translation(t_point *points, t_vars *vars)
+{
+	if (vars->transl == 1)
+	{
+		points->x += -1;
+		points->y -= -1;
+	}
+	else if (vars->transl == 2)
+	{
+		points->x += 1;
+		points->y -= 1;
+	}
+	else if (vars->transl == 3)
+	{
+		points->x += -1;
+		points->y -= 1;
+	}
+	else if (vars->transl == 4)
+	{
+		points->x += 1;
+		points->y -= -1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 16:48:24 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:09:46 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ void			rotate_z(t_point *p, float angle);
 void			rotate_y(t_point *p, float angle);
 void			rotate_x(t_point *p, float angle);
 void			transform_points(t_point ***points, t_vars *vars);
+void			set_translation(t_point *points, t_vars *vars);
 
 #endif
