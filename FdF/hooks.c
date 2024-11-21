@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 07:42:14 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 16:09:15 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:04:16 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_mlx(t_vars *vars)
 			&vars->data->endian);
 	vars->points = NULL;
 	vars->zoom = 4;
+	vars->angle = M_PI / 6;
 	vars->transl = 0;
 }
 

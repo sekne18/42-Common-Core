@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 22:38:31 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 16:00:37 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:07:24 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	projected_x(t_point *p, int scale, t_vars *vars)
+int	projected_x(t_point *p, int scale, float angle)
 {
-	(void)vars;
-	return (((p->x * scale) - (p->y * scale)) * cos(M_PI / 6));
+	return (((p->x * scale) - (p->y * scale)) * cos(angle));
 }
 
-int	projected_y(t_point *p, int scale, t_vars *vars)
+int	projected_y(t_point *p, int scale, float angle)
 {
-	(void)vars;
-	return (((p->x * scale) + (p->y * scale)) * sin(M_PI / 6) - (p->z * scale));
+	return (((p->x * scale) + (p->y * scale)) * sin(angle) - (p->z * scale));
 }
 
 void	set_setters(t_point *a, t_point *b, int *sy, int *sx)

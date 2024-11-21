@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 17:09:46 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:03:00 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 # define KEY_W 119
 # define KEY_Q 113
 # define KEY_E 101
+# define KEY_UP 65362
+# define KEY_LEFT 65361
+# define KEY_DOWN 65364
+# define KEY_RIGHT 65363
 
 # ifdef __APPLE__
 #  define ESCAPE 53
@@ -52,6 +56,7 @@ typedef struct s_vars
 	t_point		***points;
 	int			zoom;
 	int			transl;
+	float		angle;
 	int			min_z;
 	int			max_z;
 }				t_vars;
@@ -65,8 +70,8 @@ typedef struct s_color
 
 void			fdf(char **map);
 int				parse_map(char ***map, char *filename);
-int				projected_x(t_point *p, int scale, t_vars *vars);
-int				projected_y(t_point *p, int scale, t_vars *vars);
+int				projected_x(t_point *p, int scale, float angle);
+int				projected_y(t_point *p, int scale, float angle);
 int				ft_close_win(void *param);
 int				ft_key_press(int keycode, void *param);
 void			set_setters(t_point *a, t_point *b, int *sy, int *sx);
@@ -92,10 +97,12 @@ t_point			**get_cols(char *line, int y, int len_y);
 unsigned int	interpolate_color(int min_z, int max_z, int z);
 int				ft_mouse_button(int button, int x, int y, void *params);
 void			ft_clear_image(t_vars *vars, int cols, int rows);
-void			rotate_z(t_point *p, float angle);
-void			rotate_y(t_point *p, float angle);
-void			rotate_x(t_point *p, float angle);
+void			rotate_z(t_point *a, float angle);
+void			rotate_y(t_point *a, float angle);
+void			rotate_x(t_point *a, float angle);
 void			transform_points(t_point ***points, t_vars *vars);
 void			set_translation(t_point *points, t_vars *vars);
+void			reset_properties(t_vars *vars);
+void			rotate_points(t_point ***points, t_vars *vars);
 
 #endif
