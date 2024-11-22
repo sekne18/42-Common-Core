@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:59:10 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/21 17:06:12 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/22 10:34:33 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_key_press(int keycode, void *param)
 	else if (keycode == KEY_S)
 		vars->transl = 4;
 	else if (keycode == KEY_Q)
-		vars->angle -= 0.01;
+		vars->angle -= 0.07;
 	else if (keycode == KEY_E)
-		vars->angle += 0.01;
+		vars->angle += 0.07;
 	ft_draw(vars);
 	return (0);
 }
@@ -47,7 +47,7 @@ int	ft_mouse_button(int button, int x, int y, void *params)
 {
 	t_vars	*vars;
 
-	(void)y;
+(void)y;
 	(void)x;
 	vars = params;
 	if (button == 4)

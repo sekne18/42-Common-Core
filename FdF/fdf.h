@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:46 by jans              #+#    #+#             */
-/*   Updated: 2024/11/21 14:03:00 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/22 10:35:07 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ typedef struct s_color
 
 void			fdf(char **map);
 int				parse_map(char ***map, char *filename);
-int				projected_x(t_point *p, int scale, float angle);
-int				projected_y(t_point *p, int scale, float angle);
+int				projected_x(t_point *p, int scale, t_vars *vars);
+int				projected_y(t_point *p, int scale, t_vars *vars);
 int				ft_close_win(void *param);
 int				ft_key_press(int keycode, void *param);
 void			set_setters(t_point *a, t_point *b, int *sy, int *sx);
@@ -104,5 +104,6 @@ void			transform_points(t_point ***points, t_vars *vars);
 void			set_translation(t_point *points, t_vars *vars);
 void			reset_properties(t_vars *vars);
 void			rotate_points(t_point ***points, t_vars *vars);
+void			rotate_z(t_point *p, float angle);
 
 #endif

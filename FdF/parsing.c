@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/11/20 15:55:21 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/22 14:00:31 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_point	***get_points_array(char **map, t_vars *vars)
 		return (NULL);
 	while (map[len_y])
 		len_y++;
-	points = malloc((len_y + 1) * sizeof(t_point **));
+	points = NULL;//malloc((len_y + 1) * sizeof(t_point **));
 	if (!points)
 		return (NULL);
 	i = -1;

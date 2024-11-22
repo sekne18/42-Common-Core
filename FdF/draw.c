@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:45:25 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/21 14:01:21 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/22 10:36:50 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	connect_horizontal(t_point ***points, int x, int y, t_vars *vars)
 	int		zoom;
 
 	zoom = vars->zoom;
-	p1.x = projected_x(points[y][x], zoom, vars->angle) + (WIN_WIDTH / 2);
-	p1.y = projected_y(points[y][x], zoom, vars->angle) + (WIN_HEIGHT / 2);
-	p2.x = projected_x(points[y][x + 1], zoom, vars->angle) + (WIN_WIDTH / 2);
-	p2.y = projected_y(points[y][x + 1], zoom, vars->angle) + (WIN_HEIGHT / 2);
+	p1.x = projected_x(points[y][x], zoom, vars) + (WIN_WIDTH / 2);
+	p1.y = projected_y(points[y][x], zoom, vars) + (WIN_HEIGHT / 2);
+	p2.x = projected_x(points[y][x + 1], zoom, vars) + (WIN_WIDTH / 2);
+	p2.y = projected_y(points[y][x + 1], zoom, vars) + (WIN_HEIGHT / 2);
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
@@ -42,10 +42,10 @@ void	connect_vertical(t_point ***points, int x, int y, t_vars *vars)
 	int		zoom;
 
 	zoom = vars->zoom;
-	p1.x = projected_x(points[y][x], zoom, vars->angle) + (WIN_WIDTH / 2);
-	p1.y = projected_y(points[y][x], zoom, vars->angle) + (WIN_HEIGHT / 2);
-	p2.x = projected_x(points[y + 1][x], zoom, vars->angle) + (WIN_WIDTH / 2);
-	p2.y = projected_y(points[y + 1][x], zoom, vars->angle) + (WIN_HEIGHT / 2);
+	p1.x = projected_x(points[y][x], zoom, vars) + (WIN_WIDTH / 2);
+	p1.y = projected_y(points[y][x], zoom, vars) + (WIN_HEIGHT / 2);
+	p2.x = projected_x(points[y + 1][x], zoom, vars) + (WIN_WIDTH / 2);
+	p2.y = projected_y(points[y + 1][x], zoom, vars) + (WIN_HEIGHT / 2);
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
 	if (abs(dx) > abs(dy))
@@ -65,7 +65,6 @@ void	draw_wireframe(t_point ***points, t_vars *vars)
 	cols = points[0][0]->info->cols;
 	ft_clear_image(vars, cols, rows);
 	transform_points(points, vars);
-//	rotate_points(points, vars);
 	y = 0;
 	while (y < rows)
 	{

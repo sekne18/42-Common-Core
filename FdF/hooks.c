@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 07:42:14 by jans              #+#    #+#             */
-/*   Updated: 2024/11/21 14:04:16 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/22 12:09:22 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	init_vars(t_vars **vars)
 	*vars = malloc(sizeof(t_vars));
 	if (!*vars)
 		return (0);
+	ft_memset(*vars, 0, sizeof(t_vars));
 	(*vars)->data = malloc(sizeof(t_data));
 	if (!(*vars)->data)
 		return (0);
