@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:10:02 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/22 12:18:04 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 11:01:53 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,23 @@ void	free_points(t_point ***points)
 	int	rows;
 	int	cols;
 
-	cols = points[0][0]->info->cols;
-	rows = points[0][0]->info->rows;
-	y = 0;
-	while (y < rows)
+	if (points[0])
 	{
-		x = 0;
-		while (x < cols)
+		cols = points[0][0]->info->cols;
+		rows = points[0][0]->info->rows;
+		y = 0;
+		while (y < rows)
 		{
-			free(points[y][x]->info);
-			free(points[y][x]);
-			x++;
+			x = 0;
+			while (x < cols)
+			{
+				free(points[y][x]->info);
+				free(points[y][x]);
+				x++;
+			}
+			free(points[y]);
+			y++;
 		}
-		free(points[y]);
-		y++;
 	}
 	free(points);
 }

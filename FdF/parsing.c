@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/11/22 14:00:31 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 10:46:19 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_point	***get_points_array(char **map, t_vars *vars)
 		return (NULL);
 	while (map[len_y])
 		len_y++;
-	points = NULL;//malloc((len_y + 1) * sizeof(t_point **));
+	points = malloc((len_y + 1) * sizeof(t_point **));
 	if (!points)
 		return (NULL);
 	i = -1;
@@ -32,7 +32,10 @@ t_point	***get_points_array(char **map, t_vars *vars)
 	{
 		points[i] = get_cols(map[i], i, len_y);
 		if (!points[i])
+		{
 			free_points(points);
+			return (NULL);
+		}
 	}
 	points[i] = 0;
 	set_z_limits(points, vars);
@@ -53,12 +56,16 @@ t_point	**get_cols(char *line, int y, int len_y)
 		return (NULL);
 	while (formatted[len_x])
 		len_x++;
-	point_arr = malloc((len_x + 1) * sizeof(t_point *));
+	point_arr = NULL;//malloc((len_x + 1) * sizeof(t_point *));
 	if (!point_arr)
 		return (NULL);
 	while (formatted[++x])
+	{
 		point_arr[x] = ft_new_point(x, y, ft_atoi(formatted[x]),
 				ft_new_info(len_x, len_y));
+		if (!point_arr[x])
+			return (NULL);
+	}
 	free_all(formatted);
 	return (point_arr);
 }
