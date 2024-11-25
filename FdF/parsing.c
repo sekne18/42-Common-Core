@@ -6,40 +6,40 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:53:12 by jans              #+#    #+#             */
-/*   Updated: 2024/11/22 14:00:31 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 19:45:12 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_point	***get_points_array(char **map, t_vars *vars)
+int	get_points_array(char **map, t_vars *vars)
 {
-	t_point	***points;
 	int		i;
 	int		len_y;
 
 	len_y = 0;
 	i = 0;
 	if (!map)
-		return (NULL);
+		return (0);
 	while (map[len_y])
 		len_y++;
-	points = NULL;//malloc((len_y + 1) * sizeof(t_point **));
-	if (!points)
-		return (NULL);
+	vars->points = malloc((len_y + 1) * sizeof(t_point **));
+	if (!vars->points)
+		return (0);
+	vars->info->rows = len_y + 1;
 	i = -1;
 	while (map[++i])
 	{
-		points[i] = get_cols(map[i], i, len_y);
-		if (!points[i])
-			free_points(points);
+		vars->points[i] = get_cols(map[i], i, vars);
+		if (!vars->points[i])
+			return (0);
 	}
-	points[i] = 0;
-	set_z_limits(points, vars);
-	return (points);
+	vars->points[i] = 0;
+	set_z_limits(vars->points, vars);
+	return (1);
 }
 
-t_point	**get_cols(char *line, int y, int len_y)
+t_point	**get_cols(char *line, int y, t_vars *vars)
 {
 	char	**formatted;
 	int		x;
@@ -53,12 +53,19 @@ t_point	**get_cols(char *line, int y, int len_y)
 		return (NULL);
 	while (formatted[len_x])
 		len_x++;
-	point_arr = malloc((len_x + 1) * sizeof(t_point *));
+	point_arr = NULL;//malloc((len_x + 1) * sizeof(t_point *));
 	if (!point_arr)
+	{
+		free_all(formatted);
 		return (NULL);
+	}
 	while (formatted[++x])
-		point_arr[x] = ft_new_point(x, y, ft_atoi(formatted[x]),
-				ft_new_info(len_x, len_y));
+	{
+		point_arr[x] = ft_new_point(x, y, ft_atoi(formatted[x]));
+	//	if (!point_arr[x])
+	//		return (NULL);
+		vars->info->cols++;
+	}
 	free_all(formatted);
 	return (point_arr);
 }
@@ -112,8 +119,8 @@ void	set_z_limits(t_point ***points, t_vars *vars)
 
 	vars->min_z = 0;
 	vars->max_z = 0;
-	rows = points[0][0]->info->rows;
-	cols = points[0][0]->info->cols;
+	rows = vars->info->rows;
+	cols = vars->info->cols;
 	y = -1;
 	while (++y < rows)
 	{

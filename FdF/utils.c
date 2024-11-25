@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:10:02 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/22 12:18:04 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:00:59 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,21 @@ unsigned int	interpolate_color(int min_z, int max_z, int z)
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
-void	free_points(t_point ***points)
+void	free_points(t_point ***points, t_vars *vars)
 {
 	int	x;
 	int	y;
 	int	rows;
 	int	cols;
 
-	cols = points[0][0]->info->cols;
-	rows = points[0][0]->info->rows;
+	cols = vars->info->cols;
+	rows = vars->info->rows;
 	y = 0;
 	while (y < rows)
 	{
 		x = 0;
 		while (x < cols)
 		{
-			free(points[y][x]->info);
 			free(points[y][x]);
 			x++;
 		}
@@ -81,7 +80,7 @@ void	cleanup(t_vars *vars)
 			free(vars->mlx);
 		}
 		if (vars->points)
-			free_points(vars->points);
+			free_points(vars->points, vars);
 		free(vars);
 	}
 }
@@ -93,8 +92,8 @@ void	transform_points(t_point ***points, t_vars *vars)
 	int	rows;
 	int	cols;
 
-	rows = points[0][0]->info->rows;
-	cols = points[0][0]->info->cols;
+	rows = vars->info->rows;
+	cols = vars->info->cols;
 	y = 0;
 	while (y < rows)
 	{

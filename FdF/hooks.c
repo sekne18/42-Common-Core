@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 07:42:14 by jans              #+#    #+#             */
-/*   Updated: 2024/11/22 12:09:22 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:03:44 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int	init_vars(t_vars **vars)
 	(*vars)->data = malloc(sizeof(t_data));
 	if (!(*vars)->data)
 		return (0);
-	init_mlx(*vars);
+	if (!init_mlx(*vars))
+		return (0);
 	return (1);
 }
 
-void	init_mlx(t_vars *vars)
+int	init_mlx(t_vars *vars)
 {
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, WIN_WIDTH, WIN_HEIGHT, "FdF");
@@ -33,10 +34,14 @@ void	init_mlx(t_vars *vars)
 	vars->data->addr = mlx_get_data_addr(vars->data->img,
 			&vars->data->bits_per_pixel, &vars->data->line_length,
 			&vars->data->endian);
+	vars->info = ft_new_info(0, 0);
+	if (!vars->info)
+		return (0);
 	vars->points = NULL;
 	vars->zoom = 4;
 	vars->angle = M_PI / 6;
 	vars->transl = 0;
+	return (1);
 }
 
 void	ft_hook_init(t_vars *vars)

@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:32:34 by jans              #+#    #+#             */
-/*   Updated: 2024/11/22 13:58:49 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 19:29:24 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,13 @@ int	main(int argc, char **argv)
 		free_all(map);
 		return (0);
 	}
-	vars->points = get_points_array(map, vars);
-	free_all(map);
-	if (!vars->points)
+	if (get_points_array(map, vars))
 	{
-		cleanup(vars);
-		return (0);
+		ft_hook_init(vars);
+		ft_draw(vars);
+		mlx_loop(vars->mlx);
 	}
-	ft_hook_init(vars);
-	ft_draw(vars);
-	mlx_loop(vars->mlx);
+	free_all(map);
 	cleanup(vars);
 	return (0);
 }
