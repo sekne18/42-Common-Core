@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:10:02 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/25 11:01:53 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/25 22:24:20 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,23 @@ unsigned int	interpolate_color(int min_z, int max_z, int z)
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
-void	free_points(t_point ***points)
+void	free_points(t_point ***points, t_vars *vars)
 {
 	int	x;
 	int	y;
 	int	rows;
 	int	cols;
 
-	if (points[0])
+	cols = vars->info->cols;
+	rows = vars->info->rows;
+	y = -1;
+	while (++y < rows)
 	{
-		cols = points[0][0]->info->cols;
-		rows = points[0][0]->info->rows;
-		y = 0;
-		while (y < rows)
-		{
-			x = 0;
-			while (x < cols)
-			{
-				free(points[y][x]->info);
-				free(points[y][x]);
-				x++;
-			}
+		x = -1;
+		while (++x < cols)
+			free(points[y][x]);
+		if (*points)
 			free(points[y]);
-			y++;
-		}
 	}
 	free(points);
 }
@@ -84,7 +77,9 @@ void	cleanup(t_vars *vars)
 			free(vars->mlx);
 		}
 		if (vars->points)
-			free_points(vars->points);
+			free_points(vars->points, vars);
+		if (vars->info)
+			free(vars->info);
 		free(vars);
 	}
 }
@@ -96,8 +91,8 @@ void	transform_points(t_point ***points, t_vars *vars)
 	int	rows;
 	int	cols;
 
-	rows = points[0][0]->info->rows;
-	cols = points[0][0]->info->cols;
+	rows = vars->info->rows;
+	cols = vars->info->cols;
 	y = 0;
 	while (y < rows)
 	{

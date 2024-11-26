@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:45:25 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/22 10:36:50 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:50:06 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	draw_wireframe(t_point ***points, t_vars *vars)
 	int	rows;
 	int	cols;
 
-	rows = points[0][0]->info->rows;
-	cols = points[0][0]->info->cols;
+	rows = vars->info->rows;
+	cols = vars->info->cols;
 	ft_clear_image(vars, cols, rows);
 	transform_points(points, vars);
 	y = 0;

@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 21:32:25 by jans              #+#    #+#             */
-/*   Updated: 2024/10/28 07:39:22 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/25 14:56:45 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct s_point
 	int				x;
 	int				y;
 	int				z;
-	struct s_info	*info;
 }					t_point;
 
 typedef struct s_info
@@ -69,15 +68,6 @@ void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
-t_point			*ft_new_point(int x, int y, int z, t_info *info);
+t_point			*ft_new_point(int x, int y, int z);
 t_info			*ft_new_info(int cols, int rows);
-//void			ft_lstadd_front(t_point **lst, t_point *new);
-//int				ft_lstsize(t_point *lst);
-//t_point			*ft_lstlast(t_point *lst);
-//void			ft_lstadd_back(t_point **lst, t_point *new);
-//void			ft_lstdelone(t_point *lst, void (*del)(void *));
-//void			ft_lstclear(t_point **lst, void (*del)(void *));
-//void			ft_lstiter(t_point *lst, void (*f)(int));
-//t_point			*ft_lstmap(t_point *lst, void *(*f)(int), void (*del)
-//					(void *));
 #endif
