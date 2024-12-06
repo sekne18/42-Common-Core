@@ -1,15 +1,15 @@
 CC := cc
-CFLAGS := -g -Wall -Werror -Wextra -I.
+CFLAGS := -Wall -Werror -Wextra -I./philo
 
-SRCS := main.c utils.c input.c eating.c getters_setters.c sync_utils.c \
-		write.c
+SRCS := main.c utils.c input.c eating.c getters_setters.c \
+		monitor.c write.c sync.c clean.c
 OBJS := $(SRCS:.c=.o)
 NAME := philo
 
-all: $(NAME)
-
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+all: $(NAME)
 
 clean:
 	rm -f $(OBJS)

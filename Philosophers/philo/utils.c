@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:29:37 by jans              #+#    #+#             */
-/*   Updated: 2024/11/05 09:18:52 by jans             ###   ########.fr       */
+/*   Updated: 2024/12/06 12:46:21 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ long	gettime(t_time_code time_code)
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		error_exit("Gettimeofday failed");
+	{
+		printf("Gettimeofday failed");
+		return (0);
+	}
 	if (SECOND == time_code)
 		return (tv.tv_sec + (tv.tv_usec / 1e6));
 	else if (MILLISECOND == time_code)
@@ -25,14 +28,11 @@ long	gettime(t_time_code time_code)
 	else if (MICROSECOND == time_code)
 		return ((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
-		error_exit("Wrong input to gettime");
+	{
+		printf("Wrong input to gettime");
+		return (0);	
+	}
 	return (1919);
-}
-
-void	error_exit(const char *error)
-{
-	printf("%s\n", error);
-	exit(EXIT_FAILURE);
 }
 
 long	ft_atol(const char *nptr)
@@ -41,7 +41,7 @@ long	ft_atol(const char *nptr)
 
 	sum = 0;
 	if (!(*nptr >= '0' && *nptr <= '9'))
-		error_exit("Wrong input");
+		printf("Wrong input");
 	while (*nptr >= '0' && *nptr <= '9')
 		sum = (sum * 10) + (*nptr++ - '0');
 	return (sum);
@@ -61,13 +61,18 @@ void	precise_usleep(long usec, t_table *table)
 		elapsed = gettime(MICROSECOND) - start;
 		rem = usec - elapsed;
 
-		if (rem / 1e3)
-			usleep(usec / 2);
+		if (rem > 1e3)
+			usleep(rem / 2);
 		else
 		{
-			//spinlock
 			while (gettime(MICROSECOND) - start < usec)
 				;
 		}
 	}
+}
+
+void	wait_all_threads(t_table *table)
+{
+	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
+		;
 }

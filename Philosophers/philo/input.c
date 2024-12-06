@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:43:32 by jans              #+#    #+#             */
-/*   Updated: 2024/11/05 12:48:20 by jans             ###   ########.fr       */
+/*   Updated: 2024/12/06 13:23:38 by jans             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,45 @@
 void	parse_input(t_table *table, char **argv, int opt)
 {
 	table->philo_nbr = ft_atol(argv[1]);
-	table->time_to_die = ft_atol(argv[2]);
-	table->time_to_eat = ft_atol(argv[3]);
-	table->time_to_sleep = ft_atol(argv[4]);
+	table->time_to_die = ft_atol(argv[2]) * 1e3;
+	table->time_to_eat = ft_atol(argv[3]) * 1e3;
+	table->time_to_sleep = ft_atol(argv[4]) * 1e3;
 	table->nbr_limit_meals = -1;
-	if (opt)
-		table->nbr_limit_meals = ft_atol(argv[6]);	
+	if (opt && ft_atol(argv[5]) >= 0)
+		table->nbr_limit_meals = ft_atol(argv[5]);	
 }
 
-void	init_data(t_table *table)
+int	init_data(t_table *table)
 {	
 	int		i;
 
 	i = -1;
 	table->end_simulation = false;
 	table->all_threads_ready = false;
+	table->threads_running_nbr = 0;
 	table->philos = malloc(sizeof(t_philo) * table->philo_nbr);
 	if (!table->philos)
-		error_exit("Error when malloc philosopher");
+	{
+		clean(table);
+		return (1);
+	}
 	pthread_mutex_init(&table->table_mutex, NULL);
 	pthread_mutex_init(&table->write_mutex, NULL);
 	table->forks = malloc(sizeof(t_fork) * table->philo_nbr);
 	if (!table->forks)
-		error_exit("Error when malloc forks");	
+	{
+		clean(table);
+		return (1);
+	}
 	while (++i < table->philo_nbr)
 	{
 		pthread_mutex_init(&table->forks[i].fork, NULL);
 		table->forks[i].fork_id = i;
 	}
-	philo_init(table);
+	return (philo_init(table));
 }
 
-void	philo_init(t_table *table)
+int	philo_init(t_table *table)
 {
 	int		i;
 	t_philo	*philo;
@@ -62,6 +69,7 @@ void	philo_init(t_table *table)
 		pthread_mutex_init(&philo->philo_mutex, NULL);
 		assign_forks(philo, table->forks, i);
 	}
+	return (0);
 }
 
 void	assign_forks(t_philo *philo, t_fork *forks, int philo_pos)
@@ -77,5 +85,3 @@ void	assign_forks(t_philo *philo, t_fork *forks, int philo_pos)
 		philo->second_fork = &forks[(philo_pos + 1) % philo_nbr]; 
 	}
 }
-
-
