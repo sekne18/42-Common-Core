@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:59:11 by jans              #+#    #+#             */
-/*   Updated: 2024/11/09 11:56:03 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/19 17:30:46 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 		ft_lstclear(&stack_a);
 		return (0);
 	}
-	if (!is_sorted(stack_a))
+	if (!is_sorted(stack_a, 1))
 		read_instructions(&stack_a, &stack_b);
 	if (stack_a)
 		ft_lstclear(&stack_a);
@@ -45,13 +45,13 @@ int	read_instructions(t_list **stack_a, t_list **stack_b)
 	while (bytes_read)
 	{
 		bytes_read = read(0, &str, 4);
-		if (ft_strchr(str, '\n') || bytes_read == 0)
+		if (bytes_read == 0)
 			break ;
 		str[bytes_read - 1] = 0;
 		if (!execute(str, stack_a, stack_b))
 			return (0);
 	}
-	if (is_sorted(*stack_a) && !*stack_b)
+	if (is_sorted(*stack_a, 1) && !*stack_b)
 		ft_putstr_fd("OK\n", 1);
 	else
 		ft_putstr_fd("KO\n", 1);

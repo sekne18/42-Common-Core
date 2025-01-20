@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:43:31 by jans              #+#    #+#             */
-/*   Updated: 2024/11/18 14:28:34 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/18 16:31:32 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_sigusr(int signum, siginfo_t *info, void *context)
 	{
 		if (curr_data == '\0')
 		{
-			usleep(256);
+			usleep(156);
 			kill(info->si_pid, SIGUSR1);
 		}
 		else
@@ -34,7 +34,7 @@ void	handle_sigusr(int signum, siginfo_t *info, void *context)
 		curr_data = 0; // reset
 	}
 	bits_received++;	
-	usleep(256);
+	usleep(156);
 	kill(info->si_pid, SIGUSR2);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:10:02 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/25 22:24:20 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/26 10:49:14 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,52 +36,6 @@ unsigned int	interpolate_color(int min_z, int max_z, int z)
 	color.g = color_low.g + (color_high.g - color_low.g) * z_ratio;
 	color.b = color_low.b + (color_high.b - color_low.b) * z_ratio;
 	return ((color.r << 16) | (color.g << 8) | color.b);
-}
-
-void	free_points(t_point ***points, t_vars *vars)
-{
-	int	x;
-	int	y;
-	int	rows;
-	int	cols;
-
-	cols = vars->info->cols;
-	rows = vars->info->rows;
-	y = -1;
-	while (++y < rows)
-	{
-		x = -1;
-		while (++x < cols)
-			free(points[y][x]);
-		if (*points)
-			free(points[y]);
-	}
-	free(points);
-}
-
-void	cleanup(t_vars *vars)
-{
-	if (vars)
-	{
-		if (vars->data)
-		{
-			if (vars->data->img)
-				mlx_destroy_image(vars->mlx, vars->data->img);
-			free(vars->data);
-		}
-		if (vars->win)
-			mlx_destroy_window(vars->mlx, vars->win);
-		if (vars->mlx)
-		{
-			mlx_destroy_display(vars->mlx);
-			free(vars->mlx);
-		}
-		if (vars->points)
-			free_points(vars->points, vars);
-		if (vars->info)
-			free(vars->info);
-		free(vars);
-	}
 }
 
 void	transform_points(t_point ***points, t_vars *vars)
@@ -127,5 +81,42 @@ void	set_translation(t_point *points, t_vars *vars)
 	{
 		points->x += 1;
 		points->y -= -1;
+	}
+}
+
+int	ft_2dstrlen(char **str)
+{
+	int	len;
+
+	len = 0;
+	if (!str)
+		return (0);
+	while (str[len])
+		len++;
+	return (len);
+}
+
+void	set_z_limits(t_point ***points, t_vars *vars)
+{
+	int	y;
+	int	x;
+	int	cols;
+	int	rows;
+
+	vars->min_z = 0;
+	vars->max_z = 0;
+	rows = vars->info->rows;
+	cols = vars->info->cols;
+	y = -1;
+	while (++y < rows)
+	{
+		x = -1;
+		while (++x < cols)
+		{
+			if (vars->min_z > points[y][x]->z)
+				vars->min_z = points[y][x]->z;
+			if (vars->max_z < points[y][x]->z)
+				vars->max_z = points[y][x]->z;
+		}
 	}
 }

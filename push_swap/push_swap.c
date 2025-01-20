@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:45:14 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/15 15:58:35 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/19 14:51:14 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,14 @@ void	push_swap(t_list **stack_a, t_list **stack_b)
 
 	len = ft_lstsize(*stack_a);
 	compress_numbers(stack_a, len);
-	if (is_sorted(*stack_a))
+	if (is_sorted(*stack_a, 1))
 		return ;
 	else if (len == 2)
 		sa(stack_a, 0);
 	else if (len > 2 && len < 6)
 		mini_sort(stack_a, stack_b, len);
 	else if (len <= 100)
-		merge_sort_small(stack_a, stack_b);
+		merge_sort(stack_a, stack_b);
 	else
-		merge_sort_big(stack_a, stack_b);
-//		radix_sort(stack_a, stack_b);
+		radix_sort(stack_a, stack_b);
 }

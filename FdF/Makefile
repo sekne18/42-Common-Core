@@ -3,7 +3,7 @@ CFLAGS := -g -Wall -Werror -Wextra -I.
 MLXFLAGS := -lmlx -lXext -lX11 -lm -lbsd
 
 SRCS := fdf.c get_next_line.c parsing.c draw.c mlx_helpers.c utils.c\
-		hooks.c interaction_utils.c interaction.c
+		hooks.c interaction.c clean.c memory.c
 OBJS := $(SRCS:.c=.o)
 NAME := fdf
 

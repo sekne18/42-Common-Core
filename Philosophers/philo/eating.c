@@ -6,37 +6,39 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 11:32:31 by jans              #+#    #+#             */
-/*   Updated: 2024/12/06 13:13:08 by jans             ###   ########.fr       */
+/*   Updated: 2025/01/20 14:58:22 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	start_eating(t_table *table)
+/*
+ * Creates threads, sets start_sim time and threads state. 
+ * Handles clearing the threads and mutexes if it fails during the execution.
+ *
+ * RETURNS: status and clears all allocated memory/created threads.
+ * */
+int	start_eating(t_table *table)
 {
-	int		i;
+	int	threads_ready;
 
-	i = -1;
-	if (table->nbr_limit_meals == 0)
-		return ;
-	else if (table->philo_nbr == 1)
-		pthread_create(&table->philos[0].thread_id, NULL, single_philo_simulation, &table->philos[0]);
-	else
-	{
-		while (++i < table->philo_nbr)
-			pthread_create(&table->philos[i].thread_id, NULL, eating_simulation,
-				&table->philos[i]);
-	}
+	threads_ready = create_threads(table);
+	if (threads_ready)
+		return (clean(table, threads_ready, false), 1);
 	table->start_simulation = gettime(MILLISECOND);
 	set_bool(&table->table_mutex, &table->all_threads_ready, true);
-	pthread_create(&table->monitor_thread, NULL, monitor, table);
-	i = -1;
-	while (++i < table->philo_nbr)
-		pthread_join(table->philos[i].thread_id, NULL);
-	set_bool(&table->table_mutex, &table->end_simulation, true);
-	pthread_join(table->monitor_thread, NULL);
+	if (pthread_create(&table->monitor_thread, NULL, monitor, table) != 0)
+		return (clean(table, table->philo_nbr, false), 1);
+	return (clean(table, table->philo_nbr, true), 0);
 }
 
+/*
+ * Contains main eating simualtion logic.
+ * 1. Waits for all threads to be ready
+ * 2. Increments threads_running_nbr (each thread will increment it)
+ * 3. Desync philos to avoid dead_locks
+ * 4. Execute as long as philos are alive or nbr_limit_meals was reached 
+ * */
 void	*eating_simulation(void *data)
 {
 	t_philo	*philo;
@@ -58,6 +60,10 @@ void	*eating_simulation(void *data)
 	return (NULL);
 }
 
+/*
+ * Simulates eating.
+ * Locks forks, saves last_meal_time and checks for nbr_limit_meals
+ * */
 void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->first_fork->fork);
@@ -75,6 +81,10 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->second_fork->fork);
 }
 
+/*
+ * Executes simulation for a single philosopher.
+ * Has a similar logic to eating_simulation function
+ * */
 void	*single_philo_simulation(void *data)
 {
 	t_philo	*philo;
@@ -89,12 +99,16 @@ void	*single_philo_simulation(void *data)
 	return (NULL);
 }
 
+/*
+ * Simulating thinking.
+ * Puts philo to thinking state.
+ * */
 void	thinking(t_philo *philo, bool pre_sim)
 {
 	long	t_eat;
 	long	t_sleep;
 	long	t_think;
-	
+
 	if (!pre_sim)
 		write_status(THINKING, philo);
 	if (philo->table->philo_nbr % 2 == 0)

@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 20:50:00 by jans              #+#    #+#             */
-/*   Updated: 2024/11/09 11:26:13 by jans             ###   ########.fr       */
+/*   Updated: 2024/11/19 14:52:27 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_lstlast_idx(t_list *stack)
 	return (last);
 }
 
-int	is_sorted(t_list *stack)
+int	is_sorted(t_list *stack, int desc)
 {
 	t_list	*curr;
 
@@ -66,8 +66,17 @@ int	is_sorted(t_list *stack)
 	curr = stack;
 	while (curr->next)
 	{
-		if (curr->number > curr->next->number)
-			return (0);
+		if (desc)
+		{
+			if (curr->number > curr->next->number)
+				return (0);
+		}
+		else
+		{
+			if (curr->number < curr->next->number || is_too_big_gap(curr->index,
+					curr->next->index))
+				return (0);
+		}
 		curr = curr->next;
 	}
 	return (1);

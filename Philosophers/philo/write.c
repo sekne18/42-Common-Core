@@ -23,13 +23,13 @@ void	write_status(t_philo_status status, t_philo *philo)
 	if ((TAKE_FIRST_FORK == status || TAKE_SECOND_FORK == status)
 		&& !sim_done(philo->table))
 		printf("%-6ld  %d has taken a fork\n", elapsed, philo->id);
-	else if (EATING == status && !sim_done(philo->table))	
+	else if (EATING == status && !sim_done(philo->table))
 		printf("%-6ld  %d is eating\n", elapsed, philo->id);
-	else if (DIED == status)	
+	else if (DIED == status)
 		printf("%-6ld  %d died\n", elapsed, philo->id);
-	else if (THINKING == status && !sim_done(philo->table))	
+	else if (THINKING == status && !sim_done(philo->table))
 		printf("%-6ld  %d is thinking\n", elapsed, philo->id);
-	else if (SLEEPING == status && !sim_done(philo->table))	
+	else if (SLEEPING == status && !sim_done(philo->table))
 		printf("%-6ld  %d is sleeping\n", elapsed, philo->id);
 	pthread_mutex_unlock(&philo->table->write_mutex);
 }

@@ -6,17 +6,18 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 09:03:33 by jans              #+#    #+#             */
-/*   Updated: 2024/12/06 13:14:27 by jans             ###   ########.fr       */
+/*   Updated: 2024/12/12 08:59:59 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	clean(t_table *table)
+void	clean(t_table *table, int created_threads, bool monitor_created)
 {
 	t_philo	*philo;
 	int		i;
 
+	join_threads(table, created_threads, monitor_created);
 	i = -1;
 	while (++i < table->philo_nbr)
 	{

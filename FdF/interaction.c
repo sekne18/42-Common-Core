@@ -6,7 +6,7 @@
 /*   By: jsekne <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:59:10 by jsekne            #+#    #+#             */
-/*   Updated: 2024/11/22 10:34:33 by jsekne           ###   ########.fr       */
+/*   Updated: 2024/11/26 10:50:58 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_mouse_button(int button, int x, int y, void *params)
 {
 	t_vars	*vars;
 
-(void)y;
+	(void)y;
 	(void)x;
 	vars = params;
 	if (button == 4)
@@ -61,8 +61,7 @@ int	ft_mouse_button(int button, int x, int y, void *params)
 	return (0);
 }
 
-void reset_properties(t_vars *vars)
+void	reset_properties(t_vars *vars)
 {
-	//vars->angle = M_PI / 6;
 	vars->transl = 0;
 }

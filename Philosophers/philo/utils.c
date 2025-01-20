@@ -6,7 +6,7 @@
 /*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:29:37 by jans              #+#    #+#             */
-/*   Updated: 2024/12/06 12:46:21 by jans             ###   ########.fr       */
+/*   Updated: 2025/01/20 16:00:48 by jsekne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ long	gettime(t_time_code time_code)
 	else
 	{
 		printf("Wrong input to gettime");
-		return (0);	
+		return (0);
 	}
 	return (1919);
 }
@@ -60,7 +60,6 @@ void	precise_usleep(long usec, t_table *table)
 			break ;
 		elapsed = gettime(MICROSECOND) - start;
 		rem = usec - elapsed;
-
 		if (rem > 1e3)
 			usleep(rem / 2);
 		else
@@ -71,6 +70,10 @@ void	precise_usleep(long usec, t_table *table)
 	}
 }
 
+/*
+ * Function helps to wait for all threads. Once all threads are ready
+ * we can start with the simulation
+ * */
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool(&table->table_mutex, &table->all_threads_ready))

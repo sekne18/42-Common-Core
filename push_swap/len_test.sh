@@ -1,5 +1,6 @@
 #!/bin/bash
 
+VERIFY=0
 IS_RAND=0
 COUNT=0
 PRINT=0
@@ -10,10 +11,11 @@ INC=1
 
 show_help() {
 	echo "Usage:"
-       	echo "	./len_test.sh [-r] [-i] [-c] [-p] [-m number] [-M number] [-h]"
+       	echo "	./len_test.sh [-r] [-i] [-c] [-v] [-p] [-m number] [-M number] [-h]"
 	echo
 	echo "Options:"
 	echo "	-i	print input"
+	echo "	-v	verify if output sorts"
 	echo "	-c	print amount of operations"
 	echo "	-p	print operations"
 	echo "	-r	random numbers instead of incremental"
@@ -22,7 +24,7 @@ show_help() {
 	echo "	-h	print this"
 }
 
-while getopts "n:ricpm:M:h" opt; do
+while getopts "n:ricvpm:M:h" opt; do
 	case $opt in
 		m)
 			MIN_VAL=$OPTARG
@@ -32,6 +34,9 @@ while getopts "n:ricpm:M:h" opt; do
 			;;
 		r)	
 			IS_RAND=1
+			;;
+		v)	
+			VERIFY=1
 			;;
 		c)	COUNT=1
 			;;
@@ -67,5 +72,7 @@ fi
 if [[ $COUNT -gt 0 ]]; then
 	cat tmp.txt | wc -l 
 fi
-cat tmp.txt | ./checker_linux "$RESULT"
+if [[ $VERIFY -gt 0 ]]; then
+	cat tmp.txt | ./checker_linux "$RESULT"
+fi
 rm tmp.txt

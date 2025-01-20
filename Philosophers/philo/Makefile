@@ -1,8 +1,8 @@
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -I./philo
+CFLAGS := -Wall -Werror -Wextra 
 
 SRCS := main.c utils.c input.c eating.c getters_setters.c \
-		monitor.c write.c sync.c clean.c
+		monitor.c write.c sync.c clean.c threads.c
 OBJS := $(SRCS:.c=.o)
 NAME := philo
 
@@ -19,6 +19,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
-
+.PHONY : all clean fclean re
 .SILENT:
