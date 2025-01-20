@@ -13,7 +13,7 @@ Gades on the projects
 | FdF               | C          | ✅ 120 Points    |
 | Minitalk          | C          | ✅ 125 Points    |
 | Exam 03           | C          | ✅ Passed        |
-| Philosophers      | C          | 🔄 In Progress   |
-| Minishell         | C          | 🔄 In Progress   |
+| Philosophers      | C          | 🔄 Evaluation    |
+| Minishell         | C          | ✅ 125 Points    |
 | Exam 04           | C          | ❌ Not Started   |
 | MiniRT            | C          | ❌ Not Started   |
