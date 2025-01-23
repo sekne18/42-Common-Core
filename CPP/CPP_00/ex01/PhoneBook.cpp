@@ -18,18 +18,27 @@ int main(int ac, char **av)
     // The Program only accepts ADD, SEARCH and EXIT
     // ADD, saves a new contact - no empty fields!
     // SEARCH, displays a specific contact
-    
+    // EXIT, exits the program    
+    PhoneBook book;
 
-    
     while (1)
     {
         std::string input;
-        PhoneBook book;
         std::cout << "Please enter a command: ADD, SEARCH or EXIT" << std::endl;
         std::cin >> input;
         if (input == "ADD")
         {
-
+            Contact contact;
+            std::cout << "Please enter the first name" << std::endl;
+            std::cin >> contact.first_name;
+            std::cout << "Please enter the last name" << std::endl;
+            std::cin >> contact.last_name;
+            std::cout << "Please enter the nickname" << std::endl;
+            std::cin >> contact.nickname;
+            std::cout << "Please enter the phone number" << std::endl;
+            std::cin >> contact.phone_number;
+            std::cout << "Please enter the darkest secret" << std::endl;
+            std::cin >> contact.darkest_secret;
             book.add_contact(contact);
         }
         else if (input == "SEARCH")
@@ -52,8 +61,16 @@ int main(int ac, char **av)
         else
             std::cout << "Invalid command" << std::endl;
     }
-    std::cout << "" << std::endl;
     return (0);
+}
+
+// Add a new contact to the phonebook.
+void PhoneBook::add_contact(Contact contact)
+{
+    contacts[index] = contact;
+    if (index != 7)
+        index++;
+    return;
 }
 
 void PhoneBook::search_contact(Contact contact)
