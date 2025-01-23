@@ -1,0 +1,87 @@
+nonterminals: (N_START, N_LOGIC, N_R_LOGIC, N_P_LOGIC, N_PIPE, N_L_PIPE, N_R_PIPE, N_REDIRS, N_ARGS, N_REDIR, N_ID, S_Q, D_Q, N_ID2, N_BUILTIN, ID, VAR, HERE_DOC)
+
+terminals: (|, <, >, <<, >>, (, ), &&, ||, identifier, builtin:...)
+==> make sure export has (first) argument (=identifier) with '='
+
+builtins: (export, echo, cd, env, pwd, unset, exit)
+
+identifier: no reserved symbols and whitespace unless in quotes all other characters allowed
+
+don't forget to add flags for * expansion as well as = for var assignment
+
+=============== OLD VERSION ================>
+[N_START] => [N_P_LOGIC] [N_START] | e
+[N_LOGIC] => [N_PIPE] [N_R_LOGIC]
+[N_R_LOGIC] => [&&] [N_P_LOGIC] | [||] [N_P_LOGIC] | e
+[N_P_LOGIC] => [(] [N_LOGIC] [)] | [N_LOGIC]
+[N_PIPE] => [N_L_PIPE] [N_R_PIPE]
+[N_L_PIPE] => [N_REDIRS] [N_ARGS]
+[N_R_PIPE] => [|] [N_REDIRS] [N_ARGS] [N_R_PIPE]
+[N_REDIRS] => [N_REDIR] [N_REDIRS] | e
+[N_REDIR] => [<] [N_ID] | [>] [N_ID] | [>>] [N_ID] | [HERE_DOC]
+[N_ID] => [S_Q] | [D_Q] | [ID] [N_ID2] | [N_BUILTIN] [N_ID2]
+[S_Q] => ['] [N_ID2] ['] [N_ID2]
+[D_Q] => ["] [N_ID2] ["] [N_ID2]
+[N_ID2] => [N_ID] [N_ID2] | e
+[N_ARGS] => [N_ID] [N_ARGS] [N_REDIRS] | e
+[N_BUILTIN] => [builtin] | [builtin:export] [=] [N_ID2]
+[ID] => [identifier] | [$] [VAR]
+[VAR] => [?] | [var_identifier] | e
+[HERE_DOC] => [N_ID2] [<<] [N_ID]
+=============== OLD VERSION ================>
+
+=============== NEW VERSION ================>
+precedence (lowest to highest):
+LIST		--- &&, ||
+PIPELINE	--- |
+PARENTHESES	--- (, )
+REDIRECTION	--- <, <<, >>, > 	-|
+COMMAND		--- CMD ARGS		-|
+
+[LIST] => [PIPELINE] (([&&] | [||]) [PIPELINE])*
+[PIPELINE] => [COMMAND] ([|] [COMMAND])*
+[COMMAND] => [BASIC_COMMAND] | [(] [LIST] [)]
+[BASIC_COMMAND] => ([identifier] | [REDIRECTION])+
+[REDIRECTION] => ([<] | [<<] | [>] | [>>]) [identifier]
+
+=============== NEW VERSION ================>
+
+
+tests not handled at the moment:
+[(1)] cat << lim'hello' % heredoc has delimiter limhello (because quotes are removed for string after heredoc) which is currently 2 separate tokens because lexer makes substring into a token when quoted
+
+[(2)] sort -q && echo 0 | cat && echo yes % pipe operator has precedence over logic operators so it is the same as "sort -q && (echo 0 | cat) && echo yes" but since sort -q fails nothing after gets executed
+
+[(3)] (sort -q && echo 0) | cat && echo yes % this way the first && is evaluated before the pipe and sort output (which in nothing because message gets printed on stderr) is piped to cat
+
+[(4)] < test1 > test2 % nothing happens
+
+[(4.2)] < test1 > test2 < test3 % nothing happens
+
+[(5)] < test1 echo hello > file2 > file3 % test1 writes to stdin, echo accepts stdin (but ignores input) and writes to stdout which is first set to file2 but is then overwritten to file3. (somehow file2 becomes empty)
+
+[(6)] < test1 echo hello > file2 | > file3 % same as before but because of pipe stdout of echo is not overwritten by file3 so writes to file2. since ouput is written to a file nothing is piped through and file3 is (/becomes) empty
+
+[(7)] < test1 echo hello > file2 echo hi hkhkh % everything after ... > file2 is piped to file2 (how TF are we supposed to do this, I guess they're just counted as arguments for the echo command)
+
+[(8)] < test1 sort < file2 > test2 % test1 and file2 write to stdin (file2 overwrites file1), input is sorted with sort cmd and outputted to test2
+
+[(9)] < test2 % does nothing
+
+[(10)] < test2 | cat % does nothing
+
+[(11)] < test2 cat % prints does nothing 
+
+[(12)] < hello world how < name are < cat you today
+
+[(13)] (< file2 cat | cat) && (echo -n hello > test4)
+
+[(14)] "< *.txt cat" % results in "bash: *.txt: ambiguous redirect"
+
+[(15)] ./*.sh % when s1.sh and s2.sh are present only the script that is found first (first in alphabetical order) will get executed
+
+[(16)] cat * % every file in the current directory gets added as an argument
+
+tests handled:
+
+minishell $ echo "" "" "g"

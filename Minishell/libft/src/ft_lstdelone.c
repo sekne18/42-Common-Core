@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: fmol <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 19:04:23 by jans              #+#    #+#             */
-/*   Updated: 2025/01/21 19:04:25 by jans             ###   ########.fr       */
+/*   Created: 2024/10/15 09:59:39 by fmol              #+#    #+#             */
+/*   Updated: 2024/10/15 09:59:40 by fmol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "libft.h"
 
-PhoneBook::PhoneBook(void) {
-    this->index = 0;
-    return;
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	if (!lst)
+		return ;
+	del(lst->content);
+	free(lst);
 }
-
-PhoneBook::~PhoneBook(void) {
-    return;
-}
-

@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: fmol <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 19:04:23 by jans              #+#    #+#             */
-/*   Updated: 2025/01/21 19:04:25 by jans             ###   ########.fr       */
+/*   Created: 2024/10/15 09:59:17 by fmol              #+#    #+#             */
+/*   Updated: 2024/10/15 09:59:18 by fmol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "libft.h"
 
-PhoneBook::PhoneBook(void) {
-    this->index = 0;
-    return;
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
-
-PhoneBook::~PhoneBook(void) {
-    return;
-}
-

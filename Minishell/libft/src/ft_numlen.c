@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
+/*   ft_numlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: fmol <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 19:04:23 by jans              #+#    #+#             */
-/*   Updated: 2025/01/21 19:04:25 by jans             ###   ########.fr       */
+/*   Created: 2024/12/02 13:19:59 by fmol              #+#    #+#             */
+/*   Updated: 2024/12/02 13:20:33 by fmol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "libft.h"
+#include <limits.h>
 
-PhoneBook::PhoneBook(void) {
-    this->index = 0;
-    return;
+size_t	ft_numlen(int n)
+{
+	size_t	len;
+
+	len = 1;
+	if (n == INT_MIN)
+	{
+		len += 2;
+		n /= 10;
+		n = -n;
+	}
+	else if (n < 0)
+	{
+		len++;
+		n = -n;
+	}
+	while (n >= 10)
+	{
+		len++;
+		n /= 10;
+	}
+	return (len);
 }
-
-PhoneBook::~PhoneBook(void) {
-    return;
-}
-

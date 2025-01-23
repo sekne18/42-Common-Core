@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: fmol <fmol@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 19:04:23 by jans              #+#    #+#             */
-/*   Updated: 2025/01/21 19:04:25 by jans             ###   ########.fr       */
+/*   Created: 2024/12/16 13:32:38 by jsekne            #+#    #+#             */
+/*   Updated: 2025/01/07 11:22:11 by fmol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "minishell.h"
 
-PhoneBook::PhoneBook(void) {
-    this->index = 0;
-    return;
+void	free_envp(char **envp)
+{
+	int	i;
+
+	if (!envp)
+		return ;
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 }
-
-PhoneBook::~PhoneBook(void) {
-    return;
-}
-

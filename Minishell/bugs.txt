@@ -1,0 +1,11 @@
+1) echo $USER$USER$USER$USER$USER$USER$USER$USER$USER$USER$USER $ leaks
+2) typing something and then going down in history locks the text in place
+3) (cat hello && echo hello) | ls $ prints the echo hello which should be piped through (most likely a problem with incorrect fd management in combination with && and |)
+
+
+
+
+4) << LIM cat | cat $ gets stuck $ !fixed!
+5) << LIM cat $ works
+5) << LIM cat + ctrl+c $ works
+5) << LIM cat + ctrl+d $ does not print err_msg anymore $ !fixed!
