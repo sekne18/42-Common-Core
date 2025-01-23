@@ -19,5 +19,6 @@ class PhoneBook {
     void add_contact(Contact contact);
     void search_contact(std::string first_name, std::string last_name);
   private:
-    Contact contacts[8];:
+    Contact contacts[8];
+    int index;
 };
