@@ -12,58 +12,6 @@
 
 #include "PhoneBook.hpp"
 
-int main(int ac, char **av)
-{
-    // Program starts and constantly prompts the user for the input.
-    // The Program only accepts ADD, SEARCH and EXIT
-    // ADD, saves a new contact - no empty fields!
-    // SEARCH, displays a specific contact
-    // EXIT, exits the program    
-    PhoneBook book;
-
-    while (1)
-    {
-        std::string input;
-        std::cout << "Please enter a command: ADD, SEARCH or EXIT" << std::endl;
-        std::cin >> input;
-        if (input == "ADD")
-        {
-            Contact contact;
-            std::cout << "Please enter the first name" << std::endl;
-            std::cin >> contact.first_name;
-            std::cout << "Please enter the last name" << std::endl;
-            std::cin >> contact.last_name;
-            std::cout << "Please enter the nickname" << std::endl;
-            std::cin >> contact.nickname;
-            std::cout << "Please enter the phone number" << std::endl;
-            std::cin >> contact.phone_number;
-            std::cout << "Please enter the darkest secret" << std::endl;
-            std::cin >> contact.darkest_secret;
-            book.add_contact(contact);
-        }
-        else if (input == "SEARCH")
-        {
-            std::cout << "Index     |First Name|Last Name |Nickname  " << std::endl;
-            for (int i = 0; i < 8; i++)
-            {
-                std::cout << i << "         |";
-                std::cout << contact.first_name << "         |";
-                std::cout << contact.last_name << "         |";
-                std::cout << contact.nickname << "         |";
-                std::cout << std::endl;
-            }
-            std::cout << "Please enter the index of the contact you want to display" << std::endl;
-            std::cin >> input;
-            book.search_contact(contac);
-        }
-        else if (input == "EXIT")
-            break;
-        else
-            std::cout << "Invalid command" << std::endl;
-    }
-    return (0);
-}
-
 // Add a new contact to the phonebook.
 void PhoneBook::add_contact(Contact contact)
 {
@@ -73,19 +21,55 @@ void PhoneBook::add_contact(Contact contact)
     return;
 }
 
-void PhoneBook::search_contact(Contact contact)
+void PhoneBook::print_contacts()
+{
+    int i;
+    // Each column should be only 10 characters wide. If longer, truncate and add a dot.
+    // Print the index, first name, last name and nickname of each contact.
+    // The text must be right-aligned.
+ 
+    std::cout << "     Index|First Name| Last Name|  Nickname" << std::endl;
+    i = -1;
+    while (++i < 8)
+    {
+        std::cout << "         " << i << "|";
+        std::string first_name = contacts[i].get_first_name();
+        if (first_name.length() > 10)
+        {
+            first_name = first_name.substr(0, 9) + ".";
+        }
+        std::cout << std::setw(10) << std::right << first_name << "|";
+        std::string last_name = contacts[i].get_last_name();
+        if (last_name.length() > 10)
+        {
+            last_name = last_name.substr(0, 9) + ".";
+        }
+        std::cout << std::setw(10) << std::right << last_name << "|";
+        std::string nickname = contacts[i].get_nickname();
+        if (nickname.length() > 10)
+        {
+            nickname = nickname.substr(0, 9) + ".";
+        }
+        std::cout << std::setw(10) << std::right << nickname << "|";
+        std::cout << std::endl;
+    }
+    
+}
+
+void PhoneBook::search_contact(int index)
 {
     // if the index is out of range, print error. Otherwise, print the contact information, onefield per line.
-    if (index < 0 || index > 7)
+    if ((index < 0 || index > 7) || this->index < index)
     {
-        std::cout << "Invalid index" << std::endl;
+      std::cout << "Invalid index" << std::endl;
         return;
     }
-    std::cout << "First Name: " << contact.first_name << std::endl;
-    std::cout << "Last Name: " << contact.last_name << std::endl;
-    std::cout << "Nickname: " << contact.nickname << std::endl;
-    std::cout << "Phone Number: " << contact.phone_number << std::endl;
-    std::cout << "Darkest Secret: " << contact.darkest_secret << std::endl;
+    
+    std::cout << "First Name: " << contacts[index].get_first_name() << std::endl;
+    std::cout << "Last Name: " << contacts[index].get_last_name() << std::endl;
+    std::cout << "Nickname: " << contacts[index].get_nickname() << std::endl;
+    std::cout << "Phone Number: " << contacts[index].get_phone_number() << std::endl;
+    std::cout << "Darkest Secret: " << contacts[index].get_secret() << std::endl;
 
     return;
 }

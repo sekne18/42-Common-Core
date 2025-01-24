@@ -1,10 +1,10 @@
 CPP = c++
 CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
-SRC =  PhoneBook.cpp Contact.cpp main.cpp
+SRC =  Account.cpp tests.cpp
 
 OBJS = $(SRC:.cpp=.o)
 
-NAME = phonebook
+NAME = account
 
 all: $(NAME)
 

@@ -11,13 +11,16 @@
 /* ************************************************************************** */
 
 #include <iostream>
+#include <iomanip>
+#include "Contact.hpp"
 
 class PhoneBook {
   public:
     PhoneBook(void);
     ~PhoneBook(void);
     void add_contact(Contact contact);
-    void search_contact(std::string first_name, std::string last_name);
+    void search_contact(int index);
+    void print_contacts();
   private:
     Contact contacts[8];
     int index;
