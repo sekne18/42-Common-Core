@@ -1,10 +1,10 @@
 CPP = c++
 CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Zombie.cpp zombieHorde.cpp
+SRC = main.cpp Replace.cpp
 
 OBJS = $(SRC:.cpp=.o)
 
-NAME = zombie
+NAME = replace
 
 all: $(NAME)
 
