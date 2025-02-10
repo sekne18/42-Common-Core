@@ -7,7 +7,7 @@ class Fixed
 {
 private:
   int _value;
-  static const int _fractionalBits = 8;
+  static const int _fractionalBits;
 public:
   Fixed(); // Constructor
   Fixed(const Fixed &fixed); // Copy Constructor

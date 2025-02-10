@@ -1,5 +1,7 @@
 #include "Fixed.hpp"
 
+const int Fixed::_fractionalBits = 8;
+
 Fixed::Fixed() : _value(0)
 {
   std::cout << "Default constructor called" << std::endl;
@@ -33,6 +35,9 @@ Fixed &Fixed::operator=(const Fixed &fixed)
   return *this;
 }
 
+/*
+ * [ ARITHMETIC OPERATORS ]
+ * */
 Fixed Fixed::operator+(const Fixed &fixed) const
 {
   return Fixed(toFloat() + fixed.toFloat());
