@@ -12,7 +12,6 @@
 
 #include "PhoneBook.hpp"
 
-// Add a new contact to the phonebook.
 void PhoneBook::add_contact(Contact contact)
 {
     contacts[index] = contact;
@@ -24,9 +23,6 @@ void PhoneBook::add_contact(Contact contact)
 void PhoneBook::print_contacts()
 {
     int i;
-    // Each column should be only 10 characters wide. If longer, truncate and add a dot.
-    // Print the index, first name, last name and nickname of each contact.
-    // The text must be right-aligned.
  
     std::cout << "     Index|First Name| Last Name|  Nickname" << std::endl;
     i = -1;
@@ -58,7 +54,6 @@ void PhoneBook::print_contacts()
 
 void PhoneBook::search_contact(int index)
 {
-    // if the index is out of range, print error. Otherwise, print the contact information, onefield per line.
     if ((index < 0 || index > 7) || this->index < index)
     {
       std::cout << "Invalid index" << std::endl;
