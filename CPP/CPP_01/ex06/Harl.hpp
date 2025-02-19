@@ -12,6 +12,7 @@ private:
   void info(void);
   void warning(void);
   int getLevel(std::string level);
+  std::string tolower(std::string level);
 
 public:
   void complain(std::string level);

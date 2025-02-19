@@ -18,7 +18,6 @@ std::string Replace::readFromFile(const std::string &filename)
   if (!ifs)
   {
     return "";
-    //throw std::runtime_error("Cannot open file: " + filename);
   }
   std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
   return content;
@@ -30,7 +29,6 @@ void Replace::writeToFile(const std::string &filename, const std::string &conten
   if (!ofs)
   {
     return ;
-    //throw std::runtime_error("Cannot open file: " + filename);
   }
   ofs << content;
 }

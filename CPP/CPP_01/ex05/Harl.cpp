@@ -37,13 +37,29 @@ void Harl::complain(std::string level)
   i = 0;
   std::string levels[4] = {"debug", "error", "info", "warning"};
   void (Harl::*logs[4])() = {&Harl::debug, &Harl::error, &Harl::info, &Harl::warning};
+
   while (i < 4)
   {
     if (level == levels[i])
-    {
-      (this->*logs[i])();
-      return;
-    }
+      break;
     i++;
+  }
+  
+  switch (i)
+  {
+    case 0:
+      (this->*logs[0])();
+      break;
+    case 1:
+      (this->*logs[1])();
+      break;
+    case 2:
+      (this->*logs[2])();
+      break;
+    case 3:
+      (this->*logs[3])();
+      break;
+    default:
+      break;
   }
 }
