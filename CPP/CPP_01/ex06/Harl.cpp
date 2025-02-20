@@ -30,18 +30,31 @@ Harl::~Harl()
   
 }
 
+std::string Harl::tolower(std::string str)
+{
+  int i = 0;
+
+  while (str[i])
+  {
+    if (str[i] >= 'A' && str[i] <= 'Z')
+      str[i] += 32;
+    i++;
+  }
+  return str;
+}
+
 int Harl::getLevel(std::string level)
 {
-  if (level == "Info")
-    return 1;
-  else if (level == "Debug")
-    return 2;
-  else if (level == "Warning")
-    return 3;
-  else if (level == "Error")
-    return 4;
-  else
-    return 0;
+  int i = 0;
+  std::string levels[4] = {"info", "debug", "warning", "error"};
+
+  while (i < 4)
+  {
+    if (level == levels[i])
+      break;
+    i++;
+  }
+  return i;
 }
 
 /*
@@ -53,9 +66,9 @@ int Harl::getLevel(std::string level)
 void Harl::complain(std::string level)
 {
   void (Harl::*logs[4])() = {&Harl::debug, &Harl::error, &Harl::info, &Harl::warning};
-  switch (getLevel(level))
+  switch (getLevel(tolower(level)))
   {
-    case 2:
+    case 1:
       std::cout << "[ DEBUG ]" << std::endl;
       (this->*logs[1])();
       std::cout << std::endl;
@@ -66,12 +79,12 @@ void Harl::complain(std::string level)
       (this->*logs[3])();
       std::cout << std::endl;
       break;
-    case 4:
+    case 3:
       std::cout << "[ ERROR ]" << std::endl;
       (this->*logs[3])();
       std::cout << std::endl;
       break;
-    case 1:
+    case 0:
       std::cout << "[ INFO ]" << std::endl;
       (this->*logs[0])();
       std::cout << std::endl;
@@ -85,7 +98,7 @@ void Harl::complain(std::string level)
       (this->*logs[3])();
       std::cout << std::endl;
       break;
-    case 3:
+    case 2:
       std::cout << "[ WARNING ]" << std::endl;
       (this->*logs[2])(); 
       std::cout << std::endl;
@@ -94,7 +107,7 @@ void Harl::complain(std::string level)
       std::cout << std::endl;
       break;
     default:
-      std::cout << "Invalid log level" << std::endl;
+      std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
       return;
   }
 }
