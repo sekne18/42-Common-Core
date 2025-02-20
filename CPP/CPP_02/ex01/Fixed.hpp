@@ -21,12 +21,8 @@ public:
   float toFloat(void) const;
   int toInt(void) const;
 
-  /* "friend" allows a non-member function to access private or protected members.
-   * Can be defined outside the class 
-   */
-  friend std::ostream &operator<<(std::ostream &out, const Fixed &value);
-
 };
 
+std::ostream &operator<<(std::ostream &out, const Fixed &value);
 
 #endif //FIXED_HPP
