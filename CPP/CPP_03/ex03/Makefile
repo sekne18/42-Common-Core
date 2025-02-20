@@ -1,5 +1,5 @@
 CPP = c++
-CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
+CPP_FLAGS = -Wshadow -Wno-shadow -Wall -Wextra -Werror -std=c++98
 SRC = main.cpp FragTrap.cpp ScavTrap.cpp ClapTrap.cpp DiamondTrap.cpp
 OBJS = $(SRC:.cpp=.o)
 
@@ -12,7 +12,7 @@ $(NAME):$(OBJS)
 
 %.o: %.cpp
 	$(CPP) $(CPP_FLAGS) -c $< -o $@
-
+	
 clean:
 	rm -f $(OBJS)
 
