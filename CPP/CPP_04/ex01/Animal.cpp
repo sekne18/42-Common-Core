@@ -7,12 +7,30 @@ Animal::Animal()
   _sound = "Rawr";
 }
 
+Animal::Animal(const Animal &other)
+{
+  std::cout << "Animal copy constructor called" << std::endl;
+  _type = other._type;
+  _sound = other._sound;
+}
+
+Animal &Animal::operator=(const Animal &other)
+{
+  std::cout << "Animal assignment operator called" << std::endl;
+  if (this != &other)
+  {
+    _type = other._type;
+    _sound = other._sound;
+  }
+  return *this;
+}
+
 Animal::~Animal()
 {
   std::cout << "Animal destructor called" << std::endl;
 }
 
-void Animal::makeSound() const
+void Animal::makeSound()
 {
   std::cout << _sound << std::endl;
 }

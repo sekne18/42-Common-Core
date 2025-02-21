@@ -11,8 +11,10 @@ protected:
 
 public:
     WrongAnimal();
+    WrongAnimal(const WrongAnimal &other);
+    WrongAnimal &operator=(const WrongAnimal &other);
     ~WrongAnimal();
-    void makeSound() const;
+    void makeSound();
     std::string getType() const;
 };
 

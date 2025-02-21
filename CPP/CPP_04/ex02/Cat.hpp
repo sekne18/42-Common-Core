@@ -8,13 +8,14 @@ class Cat : public AAnimal
 {
 private:
   Brain *_brain;
-
+  
 public:
   Cat();
+  Cat(Cat const &src);
+  Cat &operator=(Cat const &rhs);
   ~Cat();
-  virtual void makeSound() const;
+  void makeSound() const;
 
 };
-
 
 #endif // CAT_HPP

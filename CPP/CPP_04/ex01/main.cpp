@@ -4,7 +4,6 @@
 
 int main()
 {
-  // Create and fill an array of Animal objects. Half dogs, half cats.
   int i = -1;
 
   Animal *animals[10];
@@ -16,9 +15,10 @@ int main()
       animals[i] = new Cat();
   }
   
-  i = -1;
+  while (--i >= 0)
+    animals[i]->makeSound();
+
   while (++i < 10)
     delete animals[i];
-
   return 0;
 }

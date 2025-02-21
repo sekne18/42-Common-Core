@@ -4,8 +4,28 @@ Cat::Cat()
 {
   std::cout << "Cat constructor called" << std::endl;
   _type = "Cat";
-  _sound = "Meow";
+  _sound = "Meow meow";
   _brain = new Brain();
+}
+
+Cat::Cat(Cat const &src) : AAnimal(src)
+{
+  std::cout << "Cat copy constructor called" << std::endl;
+  _type = src.getType();
+  _sound = src._sound;
+  _brain = new Brain();
+}
+
+Cat &Cat::operator=(Cat const &rhs)
+{
+  std::cout << "Cat assignation operator called" << std::endl;
+  if (this != &rhs)
+  {
+    _type = rhs.getType();
+    _sound = rhs._sound;
+    _brain = new Brain();
+  }
+  return *this;
 }
 
 Cat::~Cat()

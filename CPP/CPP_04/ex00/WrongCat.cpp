@@ -11,3 +11,13 @@ WrongCat::~WrongCat()
   std::cout << "WrongCat destructor called" << std::endl;
 }
 
+WrongCat &WrongCat::operator=(const WrongCat &other)
+{
+  _type = other._type;
+  return *this;
+}
+
+WrongCat::WrongCat(const WrongCat &other) : WrongAnimal()
+{
+  *this = other;
+}
