@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 Bureaucrat::Bureaucrat() : _name("default"), _grade(150)
 { 
@@ -58,12 +59,12 @@ int Bureaucrat::getGrade() const
   return _grade;
 }
 
-const char *GradeTooHighException::what() const throw()
+const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
   return "Grade is too high";
 }
 
-const char *GradeTooLowException::what() const throw()
+const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
   return "Grade is too low";
 }
