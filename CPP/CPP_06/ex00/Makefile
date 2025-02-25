@@ -1,9 +1,9 @@
 CPP = c++
 CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp Intern.cpp
+SRC = main.cpp ScalarConverter.cpp
 OBJS = $(SRC:.cpp=.o)
 
-NAME = Intern
+NAME = ScalarConversion
 
 all: $(NAME)
 
