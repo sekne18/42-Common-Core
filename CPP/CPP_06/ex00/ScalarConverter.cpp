@@ -1,26 +1,16 @@
 #include "ScalarConverter.hpp"
 
-ScalarConverter::ScalarConverter() {}
-
-ScalarConverter::ScalarConverter(std::string const &value) : _value(value) {}
-
-ScalarConverter::ScalarConverter(ScalarConverter const &src) {
-  *this = src;
-}
-
-ScalarConverter::~ScalarConverter() {}
-
-ScalarConverter &ScalarConverter::operator=(ScalarConverter const &rhs) {
-  if (this != &rhs) {
-    _value = rhs._value;
-  }
-  return *this;
-}
-
-char ScalarConverter::toChar() const {
+char ScalarConverter::toChar(std::string const &value)
+{
   char c;
+  char* endptr;
+
   try {
-    c = std::stoi(_value);
+    int i = std::strtol(value.c_str(), &endptr, 10);
+    c = static_cast<char>(i);
+    if (endptr == value.c_str()) {
+      throw ScalarConverter::ImpossibleException();
+    }
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
@@ -30,55 +20,59 @@ char ScalarConverter::toChar() const {
   return c;
 }
 
-int ScalarConverter::toInt() const {
+int ScalarConverter::toInt(std::string const &value)
+{
   int i;
+  char* endptr;
+
   try {
-    i = std::stoi(_value);
+    i = std::strtol(value.c_str(), &endptr, 10);
+    if (endptr == value.c_str()) {
+      throw ScalarConverter::ImpossibleException();
+    }
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
   return i;
 }
 
-float ScalarConverter::toFloat() const {
+float ScalarConverter::toFloat(std::string const &value)
+{
   float f;
   try {
-    f = std::stof(_value);
+    f = std::strtof(value.c_str(), NULL);
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
   return f;
 }
 
-double ScalarConverter::toDouble() const {
+double ScalarConverter::toDouble(std::string const &value)
+{
   double d;
   try {
-    d = std::stod(_value);
+    d = std::strtod(value.c_str(), NULL);
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
   return d;
 }
 
-const char *ScalarConverter::ImpossibleException::what() const throw() {
+const char *ScalarConverter::ImpossibleException::what() const throw()
+{
   return "impossible";
 }
 
-const char *ScalarConverter::NonDisplayableException::what() const throw() {
+const char *ScalarConverter::NonDisplayableException::what() const throw()
+{
   return "Non displayable";
 }
 
-std::string to_string(const Point& p) {
-    std::ostringstream oss;
-    oss << "(" << p.x << ", " << p.y << ")";
-    return oss.str();
-}
-
-static void ScalarConverter::convert()
+void ScalarConverter::convert(std::string const &value)
 {
   try {
     std::cout << "char: ";
-    std::cout << std::to_string(toChar()) << std::endl;
+    std::cout << toChar(value) << std::endl;
   } catch (ScalarConverter::ImpossibleException &e) {
     std::cout << e.what() << std::endl;
   } catch (ScalarConverter::NonDisplayableException &e) {
@@ -86,19 +80,19 @@ static void ScalarConverter::convert()
   }
   try {
     std::cout << "int: ";
-    std::cout << toInt() << std::endl;
+    std::cout << toInt(value) << std::endl;
   } catch (ScalarConverter::ImpossibleException &e) {
     std::cout << e.what() << std::endl;
   }
   try {
     std::cout << "float: ";
-    std::cout << std::fixed << std::setprecision(1) << toFloat() << "f" << std::endl;
+    std::cout << std::fixed << std::setprecision(1) << toFloat(value) << "f" << std::endl;
   } catch (ScalarConverter::ImpossibleException &e) {
     std::cout << e.what() << std::endl;
   }
   try {
     std::cout << "double: ";
-    std::cout << std::fixed << std::setprecision(1) << toDouble() << std::endl;
+    std::cout << std::fixed << std::setprecision(1) << toDouble(value) << std::endl;
   } catch (ScalarConverter::ImpossibleException &e) {
     std::cout << e.what() << std::endl;
   }
