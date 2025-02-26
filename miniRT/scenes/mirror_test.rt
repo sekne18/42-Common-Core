@@ -1,0 +1,29 @@
+W 1200 1200
+A 0.2 2 60,38,89 105,179,174
+#A 0.2 1 50,50,50
+C 0.0,1.5,0.0 0,0,-1 90
+#for mtls: add 2-3 optional arguments at the end: [texture type] = {NULL, CHECKER, TXT, BUMP, TXT_BUMP}, [texture file], [bump file]
+mtlwhite 255,255,255 255,255,255 255,255,255 0,0,0 0.0 0.0 0.0 0.0 0.0 NULL
+mtlmirror 255,255,255 255,255,255 255,255,255 0,0,0 0.0 1.0 1.0 0.0 0.0 NULL
+mtlred 255,255,255 255,0,0 255,0,0 0,0,0 0.0 0.0 0.0 0.0 0.0 NULL
+mtlgreen 255,255,255 0,255,0 0,255,0 0,0,0 0.0 0.4 0.0 0.0 0.0 NULL
+mtlblue 255,255,255 0,0,255 0,0,255 0,0,0 0.0 0.0 0.0 0.0 0.0 NULL
+mtlblue_noamb 20,20,20 0,0,255 0,0,255 0,0,0 0.0 0.0 0.0 0.0 0.0 NULL
+mtllight 0,0,0 0,0,0 0,0,0 255,255,255 1.0 0.0 0.0 0.0 0.0 NULL
+mtlchecker 255,255,255 0,0,0 0,0,0 0,0,0 0.0 0.0 0.0 0.0 0.0 CHECKER 255,255,255 0,0,0
+mtltxt 255,255,255 0,0,0 0,0,0 0,0,0 0.0 0.0 0.0 0.0 0.0 TXT textures/8081_earthmap2k.ppm
+mtlbump 255,255,255 0,0,0 0,0,0 0,0,0 0.0 0.0 0.0 0.0 0.0 BUMP textures/8081_earthbump2k.ppm
+mtltxtbump 255,255,255 0,0,0 0,0,0 0,0,0 0.0 0.0 0.0 0.0 0.0 TXT_BUMP textures/8081_earthmap2k.ppm textures/8081_earthbump2k.ppm
+mtlrefract 255,255,255 255,255,255 255,255,255 0,0,0 0.0 1.0 0.6 0.8 0.9 NULL
+mtlrefractgreen 255,255,255 0,255,0 255,255,255 0,0,0 0.0 1.0 0.6 0.8 0.9 NULL
+
+sq -4,9,-8 8,0,0 0,0,8 mtllight
+#sq -4,0,-8 0,0,8 8,0,0 mtlblue
+sq -4,0,-8 8,0,0 0,0,8 mtlblue
+sq -4,0,-8 0,0,8 0,8,0 mtlmirror
+sq -4,0,-8 8,0,0 0,8,0 mtlmirror
+sq 4,0,-8 0,0,8 0,8,0 mtlmirror
+sq -4,0,0 8,0,0 0,8,0 mtlmirror
+#sp 0,1,-4 1 mtltxtbump
+#obj 0,1,-4 0.1,0.1,0.1 -0.7071081,0,0,0.7071055 models/SM_Lantern_01_triangles.obj mtlrefractgreen
+obj 0,1,-4 0.7,0.7,0.7 0,0,0,1 models/test_droid.obj mtlrefractgreen
