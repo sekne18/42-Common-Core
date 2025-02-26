@@ -1,35 +1,21 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int main()
 {
-  Form f1("f1", 100, 50);
-  std::cout << "Form name: " << f1.getName() << std::endl;
-  std::cout << f1.getSigned() << std::endl;
-
-  Bureaucrat b1("b1", 150);
-  std::cout << b1.getName() << std::endl;
-  std::cout << b1.getGrade() << std::endl;
+  Form f1("f1", 40, 50);
+  Bureaucrat b1("b1", 60);
+  
 
   try
   {
-    f1.beSigned(b1);
+    b1.signForm(f1);
+    std::cout << f1 << std::endl;
   }
   catch (std::exception &e)
   {
     std::cout << e.what() << std::endl;
   }
-
-  /*try {
-    while (1)
-    {
-      b1.incrementGrade();
-      std::cout << b1 << std::endl;
-    }
-  }
-  catch (std::exception &e)
-  {
-    std::cout << e.what() << std::endl;
-  }*/
 
   return 0;
 }

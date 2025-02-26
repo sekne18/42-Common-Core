@@ -40,6 +40,16 @@ void Form::beSigned(Bureaucrat &b)
     throw Form::GradeTooLowException();
 }
 
+int Form::getGradeToSign() const
+{
+  return _gradeToSign;
+}
+
+int Form::getGradeToExec() const
+{
+  return _gradeToExec;
+}
+
 std::ostream &operator<<(std::ostream &out, const Form &f)
 {
   out << "Form " << f.getName() << " is ";
@@ -47,7 +57,7 @@ std::ostream &operator<<(std::ostream &out, const Form &f)
     out << "signed";
   else
     out << "not signed";
-  out << " and requires grade " << f._gradeToSign << " to sign and grade " << f._gradeToExec << " to execute.";
+  out << " and requires grade " << f.getGradeToSign() << " to sign and grade " << f.getGradeToExec() << " to execute.";
   return out;
 }
 

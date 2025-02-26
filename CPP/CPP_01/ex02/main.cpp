@@ -7,7 +7,7 @@ int main()
   std::string &stringREF = brain;
 
   std::cout << "Brain address: " << &brain << std::endl;
-  std::cout << "stringPTR address: " << &stringPTR << std::endl;
+  std::cout << "stringPTR address: " << stringPTR << std::endl;
   std::cout << "stringREF address: " << &stringREF << std::endl;
   std::cout << std::endl;
   std::cout << "Brain value: " << brain << std::endl;
