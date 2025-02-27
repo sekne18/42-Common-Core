@@ -1,5 +1,5 @@
 CPP = c++
-CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
+CPP_FLAGS = -g -Wall -Wextra -Werror -std=c++98
 SRC = main.cpp ScalarConverter.cpp
 OBJS = $(SRC:.cpp=.o)
 
