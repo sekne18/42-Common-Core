@@ -3,6 +3,7 @@
 ScavTrap::ScavTrap() : ClapTrap()
 {
   std::cout << "ScavTrap default constructor called" << std::endl;
+  _name = "default";
   _hitPoints = 100;
   _energyPoints = 50;
   _attackDamage = 20;
@@ -11,6 +12,7 @@ ScavTrap::ScavTrap() : ClapTrap()
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
   std::cout << "ScavTrap name constructor called" << std::endl;
+  _name = name;
   _hitPoints = 100;
   _energyPoints = 50;
   _attackDamage = 20;
@@ -19,11 +21,17 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 ScavTrap::ScavTrap(const ScavTrap &scavTrap) : ClapTrap(scavTrap)
 {
   std::cout << "ScavTrap copy constructor called" << std::endl;
+  _name = scavTrap._name;
+  _hitPoints = scavTrap._hitPoints;
+  _energyPoints = scavTrap._energyPoints;
+  _attackDamage = scavTrap._attackDamage;
 }
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &scavTrap)
 {
   std::cout << "ScavTrap assignation operator called" << std::endl;
+  if (this == &scavTrap)
+    return *this;
   _name = scavTrap._name;
   _hitPoints = scavTrap._hitPoints;
   _energyPoints = scavTrap._energyPoints;

@@ -3,6 +3,10 @@
 ClapTrap::ClapTrap()
 {
   std::cout << "ClapTrap default constructor called" << std::endl;
+  _name = "default";
+  _hitPoints = 10;
+  _energyPoints = 10;
+  _attackDamage = 0;
 }
 
 ClapTrap::~ClapTrap()
@@ -31,6 +35,8 @@ ClapTrap::ClapTrap(const ClapTrap &clapTrap)
 ClapTrap &ClapTrap::operator=(const ClapTrap &clapTrap)
 {
   std::cout << "ClapTrap assignation operator called" << std::endl;
+  if (this == &clapTrap)
+    return *this;
   _name = clapTrap._name;
   _hitPoints = clapTrap._hitPoints;
   _energyPoints = clapTrap._energyPoints;

@@ -28,6 +28,8 @@ ScavTrap::ScavTrap(const ScavTrap &scavTrap) : ClapTrap(scavTrap)
 ScavTrap &ScavTrap::operator=(const ScavTrap &scavTrap)
 {
   std::cout << "ScavTrap assignation operator called" << std::endl;
+  if (this == &scavTrap)
+    return *this;
   _name = scavTrap._name;
   _hitPoints = scavTrap._hitPoints;
   _energyPoints = scavTrap._energyPoints;
