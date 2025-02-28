@@ -1,9 +1,9 @@
 CPP = c++
 CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Brain.cpp Cat.cpp Dog.cpp Animal.cpp
+SRC = main.cpp AMateria.cpp Character.cpp Cure.cpp Ice.cpp MateriaSource.cpp
 OBJS = $(SRC:.cpp=.o)
 
-NAME = Animal
+NAME = materia
 
 all: $(NAME)
 

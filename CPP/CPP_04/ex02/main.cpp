@@ -4,24 +4,34 @@
 
 int main()
 {
-  Dog *j = new Dog();
-  Cat *i = new Cat();
+  // Exercice example
+	const AAnimal* dog = new Dog();
+	const AAnimal* cat = new Cat();
+	// const  AAnimal *d = new AAnimal();
 
-  j->makeSound();
-  std::cout << j->getType() << std::endl;
-  i->makeSound();
-  std::cout << i->getType() << std::endl;
+	std::cout << std::endl;
 
-  Dog *deepCopyDog = new Dog(*j);
-  AAnimal *deepCopyCat = new Cat();
+	delete dog;
+	delete cat;
 
-  deepCopyDog->makeSound();
-  deepCopyCat->makeSound();
+	std::cout << std::endl;
+	std::cout << std::endl;
 
-  delete j;
-  delete i;
-  delete deepCopyDog;
-  delete deepCopyCat;
+	// Array of animals
+	const AAnimal	*(animal_array[4]);
+	std::cout << std::endl;
+	// Half filled with dogs
+	for (int i = 0; i < 2; i++)
+		animal_array[i] = new Dog();
+	std::cout << std::endl;
 
+	// Half filled with cats
+	for (int i = 2; i < 4; i++)
+		animal_array[i] = new Cat();
+	std::cout << std::endl;
+
+	for (int i = 0; i < 4; i++)
+		delete animal_array[i];
+	std::cout << std::endl;
   return 0;
 }
