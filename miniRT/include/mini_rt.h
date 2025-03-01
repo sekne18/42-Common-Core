@@ -24,7 +24,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define NR_SAMPLES 1
+# define NR_SAMPLES 1 
 # define NR_FRAMES 1000
 # define SAVE_BUFFER_SIZE 4096
 # define ON_DESTROY	17
