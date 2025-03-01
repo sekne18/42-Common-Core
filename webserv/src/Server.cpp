@@ -47,25 +47,74 @@ void Server::start()
   }
 }
 
+/*
+ * Called when the server receives data from a client.
+ * It reads the data from the client socket and sends it back to the client.
+ * Example: If the client sends "Hello", the server will send "Hello" back.
+ * */
 void Server::handleClient(int clientSocket)
 {
-  char buffer[1024];
-  ssize_t bytesRead = read(clientSocket, buffer, sizeof(buffer));
-  if (bytesRead == -1)
-  {
-    std::cerr << "Error: Failed to read from client socket, " << strerror(errno) << "\n";
-    close(clientSocket);
-    return ;
-  } else if (bytesRead == 0) {
-   
-    // Client disconnected
-    std::cout << "Client disconnected." << "\n";
-    close(clientSocket);
+  char buffer[4096];
+  std::string rawRequest;
+
+  /*
+   * Non-Blocking Socket
+   * When you call read() on a non-blocking socket,
+   * the function will return immediately, even if no data is available.
+   * If no data is available, read() will return -2 and set errno to EAGAIN or EWOULDBLOCK.
+   * This allows your program to continue executing other tasks instead of waiting for data.
+   * */
+  while (true) {
+    ssize_t bytesRead = read(clientSocket, buffer, sizeof(buffer));
+    std::cout << "Buffer: " << buffer << "\n";
+    if (bytesRead == -1)
+    {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // No more data available at the moment
+        break;
+      }
+      else {
+        std::cerr << "Error: Failed to read from client socket. " << strerror(errno) << "\n";
+        close(clientSocket);
+        return;
+      }
+    } else if (bytesRead == 0) {
+      // Client disconnected
+      std::cout << "Client disconnected." << "\n";
+      close(clientSocket);
+      return;
+    }
+
+    // This will append the buffer to the rawRequest string
+    rawRequest.append(buffer, bytesRead);
+
+    // Check if the entire request has been received
+    // For multipart form-data, look for the boundary end marker
+    size_t boundaryEnd = rawRequest.find("--\r\n");
+    if (boundaryEnd != std::string::npos) {
+      // End of request detected
+      break;
+    }
+  }
+  
+  std::cout << "=======================================================" << "\n";
+  std::cout << "Received raw request: \n" << rawRequest << "\n";
+  std::cout << "=======================================================" << "\n";
+
+  // Check if the request is complete
+  if (rawRequest.find("--\r\n") == std::string::npos) {
+    std::cerr << "Error: Incomplete request. Missing final boundary.\n";
+    sendErrorResponse(400, "Bad Request", clientSocket); // Send error response
+    close(clientSocket); // Close the client socket
     return;
   }
 
-  // Echo the data back to the client
-  write(clientSocket, buffer, bytesRead);
+  // Pass the request data to the Request class for parsing
+  Request request(rawRequest.c_str());
+  processRequest(request, clientSocket);
+  
+  close(clientSocket);
+  std::cerr << "Debug: Client socket closed.\n";
 }
 
 void Server::acceptClient()
@@ -199,3 +248,198 @@ void Server::createSocket()
     throw std::runtime_error("Error: Failed to create socket. " + std::string(strerror(errno)));
   std::cout << "Socket created successfully." << "\n";
 }
+
+void Server::processRequest(const Request &request, int clientSocket)
+{
+  std::string method = request.getMethod();
+  std::string url = request.getUrl();
+
+  if (method == "GET")
+  {
+    if (url == "/")
+      serveStaticFile("www/index.html", clientSocket); // Serve the default file (e.g., index.html)
+    if (url.find("/cgi-bin/") == 0)
+    {
+      // Execute a CGI script
+      std::string scriptPath = "www" + url;
+      std::string queryString = request.getHeader("Query-String");
+      executeCgiScript(scriptPath, queryString, clientSocket);
+    } else {
+      // Serve a static file
+      serveStaticFile("www" + url, clientSocket);
+    }
+  } 
+  else if (method == "POST")
+  {
+    if (url == "/upload") {
+      // Handle file upload
+      handleFileUpload(request.getBody(), clientSocket);
+    } else {
+      // Unsupported POST request
+      sendErrorResponse(405, "Method Not Allowed", clientSocket);
+    }
+  }
+  else {
+    // Unsupported HTTP method
+    sendErrorResponse(405, "Method Not Allowed", clientSocket);
+  }
+}
+
+void Server::serveStaticFile(const std::string& filePath, int clientSocket)
+{
+  // Open the file in binary mode which is necessary for non-text files
+  std::ifstream file(filePath.c_str(), std::ios::binary);
+  if (!file) {
+    sendErrorResponse(404, "Not Found", clientSocket);
+    return;
+  }
+
+  std::ostringstream response;
+  response << "HTTP/1.1 200 OK\r\n";
+  response << "Content-Type: text/html\r\n";
+  response << "Connection: close\r\n";
+  response << "\r\n";
+  response << file.rdbuf();
+
+  write(clientSocket, response.str().c_str(), response.str().size());
+}
+
+/*
+ * Triggered when the URL starts with /cgi-bin/
+ * Function will create a pipe and fork a child process to execute the CGI script.
+ * The child process will redirect its stdout to the write end of the pipe.
+ * The parent process will read the output of the CGI script from the read end of the pipe.
+ * */
+void Server::executeCgiScript(const std::string &scriptPath, const std::string &queryString, int clientSocket)
+{          
+  int pipefd[2];
+  if (pipe(pipefd) == -1)
+  {
+    std::cerr << "Error: Failed to create pipe. " << strerror(errno) << "\n";
+    sendErrorResponse(500, "Internal Server Error", clientSocket);
+    return;
+  }
+
+  pid_t pid = fork();
+  if (pid == -1)
+  {
+    std::cerr << "Error: Failed to fork. " << strerror(errno) << "\n";
+    sendErrorResponse(500, "Internal server Error", clientSocket);
+    return;
+  }
+
+  if (pid == 0) // Child process
+  {
+    close(pipefd[0]); // Close read end of the pipe
+    
+    // Redirect stdout to the write end of the pipe
+    dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);
+
+    // Set environment variables for CGI
+    setenv("QUERY_STRING", queryString.c_str(), 1);
+    setenv("REQUEST_METHOD", "GET", 1);
+                                                    
+    // Debug: Print the script path
+    std::cerr << "Executing CGI script: " << scriptPath << "\n";
+
+    // Execute the CGI script
+    // execl() replaces the current process image with a new process image specified by the path argument.
+    execl(scriptPath.c_str(), scriptPath.c_str(), NULL);
+   
+    // If execl fails
+    std::cerr << "Error: Failed to execute CGI script. " << strerror(errno) << "\n";
+    exit(1);
+  } else { // Parent process
+    close(pipefd[1]); // Close write end of the pipe
+    
+    // Read the output of the CGI script from the pipe
+    char buffer[1024];
+    std::string cgiOutput;
+    ssize_t bytesRead;
+    while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer))) > 0)
+      cgiOutput.append(buffer, bytesRead);
+    close(pipefd[0]);
+    
+    // Debug: Print the CGI output
+    std::cerr << "CGI output: " << cgiOutput << std::endl;
+
+    // Wait for the child process to finish
+    int status;
+    waitpid(pid, &status, 0);
+
+    // Send the CGI output as the HTTP response
+    std::ostringstream response;
+    response << "HTTP/1.1 200 OK\r\n";
+    response << "Content-Type: text/html\r\n";
+    response << "Content-Length: " << cgiOutput.size() << "\r\n";
+    response << "\r\n";
+    response << cgiOutput;
+
+    write(clientSocket, response.str().c_str(), response.str().size());
+  }
+}
+
+/*
+ * Triggered when the URL is /upload
+ * Function will extract the file name and content from the body of the request.
+ * It will save the file to the uploads directory and send a success response.
+ * */ 
+void Server::handleFileUpload(const std::string &body, int clientSocket)
+{
+  // Extract the file name and content from the body
+  // (This is a simplified example; I may need to parse multipart/form-data)
+  size_t filenameStart = body.find("filename=\"");
+  if (filenameStart == std::string::npos) {
+    std::cerr << "Error: 'filename' not found in request body." << "\n";
+    sendErrorResponse(400, "Bad Request", clientSocket);
+    return;
+  }
+  filenameStart += 10; // Skip "filename=\""
+  size_t filenameEnd = body.find("\"", filenameStart);
+  std::string filename = body.substr(filenameStart, filenameEnd - filenameStart);
+
+  size_t fileContentStart = body.find("\r\n\r\n", filenameEnd);
+  if (fileContentStart == std::string::npos) {
+    std::cerr << "Error: File content not found in request body." << "\n";
+    sendErrorResponse(400, "Bad Request", clientSocket);
+    return;
+  }
+  fileContentStart += 4; // Skip "\r\n\r\n"
+  std::string fileContent = body.substr(fileContentStart);
+
+  // Save the file to the uploads directory
+  std::string filePath = "www/uploads/" + filename;
+  
+  // std::ios::binary opens the file in binary mode, which is necessary for non-text files
+  std::ofstream file(filePath.c_str(), std::ios::binary);
+  if (!file) {
+    std::cerr << "Error: Failed to open file for writing: " << filePath << "\n";
+    sendErrorResponse(500, "Internal Server Error", clientSocket);
+    return;
+  }
+  file.write(fileContent.c_str(), fileContent.size());
+  file.close();
+
+  // Send a success response
+  std::ostringstream response;
+  response << "HTTP/1.1 200 OK\r\n";
+  response << "Content-Type: text/html\r\n";
+  response << "\r\n";
+  response << "<html><body><h1>File uploaded successfully!</h1></body></html>";
+
+  write(clientSocket, response.str().c_str(), response.str().size());
+}
+
+void Server::sendErrorResponse(int statusCode, const std::string &statusMessage, int clientSocket)
+{
+  std::ostringstream response;
+  response << "HTTP/1.1 " << statusCode << " " << statusMessage << "\r\n";
+  response << "Content-Type: text/html\r\n";
+  response << "Connection: close\r\n";
+  response << "\r\n";
+  response << "<html><body><h1>" << statusCode << " " << statusMessage << "</h1></body></html>";
+  
+  write(clientSocket, response.str().c_str(), response.str().size());
+}
+
