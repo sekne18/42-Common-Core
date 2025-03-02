@@ -18,7 +18,7 @@ Gades on the projects
 | Exam 04           | C          | ✅ Passed        |
 | MiniRT            | C          | ✅ 125 Points    |
 | CPP 0-4           | C++        | ✅ 92 Points     |
-| Net Practice      | /          | ✅ Passed        |
+| Net Practice      | /          | ✅ 100 Points    |
 | Exam 05           | C++        | ❌ Not Started   |
 | Webserv           | C++        | 🔄 In progress   |
 | CPP 5-9           | C++        | 🔄 In progress   |
