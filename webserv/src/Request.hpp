@@ -7,6 +7,7 @@
 class Request
 {
   public:
+    Request();
     Request(const std::string &rawRequest);
     std::string getMethod() const;
     std::string getUrl() const;

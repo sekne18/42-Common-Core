@@ -8,6 +8,8 @@
   * It receives a raw request string (for example "GET /index.html HTTP/1.1")
   * and parses it into the HTTP method, URL, headers, and body.
  */
+Request::Request() {}
+
 Request::Request(const std::string &rawRequest)
 {
   parseRequest(rawRequest);
@@ -64,3 +66,4 @@ std::string Request::getBody() const
 {
   return _body;
 }
+

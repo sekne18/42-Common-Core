@@ -1,8 +1,8 @@
 CPP = c++
 CPP_FLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = src/main.cpp src/Server.cpp src/Request.cpp \
-		#	Response.cpp Config.cpp Utils.cpp Route.cpp \
-			Error.cpp Client.cpp CGI.cpp 
+SRC = src/main.cpp src/Server.cpp src/Response.cpp \
+			src/Config.cpp src/NetworkManager.cpp src/Client.cpp \
+			src/CGI.cpp src/Request.cpp src/Utils.cpp
 OBJS = $(SRC:.cpp=.o)
 
 NAME = webserv
