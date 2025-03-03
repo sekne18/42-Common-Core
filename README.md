@@ -16,11 +16,12 @@ Gades on the projects
 | Philosophers      | C          | ✅ 100 Points    |
 | Minishell         | C          | ✅ 125 Points    |
 | Exam 04           | C          | ✅ Passed        |
-| MiniRT            | C          | ✅ Passed        |
-| CPP 0-4           | C++        | 🔄 In progress   |
-| Net Practice      | /          | 🔄 In progress   |
-| Exam 05           | C          | ❌ Not Started   |
-| ft_irc            | C++        | ❌ Not Started   |
+| MiniRT            | C          | ✅ 125 Points    |
+| CPP 0-4           | C++        | ✅ 92 Points     |
+| Net Practice      | /          | ✅ 100 Points    |
+| Exam 05           | C++        | ❌ Not Started   |
+| Webserv           | C++        | 🔄 In progress   |
 | CPP 5-9           | C++        | 🔄 In progress   |
 | Inception         | Docker     | ❌ Not Started   |
-| ft_transendence   | Tech-Stack | ❌ Not Started   |
+| ft_transendence   | Full-Stack | ❌ Not Started   |
+| Exam 06           | C          | ❌ Not Started   |
