@@ -6,7 +6,6 @@
 
 class A : public Base
 {
-public:
 
 };
 

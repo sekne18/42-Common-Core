@@ -1,9 +1,9 @@
 CPP = c++
 CPP_FLAGS = -g -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Base.cpp
+SRC = main.cpp
 OBJS = $(SRC:.cpp=.o)
 
-NAME = Identify
+NAME = iter
 
 all: $(NAME)
 
