@@ -12,33 +12,56 @@ private:
   unsigned int _size;
 
 public:
-  Array();
-  Array(unsigned int n);
-  Array(const Array& other);
-  Array& operator=(const Array& other);
-  ~Array();
+  Array() : _data(NULL), _size(0) {}
 
-  unsigned int size() const;
-  const T& operator[](unsigned int index) const;
-  T& operator[](unsigned int index);
+  Array(unsigned int n) : _size(n) {
+    if (n == 0)
+      _data = NULL;
+    else
+      _data = new T[n];
+  }
 
+  ~Array()
+  {
+	  delete[] _data;
+  }
+
+  Array(const Array& other) : _data(), _size(0)
+  {
+    *this = other;
+  }
+
+  Array<T>& operator=(const Array& other)
+  {
+    if (this != &other)
+    {
+      delete[] _data;
+      _size = other._size;
+      _data = new T[_size];
+      for (unsigned int i = 0; i < _size; ++i)
+        _data[i] = other._data[i];
+    }
+    return *this;
+  }
+
+  unsigned int size() const
+  {
+    return _size;
+  }
+
+  const T& operator[](unsigned int index) const
+  {
+    if (index >= _size)
+      throw std::out_of_range("Index out of range");
+    return _data[index];
+  }
+
+  T& operator[](unsigned int index)
+  {
+    if (index >= _size)
+      throw std::out_of_range("Index out of range");
+    return _data[index];
+  }
 };
-
-template <class t>
-array<t>::array() : _data(null), _size(0)
-{
-}
-
-template <class t>
-array<t>::array(unsigned int n) : _data(), _size(0)
-{
-}
-
-template <class T>
-Array<T>::~Array()
-{
-	delete[] _arr;
-}
-
 
 #endif // ARRAY_HPP
