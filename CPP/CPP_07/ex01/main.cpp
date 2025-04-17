@@ -4,9 +4,9 @@
 template <typename T>
 void toUpper(T& str)
 {
-    /* int i = -1;
-    while (str[++i]) */
-        std::cout << str;//toupper(str[i]);
+    int i = -1;
+    while (str[++i])
+        std::cout << (char)toupper(str[i]);
 }
 
 int main( void ) {
