@@ -7,6 +7,9 @@ char ScalarConverter::toChar(std::string const &value)
 
   try {
     int i = std::strtol(value.c_str(), &endptr, 10);
+    if (i < 32 || i > 126) {
+      throw ScalarConverter::NonDisplayableException();
+    }
     c = static_cast<char>(i);
     if (endptr == value.c_str()) {
       throw ScalarConverter::ImpossibleException();
@@ -14,26 +17,23 @@ char ScalarConverter::toChar(std::string const &value)
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
-  if (c < 32 || c > 126) {
-    throw ScalarConverter::NonDisplayableException();
-  }
   return c;
 }
 
 int ScalarConverter::toInt(std::string const &value)
 {
-  int i;
+  long i;
   char* endptr;
 
   try {
     i = std::strtol(value.c_str(), &endptr, 10);
-    if (endptr == value.c_str()) {
+    if (endptr == value.c_str() || i > INT_MAX || i < INT_MIN) {
       throw ScalarConverter::ImpossibleException();
     }
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
-  return i;
+  return static_cast<int>(i);
 }
 
 float ScalarConverter::toFloat(std::string const &value)
