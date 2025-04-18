@@ -2,22 +2,20 @@
 
 char ScalarConverter::toChar(std::string const &value)
 {
-  char c;
-  char* endptr;
+  if (value.length() == 1 && std::isprint(value[0]) && std::isalpha(value[0]))
+    return value[0];
 
   try {
-    int i = std::strtol(value.c_str(), &endptr, 10);
-    if (i < 32 || i > 126) {
-      throw ScalarConverter::NonDisplayableException();
-    }
-    c = static_cast<char>(i);
-    if (endptr == value.c_str()) {
+    int i = toInt(value);
+    if (i < 0 || i > 127)
       throw ScalarConverter::ImpossibleException();
-    }
+    char c = static_cast<char>(i);
+    if (!std::isprint(c))
+      throw ScalarConverter::NonDisplayableException();
+    return c;
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
-  return c;
 }
 
 int ScalarConverter::toInt(std::string const &value)
@@ -27,7 +25,7 @@ int ScalarConverter::toInt(std::string const &value)
 
   try {
     i = std::strtol(value.c_str(), &endptr, 10);
-    if (endptr == value.c_str() || i > INT_MAX || i < INT_MIN) {
+    if (endptr == value.c_str() || i > INT_MAX || i < INT_MIN || *endptr != '\0') {
       throw ScalarConverter::ImpossibleException();
     }
   } catch (std::exception &e) {
@@ -39,8 +37,12 @@ int ScalarConverter::toInt(std::string const &value)
 float ScalarConverter::toFloat(std::string const &value)
 {
   float f;
+  char* endptr;
+  
   try {
-    f = std::strtof(value.c_str(), NULL);
+    f = std::strtof(value.c_str(), &endptr);
+    if (endptr == value.c_str() || *endptr != '\0')
+      throw ScalarConverter::ImpossibleException();
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
@@ -50,8 +52,12 @@ float ScalarConverter::toFloat(std::string const &value)
 double ScalarConverter::toDouble(std::string const &value)
 {
   double d;
+  char* endptr;
+
   try {
-    d = std::strtod(value.c_str(), NULL);
+    d = std::strtod(value.c_str(), &endptr);
+    if (endptr == value.c_str() || *endptr != '\0')
+      throw ScalarConverter::ImpossibleException();
   } catch (std::exception &e) {
     throw ScalarConverter::ImpossibleException();
   }
