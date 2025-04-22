@@ -4,7 +4,7 @@ int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        std::cerr << "Error: wrong number of arguments" << std::endl;
+        std::cerr << "Error: could not open file." << std::endl;
         return 1;
     }
     BitcoinExchange bitcoinExchange(argv[1]);
