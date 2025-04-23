@@ -31,8 +31,8 @@ private:
     void print_data();
     bool valid_date(std::string date);
     bool valid_value(std::string value, std::string date);
-    void calcValues(std::string date, float values);
     void loadDatabase();
+    void calcValues(std::string date, float values, std::string input_date);
 
 
 

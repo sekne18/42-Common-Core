@@ -51,12 +51,18 @@ void BitcoinExchange::processFile()
   std::getline(file, line);
   while (std::getline(file, line))
   {
-    std::string date = line.substr(0, line.find("|"));
+    std::string date = line.substr(0, line.find("|")-1);
     try {
+      if (line.find("|") == std::string::npos)
+      {
+        throw BitcoinExchange::BadInputException(line);
+        continue;
+      }
+
       if (valid_date(date) && valid_value(line.substr(line.find("|") + 1), date))
       {
         value = std::strtof(line.substr(line.find("|") + 1).c_str(), NULL);
-        calcValues(findDate(date), value);
+        calcValues(findDate(date), value, date);
       }
     }
     catch (const NotPositiveException &e) {
@@ -75,9 +81,9 @@ void BitcoinExchange::processFile()
   file.close();
 }
 
-void BitcoinExchange::calcValues(std::string date, float values)
+void BitcoinExchange::calcValues(std::string date, float values, std::string input_date)
 {
-  std::cout << date << "=>" << values << " = " << _data[date] * values  << std::endl;
+  std::cout << input_date << " => " << values << " = " << _data[date] * values  << std::endl;
 }
 
 std::string BitcoinExchange::findDate(std::string date)
@@ -97,9 +103,29 @@ std::string BitcoinExchange::findDate(std::string date)
 
 bool BitcoinExchange::valid_date(std::string date)
 {
-  // split string by -
-  // validate each value range
-  (void)date;
+  if (date.length() != 10 || date[4] != '-' || date[7] != '-')
+    throw BitcoinExchange::BadInputException(date);
+  if (date[0] < '0' || date[0] > '9' || date[1] < '0' || date[1] > '9' ||
+      date[2] < '0' || date[2] > '9' || date[3] < '0' || date[3] > '9' ||
+      date[5] < '0' || date[5] > '1' || date[6] < '0' || date[6] > '9' ||
+      date[8] < '0' || date[8] > '3' || date[9] < '0' || date[9] > '9')
+    throw BitcoinExchange::BadInputException(date);
+  int year = atoi(date.substr(0, 4).c_str());
+  int month = atoi(date.substr(5, 2).c_str());
+  int day = atoi(date.substr(8, 2).c_str());
+  if (month < 1 || month > 12)
+    throw BitcoinExchange::BadInputException(date);
+  if (day < 1 || day > 31)
+    throw BitcoinExchange::BadInputException(date);
+  if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
+    throw BitcoinExchange::BadInputException(date);
+  if (month == 2)
+  {
+    if (day > 29)
+      throw BitcoinExchange::BadInputException(date);
+    if (day == 29 && !(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)))
+      throw BitcoinExchange::BadInputException(date);
+  }
   return true;
 }
 
