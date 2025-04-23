@@ -5,17 +5,13 @@ char ScalarConverter::toChar(std::string const &value)
   if (value.length() == 1 && std::isprint(value[0]) && std::isalpha(value[0]))
     return value[0];
 
-  try {
-    int i = toInt(value);
-    if (i < 0 || i > 127)
-      throw ScalarConverter::ImpossibleException();
-    char c = static_cast<char>(i);
-    if (!std::isprint(c))
-      throw ScalarConverter::NonDisplayableException();
-    return c;
-  } catch (std::exception &e) {
+  int i = toInt(value);
+  if (i < 0 || i > 127)
     throw ScalarConverter::ImpossibleException();
-  }
+  char c = static_cast<char>(i);
+  if (!std::isprint(c))
+    throw ScalarConverter::NonDisplayableException();
+  return c;
 }
 
 int ScalarConverter::toInt(std::string const &value)
@@ -23,30 +19,28 @@ int ScalarConverter::toInt(std::string const &value)
   long i;
   char* endptr;
 
-  try {
-    i = std::strtol(value.c_str(), &endptr, 10);
-    if (endptr == value.c_str() || i > INT_MAX || i < INT_MIN || *endptr != '\0') {
-      throw ScalarConverter::ImpossibleException();
-    }
-  } catch (std::exception &e) {
+  if (value == "0")
+    return 0;
+  i = std::strtol(value.c_str(), &endptr, 10);
+  if ((*endptr) || value.c_str() == endptr)
     throw ScalarConverter::ImpossibleException();
-  }
-  return static_cast<int>(i);
+  if (value == "nan" || value == "NaN" || value == "inf" || value == "-inf")
+    throw ScalarConverter::ImpossibleException();
+  if (i <= INT_MAX && i >= INT_MIN)
+    return static_cast<int>(i);
+  throw ScalarConverter::ImpossibleException();
 }
 
 float ScalarConverter::toFloat(std::string const &value)
 {
   float f;
   char* endptr;
-  
-  try {
-    f = std::strtof(value.c_str(), &endptr);
-    if (endptr == value.c_str() || *endptr != '\0')
-      throw ScalarConverter::ImpossibleException();
-  } catch (std::exception &e) {
+
+  f = std::strtof(value.c_str(), &endptr);
+  if (!(*endptr) || (!endptr[1] && *endptr == 'f'))
+    return f;
+  else
     throw ScalarConverter::ImpossibleException();
-  }
-  return f;
 }
 
 double ScalarConverter::toDouble(std::string const &value)
@@ -54,14 +48,11 @@ double ScalarConverter::toDouble(std::string const &value)
   double d;
   char* endptr;
 
-  try {
-    d = std::strtod(value.c_str(), &endptr);
-    if (endptr == value.c_str() || *endptr != '\0')
-      throw ScalarConverter::ImpossibleException();
-  } catch (std::exception &e) {
+  d = std::strtod(value.c_str(), &endptr);
+  if (!(*endptr) || (!endptr[1] && *endptr == 'f'))
+    return d;
+  else
     throw ScalarConverter::ImpossibleException();
-  }
-  return d;
 }
 
 const char *ScalarConverter::ImpossibleException::what() const throw()
