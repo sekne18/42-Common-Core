@@ -1,24 +1,23 @@
-version: "3.8"
-
 volumes:
         wordpress:
                 name: wordpress
                 driver: local
                 driver_opts:
-                        device: /Users/jsekne/Desktop/Inception/srcs/wordpress
+                        device: /home/jsekne/
                         o: bind
                         type: none
         mariadb:
                 name: mariadb
                 driver: local
                 driver_opts:
-                        device: /Users/jsekne/Desktop/Inception/srcs/mariadb
+                        device: /home/jsekne/
                         o: bind
                         type: none
 
+
 networks:
   inception:
-    name: inception
+    driver: bridge
 
 services:
   nginx:
