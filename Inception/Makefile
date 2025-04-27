@@ -1,64 +1,16 @@
-NAME 			:= inception
-DOCKER-COMPOSE 	:= ./srcs/docker-compose.yaml
-ENV_FILE 		:= ./srcs/.env
-VOLUMES_DIR 	:= /home/jsekne/data
+all : up
 
-all: build
+up : 
+	@docker-compose -f ./srcs/docker-compose.yml up -d
 
-build: setup
-	@echo $(OR) "⣿⣿⣿ Inception ⣿⣿⣿" $(RES)
-	docker compose -f $(DOCKER-COMPOSE) --env-file $(ENV_FILE) up -d --build
+down : 
+	@docker-compose -f ./srcs/docker-compose.yml down
 
-start:
-	docker compose -f $(DOCKER-COMPOSE) start
+stop : 
+	@docker-compose -f ./srcs/docker-compose.yml stop
 
-stop:
-	docker compose -f $(DOCKER-COMPOSE) stop
+start : 
+	@docker-compose -f ./srcs/docker-compose.yml start
 
-down:
-	docker compose -f $(DOCKER-COMPOSE) down 
-
-ps:
-	docker ps
-
-clean: stop
-	docker compose -f $(DOCKER-COMPOSE) down
-
-fclean: clean
-	docker compose -f $(DOCKER-COMPOSE) down --remove-orphans
-	docker compose -f $(DOCKER-COMPOSE) down --volumes
-
-
-prune:
-	@echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿ "$(RES)
-	docker image prune -a
-	sudo rm -rf $(VOLUMES_DIR)
-	@sudo sed -i '1s/jmouaike.42.fr www.jmouaike.42.fr/localhost/' '/etc/hosts'
-	@sudo cat /etc/hosts | head -n 1
-
-re: fclean all
-	
-
-images:
-	docker images -qa
-
-network:
-	docker network ls
-
-volume:
-	docker volume ls
-
-logs:
-	docker logs -t -f $$(docker compose -f $(DOCKER-COMPOSE) ps -q nginx)
-
-setup:
-	mkdir -p $(VOLUMES_DIR)/website
-	mkdir -p $(VOLUMES_DIR)/database
-	sudo bash ./srcs/requirements/tools/setup.sh
-
-help:
-	@echo $(OR)Inception $(PK)help$(RES)
-
-.PHONY: all build start stop down ps clean fclean \
-		re images network volume logs setup help
-
+status : 
+	@docker ps

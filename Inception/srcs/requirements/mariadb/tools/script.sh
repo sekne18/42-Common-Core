@@ -1,23 +1,16 @@
-if [ ! -f "/run/mysqld/mysqld.pid" ];
-then
-	sed -i 's/= 127.0.0.1/= 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
-	sed -i 's/basedir/port\t\t\t\t\t= 3306\nbasedir/' /etc/mysql/mariadb.conf.d/50-server.cnf
-	echo "Inception : 50-server.cnf updated."
-	if [ ! -d "/var/lib/mysql/${DB_DATABASE}" ];
-	then
-		echo "Inception : ${DB_DATABASE} database is being created."
-		service mariadb start
-		mysql -e "CREATE DATABASE IF NOT EXISTS ${DB_DATABASE};"
-		mysql -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_USER_PASSWORD}';"
-		mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_USER_PASSWORD}';"
-		mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
-		mysql -e "FLUSH PRIVILEGES;"
-		mysql -u root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
-		mysqladmin -u root -p$DB_ROOT_PASSWORD shutdown
-	else
-		echo "Inception : ${DB_DATABASE} database is already there.";
-	fi
-fi
+#!/bin/bash
 
-# Start the mariadb service in safe mode
-exec "mysqld_safe";
+service mysql start 
+
+
+echo "CREATE DATABASE IF NOT EXISTS $db1_name ;" > db1.sql
+echo "CREATE USER IF NOT EXISTS '$db1_user'@'%' IDENTIFIED BY '$db1_pwd' ;" >> db1.sql
+echo "GRANT ALL PRIVILEGES ON $db1_name.* TO '$db1_user'@'%' ;" >> db1.sql
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> db1.sql
+echo "FLUSH PRIVILEGES;" >> db1.sql
+
+mysql < db1.sql
+
+kill $(cat /var/run/mysqld/mysqld.pid)
+
+mysqld

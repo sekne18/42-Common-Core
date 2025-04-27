@@ -1,17 +1,15 @@
-FROM debian:bullseye
+FROM debian:buster
 
-RUN apt-get update -y && \
-    apt-get install -y curl php php-fpm php-mysql mariadb-client && \
-    mkdir -p /run/php && \
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-    chmod +x wp-cli.phar && \
-    mv wp-cli.phar /usr/local/bin/wp && \
-    wp cli update
 
-COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
+RUN apt update -y 
 
-COPY --chmod=0755 /tools/setup.sh /usr/local/bin
+RUN apt install php-fpm php-mysql -y
 
-EXPOSE 9000
+RUN apt install curl -y
 
-ENTRYPOINT ["/usr/local/bin/setup.sh"]
+
+COPY ./tools/script.sh /
+COPY ./tools/wp-config.php /
+
+
+CMD [ "/script.sh" ]
