@@ -71,11 +71,11 @@ void RPN::processInput(const std::string &input)
         }
         if (_stack.size() != 1)
             throw ErrorException();
+        std::cout << _stack.top() << std::endl;
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << std::endl;
         return;
     }
-    std::cout << _stack.top() << std::endl;
 }
