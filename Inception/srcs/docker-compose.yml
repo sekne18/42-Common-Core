@@ -3,27 +3,30 @@ volumes:
                 name: wordpress
                 driver: local
                 driver_opts:
-                        device: /home/jsekne/
+                        device: /home/jsekne/data/wordpress
                         o: bind
                         type: none
         mariadb:
                 name: mariadb
                 driver: local
                 driver_opts:
-                        device: /home/jsekne/
+                        device: /home/jsekne/data/mariadb
                         o: bind
                         type: none
 
 
 networks:
   inception:
-    driver: bridge
+    name: inception
 
 services:
   nginx:
     container_name: nginx
-    build: ./requirements/nginx/.
-    image: nginx:42
+    build:
+      context: ./requirements/nginx
+      args:
+        - DOMAIN=${DOMAIN}
+        - CERTS_=${CERTS_}
     ports:
      - "443:443"
     depends_on:
@@ -37,8 +40,26 @@ services:
     restart: always
   wordpress:
     container_name: wordpress
-    build: ./requirements/wordpress/.
-    image: wordpress:42
+    build:
+      context: ./requirements/wordpress
+      args:
+        - DOMAIN=${DOMAIN}
+        - DB_NAME=${DB_NAME}
+        - DB_HOST=${DB_HOST}
+        - DB_USER=${DB_USER}     
+        - DB_PWD=${DB_PWD}
+        - ADM_USER=${WP_ADMIN_USER}
+        - ADM_PASS=${WP_ADMIN_PWD}
+        - ADM_MAIL=${WP_ADMIN_MAIL}
+        - TITLE=${TITLE}
+        - NORMAL_USER=${WP_USER}
+        - NORMAL_PASS=${WP_PWD}
+        - NORMAL_MAIL=${WP_MAIL}
+    environment:
+      - WORDPRESS_DB_HOST=${DB_HOST}
+      - WORDPRESS_DB_NAME=${DB_NAME}
+      - WORDPRESS_DB_USER=${DB_USER}
+      - WORDPRESS_DB_PASSWORD=${DB_PWD}
     depends_on:
       - mariadb
     volumes:
@@ -50,8 +71,18 @@ services:
     restart: always
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb/.
-    image: mariadb:42
+    build: 
+      context: ./requirements/mariadb
+      args:
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PWD=${DB_PWD}    
+        - ROOT_PASS=${ROOT_PASS}
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PWD}
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
     volumes:
       - mariadb:/var/lib/mysql
     env_file:

@@ -1,16 +1,18 @@
-all : up
+CONTAINERS := $(shell docker ps -qa)
+IMAGES := $(shell docker images -qa)
+VOLUMES := $(shell docker volume ls -q)
+NETWORKS := $(shell (docker network ls -q 2>&1 >/dev/null))
 
-up : 
-	@docker-compose -f ./srcs/docker-compose.yml up -d
+all:
+	mkdir -p /home/jsekne/data/wordpress /home/jsekne/data/mariadb
+	docker compose -f srcs/docker-compose.yml up -d
 
-down : 
-	@docker-compose -f ./srcs/docker-compose.yml down
+fclean:
+	docker stop $(CONTAINERS) || true; docker rm $(CONTAINERS) || true; docker rmi -f $(IMAGES) || true; docker volume rm $(VOLUMES) || true; docker network rm $(NETWORKS) || true
 
-stop : 
-	@docker-compose -f ./srcs/docker-compose.yml stop
+re: fclean all
 
-start : 
-	@docker-compose -f ./srcs/docker-compose.yml start
+%:
+	docker-compose -f srcs/docker-compose.yml $@
 
-status : 
-	@docker ps
+.PHONY: all fclean re

@@ -1,16 +1,28 @@
 #!/bin/bash
 
-service mysql start 
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initializing MySQL data directory..."
+    mysql_install_db --user=mysql
+fi
 
+mysqld_safe &
 
-echo "CREATE DATABASE IF NOT EXISTS $db1_name ;" > db1.sql
-echo "CREATE USER IF NOT EXISTS '$db1_user'@'%' IDENTIFIED BY '$db1_pwd' ;" >> db1.sql
-echo "GRANT ALL PRIVILEGES ON $db1_name.* TO '$db1_user'@'%' ;" >> db1.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> db1.sql
-echo "FLUSH PRIVILEGES;" >> db1.sql
+until mysqladmin ping 2>/dev/null; do
+    echo "Waiting for MySQL to be ready..."
+    sleep 2
+done
 
-mysql < db1.sql
+# Prepare SQL commands
+echo "Setting up database and users..."
+mysql -u root -p"${ROOT_PASS}" << EOF
+CREATE DATABASE IF NOT EXISTS ${DB_NAME};
+CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PWD}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASS}';
+FLUSH PRIVILEGES;
+EOF
 
-kill $(cat /var/run/mysqld/mysqld.pid)
+mysqladmin -u root -p"${ROOT_PASS}" shutdown
 
-mysqld
+echo "Starting MySQL..."
+exec mysqld

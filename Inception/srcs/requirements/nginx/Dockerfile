@@ -1,7 +1,19 @@
 FROM debian:buster
 
-RUN apt -y update && apt install -y nginx && apt install openssl -y
+ARG DOMAIN
+ARG CERTS_
 
-COPY ./tools/script.sh /
+ENV DOMAIN=$DOMAIN
+ENV CERTS_=$CERTS_
 
-CMD [ "/script.sh" ]
+RUN apt update -y && apt upgrade -y
+RUN apt install -y nginx openssl
+
+COPY ./tools/script.sh /script.sh
+
+RUN chmod +x /script.sh
+RUN /script.sh
+
+CMD ["nginx", "-g", "daemon off;"]
+
+
