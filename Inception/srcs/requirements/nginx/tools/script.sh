@@ -30,5 +30,18 @@ server {
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
     }
 }
+
+server {
+    listen 81;
+    
+    server_name localhost ${DOMAIN} www.${DOMAIN};
+    
+    index index.html;
+    root /var/www/static;
+    
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
 " > /etc/nginx/sites-available/default
 

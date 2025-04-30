@@ -14,7 +14,6 @@ volumes:
                         o: bind
                         type: none
 
-
 networks:
   inception:
     name: inception
@@ -23,16 +22,18 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ./requirements/nginx
+      context: ./requirements
+      dockerfile: ./nginx/Dockerfile
       args:
         - DOMAIN=${DOMAIN}
         - CERTS_=${CERTS_}
     ports:
-     - "443:443"
+      - "443:443"
+      - "81:81"
     depends_on:
       - wordpress
     volumes:
-     - wordpress:/var/www/html
+      - wordpress:/var/www/html
     networks:
       - inception
     env_file:
