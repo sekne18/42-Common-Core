@@ -1,8 +1,5 @@
 !/bin/bash
 
-#Exit on error
-#set -e
-
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "/C=BE/ST=Antwerp/L=Antwerp/O=19/OU=19Antwerp/CN=${DOMAIN}" \
     -keyout ${CERTS_}/nginx-selfsigned.key \

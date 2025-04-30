@@ -42,24 +42,6 @@ services:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
-      args:
-        - DOMAIN=${DOMAIN}
-        - DB_NAME=${DB_NAME}
-        - DB_HOST=${DB_HOST}
-        - DB_USER=${DB_USER}     
-        - DB_PWD=${DB_PWD}
-        - ADM_USER=${WP_ADMIN_USER}
-        - ADM_PASS=${WP_ADMIN_PWD}
-        - ADM_MAIL=${WP_ADMIN_MAIL}
-        - TITLE=${TITLE}
-        - NORMAL_USER=${WP_USER}
-        - NORMAL_PASS=${WP_PWD}
-        - NORMAL_MAIL=${WP_MAIL}
-    environment:
-      - WORDPRESS_DB_HOST=${DB_HOST}
-      - WORDPRESS_DB_NAME=${DB_NAME}
-      - WORDPRESS_DB_USER=${DB_USER}
-      - WORDPRESS_DB_PASSWORD=${DB_PWD}
     depends_on:
       - mariadb
     volumes:
@@ -73,18 +55,14 @@ services:
     container_name: mariadb
     build: 
       context: ./requirements/mariadb
-      args:
-        - DB_NAME=${DB_NAME}
-        - DB_USER=${DB_USER}
-        - DB_PWD=${DB_PWD}    
-        - ROOT_PASS=${ROOT_PASS}
-    environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PWD}
-      - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
     volumes:
       - mariadb:/var/lib/mysql
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PWD=${DB_PWD}
+      - DB_ROOT_USER=${DB_ROOT_USER}
+      - DB_ROOT_PWD=${DB_ROOT_PWD}
     env_file:
       - .env
     networks:

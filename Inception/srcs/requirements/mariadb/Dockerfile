@@ -1,23 +1,11 @@
 FROM debian:buster
 
-ARG DB_NAME
-ARG ADM_USER
-ARG ADM_PASS
-ARG ROOT_PASS
+RUN apt-get update -y && \
+    apt-get install -y mariadb-server
 
-ENV DB_NAME=$DB_NAME
-ENV ADM_USER=$ADM_USER
-ENV ADM_PASS=$ADM_PASS
-ENV ROOT_PASS=$ROOT_PASS
+COPY ./tools/script.sh /tmp/script.sh
+RUN  chmod +x /tmp/script.sh
 
-RUN apt update -y && apt upgrade -y
-RUN apt install -y mariadb-server
+RUN sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf 
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-
-COPY ./tools/script.sh /script.sh
-
-RUN chmod +x /script.sh
-
-CMD [ "/script.sh" ]
-
+CMD ["bash", "/tmp/script.sh"]

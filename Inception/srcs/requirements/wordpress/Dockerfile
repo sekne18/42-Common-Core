@@ -1,39 +1,26 @@
 FROM debian:buster
 
-ARG DOMAIN
-ARG DB_NAME
-ARG ADM_PASS
-ARG ADM_USER
-ARG DB_HOST
-ARG TITLE
-ARG ADM_MAIL
-ARG NORMAL_USER
-ARG NORMAL_PASS
-ARG NORMAL_MAIL
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    php-fpm \
+    php-mysql \
+    php-zip \
+    curl \
+    vim && \
+    sed -i -e 's/listen =.*/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
 
-ENV DOMAIN=${DOMAIN}
-ENV DB_NAME=${DB_NAME}
-ENV ADM_PASS=${ADM_PASS}
-ENV ADM_USER=${ADM_USER}
-ENV DB_HOST=${DB_HOST}
-ENV TITLE=${TITLE}
-ENV ADM_MAIL=${ADM_MAIL}
-ENV NORMAL_USER=${NORMAL_USER}
-ENV NORMAL_PASS=${NORMAL_PASS}
-ENV NORMAL_MAIL=${NORMAL_MAIL}
+RUN apt-get install -y sendmail
+RUN mkdir -p /run/php
 
-RUN apt update -y && apt upgrade -y
-RUN apt install -y php-fpm php-mysql curl
-
-COPY ./tools/script.sh /script.sh
-COPY ./tools/boot.sh /boot.sh
-
-RUN chmod +x /script.sh
-RUN chmod +x /boot.sh
-
-RUN /script.sh
-
+WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
 
-CMD ["/boot.sh"]
+RUN wp core download --allow-root
 
+COPY ./tools/script.sh .
+
+RUN chmod +x script.sh
+
+ENTRYPOINT ["bash", "script.sh"]
