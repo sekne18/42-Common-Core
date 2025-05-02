@@ -69,3 +69,12 @@ services:
     networks:
       - inception
     restart: always
+  redis:
+    build: ./requirements/bonus/redis
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - inception
+    restart: always

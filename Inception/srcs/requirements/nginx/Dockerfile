@@ -18,10 +18,6 @@ COPY ../bonus/static_site/portfolio/ /var/www/static/
 # Copy NGINX configuration script
 COPY ./nginx/tools/script.sh /script.sh
 
-#RUN mkdir -p /var/www/static
-
-#COPY ../bonus/static-site/ /var/www/static/
-
 RUN chmod +x /script.sh
 RUN /script.sh
 
