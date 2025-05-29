@@ -23,5 +23,5 @@ Gades on the projects
 | Webserv           | C++        | ✅ 125 Points    |
 | CPP 5-9           | C++        | ✅ 100 Points    |
 | Inception         | Docker     | ✅ 110 Points    |
-| ft_transendence   | Full-Stack | 🔄 In progress   |
+| ft_transendence   | Full-Stack | ✅ 125 Points    |
 | Exam 06           | C          | ✅ Passed        |
