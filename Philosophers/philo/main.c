@@ -1,31 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/02 20:16:45 by jans              #+#    #+#             */
-/*   Updated: 2024/12/12 08:44:41 by jsekne           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "philo.h"
 
 int	main(int argc, char **argv)
 {
-	t_table	table;
-	int		status;
+	t_data	data;
 
-	status = 0;
-	if (argc == 5 || argc == 6)
+	if (argc != 5 && argc != 6)
 	{
-		parse_input(&table, argv, argc == 6);
-		if (init_data(&table))
-			return (1);
-		status = start_eating(&table);
+		printf("Usage: ./philo nb_philos time_die time_eat time_sleep "
+			"[must_eat]\n");
+		return (1);
 	}
-	else
-		printf("Wrong input\n");
-	return (status);
+	if (!is_valid_args(argv, argc))
+	{
+		printf("Error: Invalid arguments\n");
+		return (1);
+	}
+	if (init_data(&data, argv, argc))
+		return (1);
+	if (start_simulation(&data))
+	{
+		cleanup_mutexes(&data);
+		return (1);
+	}
+	cleanup_mutexes(&data);
+	return (0);
 }

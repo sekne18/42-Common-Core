@@ -1,81 +1,93 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 12:29:37 by jans              #+#    #+#             */
-/*   Updated: 2025/01/20 16:00:48 by jsekne           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "philo.h"
 
-long	gettime(t_time_code time_code)
+long long	get_time(void)
 {
 	struct timeval	tv;
 
-	if (gettimeofday(&tv, NULL))
-	{
-		printf("Gettimeofday failed");
-		return (0);
-	}
-	if (SECOND == time_code)
-		return (tv.tv_sec + (tv.tv_usec / 1e6));
-	else if (MILLISECOND == time_code)
-		return ((tv.tv_sec * 1e3) + (tv.tv_usec / 1e3));
-	else if (MICROSECOND == time_code)
-		return ((tv.tv_sec * 1e6) + tv.tv_usec);
-	else
-	{
-		printf("Wrong input to gettime");
-		return (0);
-	}
-	return (1919);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long	ft_atol(const char *nptr)
+void	smart_sleep(long long time_to_sleep, t_data *data)
 {
-	long	sum;
+	long long	start_time;
 
-	sum = 0;
-	if (!(*nptr >= '0' && *nptr <= '9'))
-		printf("Wrong input");
-	while (*nptr >= '0' && *nptr <= '9')
-		sum = (sum * 10) + (*nptr++ - '0');
-	return (sum);
-}
-
-void	precise_usleep(long usec, t_table *table)
-{
-	long	start;
-	long	elapsed;
-	long	rem;
-
-	start = gettime(MICROSECOND);
-	while (gettime(MICROSECOND) - start < usec)
+	start_time = get_time();
+	while (get_time() - start_time < time_to_sleep)
 	{
-		if (sim_done(table))
-			break ;
-		elapsed = gettime(MICROSECOND) - start;
-		rem = usec - elapsed;
-		if (rem > 1e3)
-			usleep(rem / 2);
-		else
+		pthread_mutex_lock(&data->death_mutex);
+		if (data->someone_died)
 		{
-			while (gettime(MICROSECOND) - start < usec)
-				;
+			pthread_mutex_unlock(&data->death_mutex);
+			break ;
 		}
+		pthread_mutex_unlock(&data->death_mutex);
+		usleep(500);
 	}
 }
 
-/*
- * Function helps to wait for all threads. Once all threads are ready
- * we can start with the simulation
- * */
-void	wait_all_threads(t_table *table)
+void	print_status(t_philo *philo, t_status status)
 {
-	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
-		;
+	long long	timestamp;
+
+	pthread_mutex_lock(&philo->data->write_mutex);
+	pthread_mutex_lock(&philo->data->death_mutex);
+	if (philo->data->someone_died && status != DIED)
+	{
+		pthread_mutex_unlock(&philo->data->death_mutex);
+		pthread_mutex_unlock(&philo->data->write_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->data->death_mutex);
+	timestamp = get_time() - philo->data->start_time;
+	if (status == THINKING)
+		printf("%lld %d is thinking\n", timestamp, philo->id);
+	else if (status == EATING)
+		printf("%lld %d is eating\n", timestamp, philo->id);
+	else if (status == SLEEPING)
+		printf("%lld %d is sleeping\n", timestamp, philo->id);
+	else if (status == TAKE_FORK)
+		printf("%lld %d has taken a fork\n", timestamp, philo->id);
+	else if (status == DIED)
+		printf("%lld %d died\n", timestamp, philo->id);
+	pthread_mutex_unlock(&philo->data->write_mutex);
+}
+
+int	ft_atoi(const char *str)
+{
+	int	result;
+
+	result = 0;
+	while (*str >= '0' && *str <= '9')
+	{
+		result = (result * 10) + (*str - '0');
+		str++;
+	}
+	return (result);
+}
+
+int	is_valid_args(char **argv, int argc)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (i < argc)
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] < '0' || argv[i][j] > '9')
+				return (0);
+			j++;
+		}
+		if (ft_atoi(argv[i]) <= 0)
+			return (0);
+		i++;
+	}
+	if (ft_atoi(argv[1]) > MAX_PHILOS)
+		return (0);
+	return (1);
 }

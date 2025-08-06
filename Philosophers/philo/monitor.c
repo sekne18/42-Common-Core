@@ -1,56 +1,70 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/06 08:25:47 by jans              #+#    #+#             */
-/*   Updated: 2025/01/20 16:54:12 by jsekne           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "philo.h"
 
-bool	philo_dead(t_philo *philo)
+void	*monitor_routine(void *arg)
 {
-	long	elapsed;
-	long	t_to_die;
+	t_data	*data;
 
-	if (get_bool(&philo->philo_mutex, &philo->full))
-		return (false);
-	elapsed = gettime(MILLISECOND) - get_time(&philo->philo_mutex,
-			&philo->last_meal_time);
-	t_to_die = philo->table->time_to_die / 1e3;
-	if (elapsed > t_to_die)
-		return (true);
-	return (false);
-}
-
-/*
- * Monitor overviews the processes and checks if and philo died.
- * If philo died it sets end_simulation to true and all threads will exit loops
- * */
-void	*monitor(void *data)
-{
-	int		i;
-	t_table	*table;
-
-	table = (t_table *)data;
-	while (!all_threads_running(&table->table_mutex,
-			&table->threads_running_nbr, table->philo_nbr))
-		;
-	while (!sim_done(table))
+	data = (t_data *)arg;
+	while (1)
 	{
-		i = -1;
-		while (++i < table->philo_nbr && !sim_done(table))
-		{
-			if (philo_dead(table->philos + i))
-			{
-				set_bool(&table->table_mutex, &table->end_simulation, true);
-				write_status(DIED, table->philos + i);
-			}
-		}
+		if (check_death(data) || check_all_ate(data))
+			break ;
+		usleep(1000);
 	}
 	return (NULL);
+}
+
+int	check_death(t_data *data)
+{
+	int			i;
+	long long	current_time;
+
+	i = 0;
+	current_time = get_time();
+	while (i < data->nb_philos)
+	{
+		pthread_mutex_lock(&data->meal_mutex);
+		if (current_time - data->philos[i].last_meal_time
+			>= (long long)data->time_to_die)
+		{
+			pthread_mutex_unlock(&data->meal_mutex);
+			pthread_mutex_lock(&data->death_mutex);
+			data->someone_died = 1;
+			pthread_mutex_unlock(&data->death_mutex);
+			print_status(&data->philos[i], DIED);
+			return (1);
+		}
+		pthread_mutex_unlock(&data->meal_mutex);
+		i++;
+	}
+	return (0);
+}
+
+int	check_all_ate(t_data *data)
+{
+	int	i;
+	int	count;
+
+	if (data->must_eat == -1)
+		return (0);
+	i = 0;
+	count = 0;
+	while (i < data->nb_philos)
+	{
+		pthread_mutex_lock(&data->meal_mutex);
+		if (data->philos[i].meals_eaten >= data->must_eat)
+			count++;
+		pthread_mutex_unlock(&data->meal_mutex);
+		i++;
+	}
+	if (count == data->nb_philos)
+	{
+		pthread_mutex_lock(&data->death_mutex);
+		data->all_ate_enough = 1;
+		pthread_mutex_unlock(&data->death_mutex);
+		return (1);
+	}
+	return (0);
 }
