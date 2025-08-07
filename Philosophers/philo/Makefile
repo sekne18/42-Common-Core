@@ -1,34 +1,21 @@
+CC := cc
+CFLAGS := -g -Wall -Werror -Wextra 
 
-
-NAME = philo
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
-RM = rm -f
-
-SRCDIR = .
-OBJDIR = obj
-
-SOURCES = main.c init.c simulation.c actions.c monitor.c utils.c
-
-SRCS = $(addprefix $(SRCDIR)/, $(SOURCES))
-OBJS = $(addprefix $(OBJDIR)/, $(SOURCES:.c=.o))
-
-all: $(NAME)
+SRCS := main.c init.c simulation.c actions.c monitor.c utils.c
+OBJS := $(SRCS:.c=.o)
+NAME := philo
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+all: $(NAME)
 
 clean:
-	$(RM) -r $(OBJDIR)
+	rm -f $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY : all clean fclean re

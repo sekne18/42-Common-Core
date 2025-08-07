@@ -1,27 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jans <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/06 08:25:47 by jans              #+#    #+#             */
+/*   Updated: 2025/01/20 15:58:08 by jsekne           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void	*monitor(void *arg)
+bool	philo_dead(t_philo *philo)
 {
-	t_table	*table;
-	int		i;
+	long	elapsed;
+	long	t_to_die;
 
-	table = (t_table *)arg;
-	while (!table->end_simulation)
+	if (get_bool(&philo->philo_mutex, &philo->full))
+		return (false);
+	elapsed = gettime(MILLISECOND) - get_time(&philo->philo_mutex,
+			&philo->last_meal_time);
+	t_to_die = philo->table->time_to_die / 1e3;
+	if (elapsed > t_to_die)
+		return (true);
+	return (false);
+}
+
+/*
+ * Monitor overviews the processes and checks if and philo died.
+ * If philo died it sets end_simulation to true and all threads will exit loops
+ * */
+void	*monitor(void *data)
+{
+	int		i;
+	t_table	*table;
+
+	table = (t_table *)data;
+	while (!all_threads_running(&table->table_mutex,
+			&table->threads_running_nbr, table->philo_nbr))
+		;
+	while (!sim_done(table))
 	{
-		i = 0;
-		while (i < table->philo_nbr && !table->end_simulation)
+		i = -1;
+		while (++i < table->philo_nbr && !sim_done(table))
 		{
-			if (!table->philos[i].full
-				&& get_timestamp() - table->philos[i].last_meal_time
-				> table->time_to_die)
+			if (philo_dead(table->philos + i))
 			{
-				table->end_simulation = true;
-				print_status(&table->philos[i], "died");
-				break ;
+				set_bool(&table->table_mutex, &table->end_simulation, true);
+				write_status(DIED, table->philos + i);
 			}
-			i++;
 		}
-		usleep(1000);
 	}
 	return (NULL);
 }

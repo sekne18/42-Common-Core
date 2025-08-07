@@ -12,6 +12,12 @@
 
 #include "philo.h"
 
+/*
+ * Take forks for the philosopher. The order of taking forks is determined
+ * by the philosopher's ID to avoid deadlock. Odd philosophers take the left
+ * fork first, while even philosophers take the right fork first.
+ * It locks the mutexes for the forks and prints the status.
+*/
 void	take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 1)
@@ -30,6 +36,12 @@ void	take_forks(t_philo *philo)
 	}
 }
 
+/*
+ * Simulate eating by the philosopher. It locks the meal mutex to update
+ * the last meal time and increments the meals eaten count. It then sleeps
+ * for the time it takes to eat.
+ * After eating, it prints the status.
+*/
 void	eat(t_philo *philo)
 {
 	print_status(philo, EATING);
@@ -40,18 +52,33 @@ void	eat(t_philo *philo)
 	smart_sleep(philo->data->time_to_eat, philo->data);
 }
 
+/*
+ * Drop the forks after eating. It unlocks the mutexes for both forks.
+ * This allows other philosophers to take the forks.
+*/
 void	drop_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
 
+/*
+ * Simulate sleeping by the philosopher. It prints the sleeping status
+ * and sleeps for the specified time to sleep.
+ * This allows the philosopher to rest before thinking again.
+*/
 void	philo_sleep(t_philo *philo)
 {
 	print_status(philo, SLEEPING);
 	smart_sleep(philo->data->time_to_sleep, philo->data);
 }
 
+/*
+ * Simulate thinking by the philosopher. It prints the thinking status.
+ * If the number of philosophers is even, it sleeps for a short time to
+ * allow other philosophers to take their turns.
+ * This helps in balancing the simulation and avoiding starvation.
+*/
 void	think(t_philo *philo)
 {
 	long long	think_time;

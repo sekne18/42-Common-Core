@@ -14,12 +14,21 @@
 
 long long	get_time(void)
 {
-	struct timeval	tv;
+	struct timeval	t;
+	long long		ms;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	if (gettimeofday(&t, NULL) != 0)
+		return (-1);
+	ms = (long long)t.tv_sec * 1000;
+	ms += t.tv_usec / 1000;
+	return (ms);
 }
 
+/*
+ * Smart sleep function that allows the philosopher to sleep for a specified
+ * time while checking if someone has died. It uses a loop to check the
+ * `someone_died` flag and sleeps in small increments to avoid busy waiting.
+*/
 void	smart_sleep(long long time_to_sleep, t_data *data)
 {
 	long long	start_time;
@@ -38,6 +47,9 @@ void	smart_sleep(long long time_to_sleep, t_data *data)
 	}
 }
 
+/*
+ * Print the status of the philosopher with a timestamp.
+*/
 void	print_status(t_philo *philo, t_status status)
 {
 	long long	timestamp;
@@ -78,6 +90,11 @@ int	ft_atoi(const char *str)
 	return (result);
 }
 
+/*
+ * Validate the command line arguments.
+ * It checks if all arguments are positive integers and within the limits.
+ * Returns 1 if valid, 0 otherwise.
+*/
 int	is_valid_args(char **argv, int argc)
 {
 	int	i;

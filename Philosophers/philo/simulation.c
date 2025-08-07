@@ -11,7 +11,12 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-
+/*
+ * Create threads for each philosopher and the monitor.
+ * If there is only one philosopher, it creates a single thread for that
+ * philosopher. Otherwise, it creates a thread for each philosopher.
+ * Returns 0 on success, 1 on failure.
+*/
 static int	create_threads(t_data *data)
 {
 	int	i;
@@ -37,6 +42,9 @@ static int	create_threads(t_data *data)
 	return (0);
 }
 
+/*
+ * Join all philosopher threads after the simulation is complete.
+*/
 static void	join_threads(t_data *data)
 {
 	int	i;
@@ -49,6 +57,11 @@ static void	join_threads(t_data *data)
 	}
 }
 
+/*
+ * Start the simulation by creating the necessary threads for philosophers
+ * and the monitor. This function handles both the single philosopher case
+ * and the multiple philosophers case.
+ */
 int	start_simulation(t_data *data)
 {
 	pthread_t	monitor;
@@ -64,6 +77,11 @@ int	start_simulation(t_data *data)
 	return (0);
 }
 
+/*
+ * Philosopher routine where each philosopher tries to take forks,
+ * eat, sleep, and think in a loop until a condition is met (like death or
+ * all philosophers have eaten enough).
+*/
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;
@@ -92,6 +110,11 @@ void	*philosopher_routine(void *arg)
 	return (NULL);
 }
 
+/*
+ * Single philosopher routine for the case where there is only one philosopher.
+ * The philosopher takes a fork, simulates eating by sleeping for the time
+ * it would take to die, and then exits.
+*/
 void	*single_philo_routine(void *arg)
 {
 	t_philo	*philo;

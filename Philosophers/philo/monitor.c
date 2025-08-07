@@ -11,7 +11,12 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-
+/*
+ * Monitor routine that checks the state of the philosophers.
+ * It runs in a separate thread and continuously checks if any philosopher
+ * has died or if all have eaten enough. If either condition is met, it exits.
+ * Returns NULL when done.
+*/
 void	*monitor_routine(void *arg)
 {
 	t_data	*data;
@@ -26,6 +31,12 @@ void	*monitor_routine(void *arg)
 	return (NULL);
 }
 
+/*
+ * Check if a philosopher has died by comparing the time since their last meal
+ * to the time limit for dying. If a philosopher has died, it sets the
+ * `someone_died` flag and prints the death message.
+ * Returns 1 if a philosopher has died, 0 otherwise.
+*/
 int	check_death(t_data *data)
 {
 	int			i;
@@ -52,6 +63,12 @@ int	check_death(t_data *data)
 	return (0);
 }
 
+/* 
+ * Check if all philosophers have eaten enough times.
+ * If the `must_eat` condition is set, it checks if each philosopher has
+ * eaten at least that many times. If all have, it sets the `all_ate_enough`
+ * flag and returns 1. Otherwise, it returns 0.
+*/
 int	check_all_ate(t_data *data)
 {
 	int	i;
